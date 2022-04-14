@@ -2,7 +2,7 @@ class AppDetails{
 
   static String appVersion = "0.2.0";
   static String appName = "Playlist Saver Fschmatz";
-  static String repositoryLink = "";
+  static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
 0.2.0

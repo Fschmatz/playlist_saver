@@ -77,7 +77,7 @@ class AppInfoPage extends StatelessWidget {
           const ListTile(
             leading: Icon(Icons.messenger_outline),
             title: Text(
-              "We're not in an information age anymore. We're in the information management age.",
+              "A strange art – music – the most poetic and precise of all the arts, vague as a dream and precise as algebra.",
             ),
           ),
         ]));

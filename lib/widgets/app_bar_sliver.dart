@@ -13,7 +13,7 @@ class _AppBarSliverState extends State<AppBarSliver> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-        title: const Text('Tech News Feed'),
+        title: const Text('Playlist Saver'),
         pinned: false,
         floating: true,
         snap: true,
