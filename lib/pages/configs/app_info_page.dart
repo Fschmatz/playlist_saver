@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../util/app_details.dart';
 
 class AppInfoPage extends StatelessWidget {
