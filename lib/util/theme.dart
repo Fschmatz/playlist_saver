@@ -7,6 +7,7 @@ ThemeData light = ThemeData(
   colorScheme: ColorScheme.light(
     background: const Color(0xFFFFFFFF),
     primary: Colors.blueAccent.shade400,
+    onPrimary: const Color(0xFFFFFFFF),
     secondary: Colors.blueAccent.shade400,
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -76,6 +77,7 @@ ThemeData dark = ThemeData(
   colorScheme: const ColorScheme.dark(
       background: Color(0xFF1C1C1D),
       primary: Color(0xFF8BA7DE),
+      onPrimary: Color(0xFF002F65),
       secondary: Color(0xFF8BA7DE),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(

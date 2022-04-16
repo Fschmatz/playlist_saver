@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
   }
 
   void getAllPlaylists() async {
-    var resp = await dbPlaylist.queryAllRows();
+    var resp = await dbPlaylist.queryAllRowsDesc();
     setState(() {
       loading = false;
       playlists = resp;
@@ -35,23 +35,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Playlist Saver'), actions: [
-       /* IconButton(
-            icon: const Icon(
-              Icons.add_outlined,
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => SavePlaylist(
-                      refreshHome: getAllPlaylists,
-                    ),
-                    fullscreenDialog: true,
-                  ));
-            }),
-        const SizedBox(
-          width: 10,
-        ),*/
         IconButton(
             icon: const Icon(
               Icons.settings_outlined,

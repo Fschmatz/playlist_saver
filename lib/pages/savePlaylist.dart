@@ -16,12 +16,12 @@ class SavePlaylist extends StatefulWidget {
 }
 
 class _SavePlaylistState extends State<SavePlaylist> {
-  final dbPlaylist = PlaylistDao.instance;
+
   TextEditingController controllerPlaylistTitle = TextEditingController();
   TextEditingController controllerArtist = TextEditingController();
   TextEditingController controllerTags = TextEditingController();
   TextEditingController controllerLink = TextEditingController();
-  static SpotifyMetadata? metaData;
+  SpotifyMetadata? metaData;
   String base64Image = '';
 
   void _fetchMetadata() async {
@@ -37,6 +37,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
   }
 
   Future<void> _savePlaylist() async {
+    final dbPlaylist = PlaylistDao.instance;
     Uint8List? bytes;
 
     if (metaData != null) {
@@ -127,7 +128,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                   if (checkErrors().isEmpty) {
                       _savePlaylist().then((v) => {
                         widget.refreshHome!(),
-                        Navigator.of(context).pop()
+                        Navigator.of(context).pop(),
                       }
                     );
                   } else {

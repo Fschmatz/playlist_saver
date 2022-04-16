@@ -5,50 +5,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
-
 import '../class/playlist.dart';
 
-class SavePlaylist extends StatefulWidget {
+class EditPlaylist extends StatefulWidget {
   @override
-  _SavePlaylistState createState() => _SavePlaylistState();
+  _EditPlaylistState createState() => _EditPlaylistState();
 
   Function() refreshHome;
-  Playlist? playlist;
+  Playlist playlist;
 
-  SavePlaylist({Key? key, required this.refreshHome, this.playlist}) : super(key: key);
+  EditPlaylist({Key? key, required this.refreshHome, required this.playlist})
+      : super(key: key);
 }
 
-class _SavePlaylistState extends State<SavePlaylist> {
+class _EditPlaylistState extends State<EditPlaylist> {
   final dbPlaylist = PlaylistDao.instance;
   TextEditingController controllerPlaylistTitle = TextEditingController();
   TextEditingController controllerArtist = TextEditingController();
   TextEditingController controllerTags = TextEditingController();
   TextEditingController controllerLink = TextEditingController();
-  static SpotifyMetadata? metaData;
   String base64Image = '';
 
-  void _fetchMetadata() async {
-    try {
-      metaData = await SpotifyApi.getData(controllerLink.text);
-    } catch (e) {
-      metaData = null;
-    }
-    setState(() {
-      metaData;
-      controllerPlaylistTitle.text = metaData!.title;
-    });
+  @override
+  void initState() {
+    controllerLink.text = widget.playlist.link;
+    controllerPlaylistTitle.text = widget.playlist.title;
+    controllerArtist.text = widget.playlist.artist!;
+    controllerTags.text = widget.playlist.tags!;
+
+    super.initState();
   }
 
 
   Future<void> _updatePlaylist() async {
+    final dbPlaylist = PlaylistDao.instance;
 
-    /* Map<String, dynamic> row = {
-      TaskDao.columnId: widget.task.id,
-      TaskDao.columnTitle: customControllerTitle.text,
-      TaskDao.columnNote: customControllerNote.text,
+    Map<String, dynamic> row = {
+      PlaylistDao.columnIdPlaylist: widget.playlist.idPlaylist,
+      PlaylistDao.columnLink: controllerLink.text,
+      PlaylistDao.columnTitle: controllerPlaylistTitle.text,
+      PlaylistDao.columnArtist: controllerArtist.text,
+      PlaylistDao.columnTags: controllerTags.text,
     };
-    final update = await tasks.update(row);*/
-
+    final update = await dbPlaylist.update(row);
   }
 
   String checkErrors() {
@@ -105,7 +104,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
           appBar: AppBar(
             title: const Text('Edit Playlist'),
             actions: [
-              IconButton(
+              /*IconButton(
                 icon: const Icon(Icons.refresh_outlined),
                 tooltip: 'Load data',
                 onPressed: () {
@@ -114,17 +113,14 @@ class _SavePlaylistState extends State<SavePlaylist> {
               ),
               const SizedBox(
                 width: 10,
-              ),
+              ),*/
               IconButton(
                 icon: const Icon(Icons.save_outlined),
                 tooltip: 'Save',
                 onPressed: () {
                   if (checkErrors().isEmpty) {
-                    _updatePlaylist().then((v) => {
-                      widget.refreshHome(),
-                      Navigator.of(context).pop()
-                    }
-                    );
+                    _updatePlaylist().then((v) =>
+                        {widget.refreshHome(), Navigator.of(context).pop()});
                   } else {
                     showAlertDialogErrors(context);
                   }
@@ -132,144 +128,141 @@ class _SavePlaylistState extends State<SavePlaylist> {
               ),
             ],
           ),
-          body: ListView(
-              children: [
-                ListTile(
-                  title: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
+          body: ListView(children: [
+          /*  ListTile(
+              title: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    elevation: 0,
+                    child: metaData == null
+                        ? Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6)),
+                            width: 125,
+                            height: 125,
+                            child: const Center(
+                              child: Icon(
+                                Icons.music_note_outlined,
+                                size: 30,
+                              ),
                             ),
-                            elevation: 0,
-                            child: metaData == null
-                                ? Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6)),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: Image.network(
+                              metaData!.thumbnailUrl,
                               width: 125,
                               height: 125,
-                              child: const Center(
-                                child: Icon(
-                                  Icons.music_note_outlined,
-                                  size: 30,
-                                ),
-                              ),
-                            )
-                                : ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: Image.network(
-                                metaData!.thumbnailUrl,
-                                width: 125,
-                                height: 125,
-                                fit: BoxFit.cover,
-                              ),
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ]),
+                  ),
+                ]),
+              ),
+            ),*/
+            ListTile(
+              title: Text("Link",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary)),
+            ),
+            ListTile(
+              title: TextField(
+                minLines: 1,
+                maxLines: 2,
+                maxLength: 500,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.name,
+                controller: controllerLink,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.link_outlined),
+                  helperText: "* Required",
+                  counterText: "",
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text("Title",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary)),
+            ),
+            ListTile(
+              title: TextField(
+                minLines: 1,
+                maxLines: 2,
+                maxLength: 300,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.name,
+                controller: controllerPlaylistTitle,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.notes_outlined),
+                  helperText: "* Required",
+                  counterText: "",
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text("Artist",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary)),
+            ),
+            ListTile(
+              title: TextField(
+                minLines: 1,
+                maxLines: 2,
+                maxLength: 300,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.name,
+                controller: controllerArtist,
+                decoration: const InputDecoration(
+                  counterText: "",
+                  prefixIcon: Icon(
+                    Icons.person_outline_outlined,
                   ),
                 ),
-                ListTile(
-                  title: Text("Link",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.primary)),
-                ),
-                ListTile(
-                  title: TextField(
-                    minLines: 1,
-                    maxLines: 2,
-                    maxLength: 500,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerLink,
-                    onSubmitted: (e) => _fetchMetadata(),
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.link_outlined),
-                      helperText: "* Required",
-                      counterText: "",
-                    ),
+              ),
+            ),
+            ListTile(
+              title: Text("Tags",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary)),
+            ),
+            ListTile(
+              title: TextField(
+                minLines: 1,
+                maxLines: 2,
+                maxLength: 300,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.name,
+                controller: controllerTags,
+                decoration: const InputDecoration(
+                  counterText: "",
+                  prefixIcon: Icon(
+                    Icons.sell_outlined,
                   ),
                 ),
-                ListTile(
-                  title: Text("Title",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.primary)),
-                ),
-                ListTile(
-                  title: TextField(
-                    minLines: 1,
-                    maxLines: 2,
-                    maxLength: 300,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerPlaylistTitle,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.notes_outlined),
-                      helperText: "* Required",
-                      counterText: "",
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Text("Artist",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.primary)),
-                ),
-                ListTile(
-                  title: TextField(
-                    minLines: 1,
-                    maxLines: 2,
-                    maxLength: 300,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerArtist,
-                    decoration: const InputDecoration(
-                      counterText: "",
-                      prefixIcon: Icon(
-                        Icons.person_outline_outlined,
-                      ),
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Text("Tags",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.primary)),
-                ),
-                ListTile(
-                  title: TextField(
-                    minLines: 1,
-                    maxLines: 2,
-                    maxLength: 300,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerTags,
-                    decoration: const InputDecoration(
-                      counterText: "",
-                      prefixIcon: Icon(
-                        Icons.sell_outlined,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-              ])),
+              ),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+          ])),
     );
   }
 }

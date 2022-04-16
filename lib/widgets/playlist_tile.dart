@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../class/playlist.dart';
+import '../pages/editPlaylist.dart';
 
 class PlaylistTile extends StatefulWidget {
   @override
@@ -40,6 +42,17 @@ class _PlaylistTileState extends State<PlaylistTile> {
               child: Wrap(
                 children: <Widget>[
                   ListTile(
+                    leading: const Icon(Icons.share_outlined),
+                    title: const Text(
+                      "Share playlist",
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Share.share(widget.playlist.link);
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
                     leading: const Icon(Icons.edit_outlined),
                     title: const Text(
                       "Edit playlist",
@@ -47,15 +60,15 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     onTap: () {
                       Navigator.of(context).pop();
 
-                     /* Navigator.push(
+                      Navigator.push(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (BuildContext context) => PgEditarLivro(
-                              livro: widget.livro,
-                              refreshLista: widget.getLivrosState,
+                            builder: (BuildContext context) => EditPlaylist(
+                              playlist: widget.playlist,
+                              refreshHome: widget.refreshHome,
                             ),
                             fullscreenDialog: true,
-                          ));*/
+                          ));
                     },
                   ),
                   const Divider(),
