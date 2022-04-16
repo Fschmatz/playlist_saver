@@ -10,10 +10,9 @@ class SavePlaylist extends StatefulWidget {
   @override
   _SavePlaylistState createState() => _SavePlaylistState();
 
-  Function() refreshHome;
-  String? linkFromShareIntent;
+  Function()? refreshHome;
 
-  SavePlaylist({Key? key, required this.refreshHome, this.linkFromShareIntent}) : super(key: key);
+  SavePlaylist({Key? key, required this.refreshHome}) : super(key: key);
 }
 
 class _SavePlaylistState extends State<SavePlaylist> {
@@ -24,15 +23,6 @@ class _SavePlaylistState extends State<SavePlaylist> {
   TextEditingController controllerLink = TextEditingController();
   static SpotifyMetadata? metaData;
   String base64Image = '';
-
-  @override
-  void initState() {
-    if(widget.linkFromShareIntent!.isNotEmpty){
-      controllerLink.text = widget.linkFromShareIntent!;
-      _fetchMetadata();
-    }
-    super.initState();
-  }
 
   void _fetchMetadata() async {
     try {
@@ -136,7 +126,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 onPressed: () {
                   if (checkErrors().isEmpty) {
                       _savePlaylist().then((v) => {
-                        widget.refreshHome(),
+                        widget.refreshHome!(),
                         Navigator.of(context).pop()
                       }
                     );
@@ -157,13 +147,13 @@ class _SavePlaylistState extends State<SavePlaylist> {
                         children: [
                           Card(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(6),
                             ),
                             elevation: 0,
                             child: metaData == null
                                 ? Container(
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5)),
+                                        borderRadius: BorderRadius.circular(6)),
                                     width: 125,
                                     height: 125,
                                     child: const Center(
@@ -174,7 +164,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                                     ),
                                   )
                                 : ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(6),
                                     child: Image.network(
                                       metaData!.thumbnailUrl,
                                       width: 125,
@@ -195,6 +185,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 ),
                 ListTile(
                   title: TextField(
+                    autofocus: true,
                     minLines: 1,
                     maxLines: 2,
                     maxLength: 500,

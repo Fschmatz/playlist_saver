@@ -9,6 +9,12 @@ ThemeData light = ThemeData(
     primary: Colors.blueAccent.shade400,
     secondary: Colors.blueAccent.shade400,
   ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: Colors.blueAccent.shade400,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(16)),
+    ),
+  ),
   dialogTheme: const DialogTheme(
     backgroundColor: Color(0xFFFFFFFF),
     shape: RoundedRectangleBorder(
@@ -71,6 +77,12 @@ ThemeData dark = ThemeData(
       background: Color(0xFF1C1C1D),
       primary: Color(0xFF8BA7DE),
       secondary: Color(0xFF8BA7DE),
+  ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: Color(0xFF8BA7DE),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(16)),
+    ),
   ),
   appBarTheme: const AppBarTheme(
       color: Color(0xFF1C1C1D),

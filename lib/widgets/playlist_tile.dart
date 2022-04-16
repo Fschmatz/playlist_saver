@@ -127,7 +127,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(6),
                               ),
                               child: Icon(
                                 Icons.music_note_outlined,
@@ -142,10 +142,10 @@ class _PlaylistTileState extends State<PlaylistTile> {
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(6),
                               ),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(6),
                                 child: Image.memory(
                                   widget.playlist.cover!,
                                   fit: BoxFit.cover,

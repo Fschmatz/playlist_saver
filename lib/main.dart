@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
-import 'package:playlist_saver/pages/configs/settings_page.dart';
 import 'package:playlist_saver/util/theme.dart';
 import 'app.dart';
 
@@ -20,11 +19,6 @@ class StartAppTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      /*initialRoute: '/',
-      routes: {
-        '/': (context) => const App(),
-        '/share': (context) => const SettingsPage(),
-      },*/
       debugShowCheckedModeBanner: false,
       theme: light,
       darkTheme: dark,

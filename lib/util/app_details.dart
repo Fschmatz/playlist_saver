@@ -23,7 +23,6 @@ class AppDetails{
 - DB
 
 0.2.0
-- Receive Share Intent OK
 - Theme
 
 0.1.0

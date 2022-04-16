@@ -142,13 +142,13 @@ class _SavePlaylistState extends State<SavePlaylist> {
                         children: [
                           Card(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(6),
                             ),
                             elevation: 0,
                             child: metaData == null
                                 ? Container(
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5)),
+                                  borderRadius: BorderRadius.circular(6)),
                               width: 125,
                               height: 125,
                               child: const Center(
@@ -159,7 +159,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                               ),
                             )
                                 : ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(6),
                               child: Image.network(
                                 metaData!.thumbnailUrl,
                                 width: 125,
