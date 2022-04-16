@@ -6,14 +6,16 @@ import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 
+import '../class/playlist.dart';
+
 class SavePlaylist extends StatefulWidget {
   @override
   _SavePlaylistState createState() => _SavePlaylistState();
 
   Function() refreshHome;
-  String? linkFromShareIntent;
+  Playlist? playlist;
 
-  SavePlaylist({Key? key, required this.refreshHome, this.linkFromShareIntent}) : super(key: key);
+  SavePlaylist({Key? key, required this.refreshHome, this.playlist}) : super(key: key);
 }
 
 class _SavePlaylistState extends State<SavePlaylist> {
@@ -24,15 +26,6 @@ class _SavePlaylistState extends State<SavePlaylist> {
   TextEditingController controllerLink = TextEditingController();
   static SpotifyMetadata? metaData;
   String base64Image = '';
-
-  @override
-  void initState() {
-    if(widget.linkFromShareIntent!.isNotEmpty){
-      controllerLink.text = widget.linkFromShareIntent!;
-      _fetchMetadata();
-    }
-    super.initState();
-  }
 
   void _fetchMetadata() async {
     try {
@@ -46,24 +39,16 @@ class _SavePlaylistState extends State<SavePlaylist> {
     });
   }
 
-  Future<void> _savePlaylist() async {
-    Uint8List? bytes;
 
-    if (metaData != null) {
-      http.Response response =
-          await http.get(Uri.parse(metaData!.thumbnailUrl));
-      base64Image = base64Encode(response.bodyBytes);
-      bytes = base64Decode(base64Image);
-    }
+  Future<void> _updatePlaylist() async {
 
-    Map<String, dynamic> row = {
-      PlaylistDao.columnLink: controllerLink.text,
-      PlaylistDao.columnTitle: controllerPlaylistTitle.text,
-      PlaylistDao.columnArtist: controllerArtist.text,
-      PlaylistDao.columnTags: controllerTags.text,
-      PlaylistDao.columnCover: base64Image.isEmpty ? null : bytes,
+    /* Map<String, dynamic> row = {
+      TaskDao.columnId: widget.task.id,
+      TaskDao.columnTitle: customControllerTitle.text,
+      TaskDao.columnNote: customControllerNote.text,
     };
-    final id = await dbPlaylist.insert(row);
+    final update = await tasks.update(row);*/
+
   }
 
   String checkErrors() {
@@ -118,7 +103,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
       },
       child: Scaffold(
           appBar: AppBar(
-            title: const Text('Save Playlist'),
+            title: const Text('Edit Playlist'),
             actions: [
               IconButton(
                 icon: const Icon(Icons.refresh_outlined),
@@ -135,10 +120,10 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 tooltip: 'Save',
                 onPressed: () {
                   if (checkErrors().isEmpty) {
-                      _savePlaylist().then((v) => {
-                        widget.refreshHome(),
-                        Navigator.of(context).pop()
-                      }
+                    _updatePlaylist().then((v) => {
+                      widget.refreshHome(),
+                      Navigator.of(context).pop()
+                    }
                     );
                   } else {
                     showAlertDialogErrors(context);
@@ -162,26 +147,26 @@ class _SavePlaylistState extends State<SavePlaylist> {
                             elevation: 0,
                             child: metaData == null
                                 ? Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5)),
-                                    width: 125,
-                                    height: 125,
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.music_note_outlined,
-                                        size: 30,
-                                      ),
-                                    ),
-                                  )
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5)),
+                              width: 125,
+                              height: 125,
+                              child: const Center(
+                                child: Icon(
+                                  Icons.music_note_outlined,
+                                  size: 30,
+                                ),
+                              ),
+                            )
                                 : ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Image.network(
-                                      metaData!.thumbnailUrl,
-                                      width: 125,
-                                      height: 125,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                              borderRadius: BorderRadius.circular(5),
+                              child: Image.network(
+                                metaData!.thumbnailUrl,
+                                width: 125,
+                                height: 125,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ]),
                   ),

@@ -14,6 +14,7 @@ class PlaylistDao {
   static const columnLink = 'link';
   static const columnTitle = 'title';
   static const columnArtist = 'artist';
+  static const columnTags = 'tags';
   static const columnCover = 'cover';
 
   static Database? _database;
@@ -37,7 +38,8 @@ class PlaylistDao {
             $columnIdPlaylist INTEGER PRIMARY KEY,     
             $columnLink TEXT NOT NULL,       
             $columnTitle TEXT NOT NULL,           
-            $columnArtist TEXT,              
+            $columnArtist TEXT,          
+            $columnTags TEXT,    
             $columnCover BLOB
           )
           ''');

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
+import 'package:playlist_saver/pages/configs/settings_page.dart';
 import 'package:playlist_saver/util/theme.dart';
 import 'app.dart';
 
@@ -13,13 +14,17 @@ Future<void> main() async {
   );
 }
 
-
 class StartAppTheme extends StatelessWidget {
   const StartAppTheme({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      /*initialRoute: '/',
+      routes: {
+        '/': (context) => const App(),
+        '/share': (context) => const SettingsPage(),
+      },*/
       debugShowCheckedModeBanner: false,
       theme: light,
       darkTheme: dark,

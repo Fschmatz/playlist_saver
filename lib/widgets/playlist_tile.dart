@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:playlist_saver/db/playlist_dao.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../class/playlist.dart';
 
 class PlaylistTile extends StatefulWidget {
@@ -7,17 +9,24 @@ class PlaylistTile extends StatefulWidget {
   _PlaylistTileState createState() => _PlaylistTileState();
 
   Playlist playlist;
+  Function() refreshHome;
 
-  PlaylistTile({Key? key, required this.playlist}) : super(key: key);
+  PlaylistTile({Key? key, required this.playlist, required this.refreshHome}) : super(key: key);
 }
 
 class _PlaylistTileState extends State<PlaylistTile> {
-  /* void _deletar(int id) async {
-    final dbLivro = LivroDao.instance;
-    final deletado = await dbLivro.delete(id);
-  }*/
 
-  /* void openBottomMenuBookSettings() {
+  _launchLink() {
+    String url = widget.playlist.link;
+    launch(url);
+  }
+
+  void _delete() async {
+    final playlists = PlaylistDao.instance;
+    final deleted = await playlists.delete(widget.playlist.idPlaylist);
+  }
+
+   void openBottomMenu() {
     showModalBottomSheet(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -31,92 +40,14 @@ class _PlaylistTileState extends State<PlaylistTile> {
               child: Wrap(
                 children: <Widget>[
                   ListTile(
-                    contentPadding: const EdgeInsets.fromLTRB(10, 3, 10, 3),
-                    title: Text(
-                      widget.livro.nome,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  const Divider(),
-                  Visibility(
-                    visible: widget.paginaAtual != 0,
-                    child: ListTile(
-                      leading: const Icon(Icons.bookmark_outline),
-                      title: const Text(
-                        "Marcar como para ler",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        _mudarEstado(widget.livro.id, 0);
-                        inOutAnimation.currentState!.animateOut();
-                        Future.delayed(const Duration(milliseconds: 300), () {
-                          widget.getLivrosState();
-                        });
-                      },
-                    ),
-                  ),
-                  Visibility(
-                    visible: widget.paginaAtual != 0,
-                    child: const Divider(),
-                  ),
-                  Visibility(
-                    visible: widget.paginaAtual != 1,
-                    child: ListTile(
-                      leading: const Icon(Icons.book_outlined),
-                      title: const Text(
-                        "Marcar como lendo",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        _mudarEstado(widget.livro.id, 1);
-                        inOutAnimation.currentState!.animateOut();
-                        Future.delayed(const Duration(milliseconds: 300), () {
-                          widget.getLivrosState();
-                        });
-                      },
-                    ),
-                  ),
-                  Visibility(
-                    visible: widget.paginaAtual != 1,
-                    child: const Divider(),
-                  ),
-                  Visibility(
-                    visible: widget.paginaAtual != 2,
-                    child: ListTile(
-                      leading: const Icon(Icons.done_outlined),
-                      title: const Text(
-                        "Marcar como lido",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        _mudarEstado(widget.livro.id, 2);
-                        inOutAnimation.currentState!.animateOut();
-
-                        Future.delayed(const Duration(milliseconds: 300), () {
-                          widget.getLivrosState();
-                        });
-                      },
-                    ),
-                  ),
-                  Visibility(
-                    visible: widget.paginaAtual != 2,
-                    child: const Divider(),
-                  ),
-                  ListTile(
                     leading: const Icon(Icons.edit_outlined),
                     title: const Text(
-                      "Editar livro",
-                      style: TextStyle(fontSize: 16),
+                      "Edit playlist",
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
 
-                      Navigator.push(
+                     /* Navigator.push(
                           context,
                           MaterialPageRoute<void>(
                             builder: (BuildContext context) => PgEditarLivro(
@@ -124,14 +55,14 @@ class _PlaylistTileState extends State<PlaylistTile> {
                               refreshLista: widget.getLivrosState,
                             ),
                             fullscreenDialog: true,
-                          ));
+                          ));*/
                     },
                   ),
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.delete_outline_outlined),
                     title: const Text(
-                      "Deletar livro",
+                      "Delete playlist",
                       style: TextStyle(fontSize: 16),
                     ),
                     onTap: () {
@@ -144,46 +75,41 @@ class _PlaylistTileState extends State<PlaylistTile> {
             ),
           );
         });
-  }*/
+  }
 
-  /* showAlertDialogOkDelete(BuildContext context) {
-    Widget okButton = TextButton(
-      child: const Text(
-        "Sim",
-      ),
-      onPressed: () {
-        _deletar(widget.livro.id);
-        inOutAnimation.currentState!.animateOut();
-        Future.delayed(const Duration(milliseconds: 300), () {
-          widget.getLivrosState();
-        });
-        Navigator.of(context).pop();
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: const Text(
-        "Confirmação ",
-      ),
-      content: const Text(
-        "Deletar livro ?",
-      ),
-      actions: [
-        okButton,
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }*/
+   showAlertDialogOkDelete(BuildContext context) {
+     showDialog(
+       context: context,
+       builder: (BuildContext context) {
+         return AlertDialog(
+           title: const Text(
+             "Confirm",
+           ),
+           content: const Text(
+             "Delete ?",
+           ),
+           actions: [
+             TextButton(
+               child: const Text(
+                 "Yes",
+               ),
+               onPressed: () {
+                 _delete();
+                 widget.refreshHome();
+                 Navigator.of(context).pop();
+               },
+             )
+           ],
+         );
+       },
+     );
+   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-     // onTap: openBottomMenuBookSettings,
+      onTap: _launchLink,
+      onLongPress : openBottomMenu,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(14, 10, 14, 8),
         child: Column(
@@ -222,7 +148,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                                 borderRadius: BorderRadius.circular(5),
                                 child: Image.memory(
                                   widget.playlist.cover!,
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                   filterQuality: FilterQuality.medium,
                                   gaplessPlayback: true,
                                 ),
@@ -255,17 +181,19 @@ class _PlaylistTileState extends State<PlaylistTile> {
                               fontSize: 16, color: Theme.of(context).hintColor),
                         ),
                       ),
-                      /*const SizedBox(
+                      const SizedBox(
                         height: 7,
                       ),
                       Visibility(
-                        visible: widget.livro.numPaginas != 0,
+                        visible: widget.playlist.tags!.isNotEmpty,
                         child: Text(
-                          widget.livro.numPaginas.toString() + " Páginas",
+                          widget.playlist.tags!,
                           style: TextStyle(
-                              fontSize: 16, color: Theme.of(context).hintColor),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.primary),
                         ),
-                      ),*/
+                      ),
                     ],
                   ),
                 ),
