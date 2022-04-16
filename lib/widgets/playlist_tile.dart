@@ -30,10 +30,6 @@ class _PlaylistTileState extends State<PlaylistTile> {
 
    void openBottomMenu() {
     showModalBottomSheet(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
-        ),
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(
@@ -135,8 +131,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     alignment: Alignment.centerLeft,
                     child: widget.playlist.cover == null
                         ? SizedBox(
-                            height: 100,
-                            width: 100,
+                            height: 85,
+                            width: 85,
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
@@ -150,8 +146,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                             ),
                           )
                         : SizedBox(
-                            height: 100,
-                            width: 100,
+                            height: 85,
+                            width: 85,
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
@@ -162,7 +158,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                                 child: Image.memory(
                                   widget.playlist.cover!,
                                   fit: BoxFit.cover,
-                                  filterQuality: FilterQuality.medium,
+                                  //filterQuality: FilterQuality.medium,
                                   gaplessPlayback: true,
                                 ),
                               ),

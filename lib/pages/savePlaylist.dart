@@ -16,7 +16,6 @@ class SavePlaylist extends StatefulWidget {
 }
 
 class _SavePlaylistState extends State<SavePlaylist> {
-
   TextEditingController controllerPlaylistTitle = TextEditingController();
   TextEditingController controllerArtist = TextEditingController();
   TextEditingController controllerTags = TextEditingController();
@@ -126,11 +125,10 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 tooltip: 'Save',
                 onPressed: () {
                   if (checkErrors().isEmpty) {
-                      _savePlaylist().then((v) => {
-                        widget.refreshHome!(),
-                        Navigator.of(context).pop(),
-                      }
-                    );
+                    _savePlaylist().then((v) => {
+                          widget.refreshHome!(),
+                          Navigator.of(context).pop(),
+                        });
                   } else {
                     showAlertDialogErrors(context);
                   }
@@ -138,145 +136,147 @@ class _SavePlaylistState extends State<SavePlaylist> {
               ),
             ],
           ),
-          body: ListView(
-              children: [
-                ListTile(
-                  title: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
+          body: ListView(children: [
+            ListTile(
+              title: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    elevation: 0,
+                    child: metaData == null
+                        ? Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6)),
+                            width: 125,
+                            height: 125,
+                            child: const Center(
+                              child: Icon(
+                                Icons.music_note_outlined,
+                                size: 30,
+                              ),
                             ),
-                            elevation: 0,
-                            child: metaData == null
-                                ? Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    width: 125,
-                                    height: 125,
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.music_note_outlined,
-                                        size: 30,
-                                      ),
-                                    ),
-                                  )
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    child: Image.network(
-                                      metaData!.thumbnailUrl,
-                                      width: 125,
-                                      height: 125,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: Image.network(
+                              metaData!.thumbnailUrl,
+                              width: 125,
+                              height: 125,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ]),
+                  ),
+                ]),
+              ),
+            ),
+            ListTile(
+              title: Text("Link",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary)),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                autofocus: true,
+                minLines: 1,
+                maxLines: 2,
+                maxLength: 500,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.name,
+                controller: controllerLink,
+                onSubmitted: (e) => _fetchMetadata(),
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.link_outlined),
+                  helperText: "* Required",
+                  counterText: "",
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text("Title",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary)),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                minLines: 1,
+                maxLines: 2,
+                maxLength: 300,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.name,
+                controller: controllerPlaylistTitle,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.notes_outlined),
+                  helperText: "* Required",
+                  counterText: "",
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text("Artist",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary)),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                minLines: 1,
+                maxLines: 2,
+                maxLength: 300,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.name,
+                controller: controllerArtist,
+                decoration: const InputDecoration(
+                  counterText: "",
+                  prefixIcon: Icon(
+                    Icons.person_outline_outlined,
                   ),
                 ),
-                ListTile(
-                  title: Text("Link",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.primary)),
-                ),
-                ListTile(
-                  title: TextField(
-                    autofocus: true,
-                    minLines: 1,
-                    maxLines: 2,
-                    maxLength: 500,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerLink,
-                    onSubmitted: (e) => _fetchMetadata(),
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.link_outlined),
-                      helperText: "* Required",
-                      counterText: "",
-                    ),
+              ),
+            ),
+            ListTile(
+              title: Text("Tags",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary)),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                minLines: 1,
+                maxLines: 2,
+                maxLength: 300,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.name,
+                controller: controllerTags,
+                decoration: const InputDecoration(
+                  counterText: "",
+                  prefixIcon: Icon(
+                    Icons.sell_outlined,
                   ),
                 ),
-                ListTile(
-                  title: Text("Title",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.primary)),
-                ),
-                ListTile(
-                  title: TextField(
-                    minLines: 1,
-                    maxLines: 2,
-                    maxLength: 300,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerPlaylistTitle,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.notes_outlined),
-                      helperText: "* Required",
-                      counterText: "",
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Text("Artist",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.primary)),
-                ),
-                ListTile(
-                  title: TextField(
-                    minLines: 1,
-                    maxLines: 2,
-                    maxLength: 300,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerArtist,
-                    decoration: const InputDecoration(
-                      counterText: "",
-                      prefixIcon: Icon(
-                        Icons.person_outline_outlined,
-                      ),
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Text("Tags",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.primary)),
-                ),
-                ListTile(
-                  title: TextField(
-                    minLines: 1,
-                    maxLines: 2,
-                    maxLength: 300,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerTags,
-                    decoration: const InputDecoration(
-                      counterText: "",
-                      prefixIcon: Icon(
-                        Icons.sell_outlined,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-              ])),
+              ),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+          ])),
     );
   }
 }

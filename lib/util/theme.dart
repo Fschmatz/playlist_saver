@@ -58,6 +58,12 @@ ThemeData light = ThemeData(
   ),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFFFFFFFF),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0)
+      ),
+    ),
   ),
   bottomAppBarColor: const Color(0xFFFFFFFF),
   navigationBarTheme: NavigationBarThemeData(
@@ -72,10 +78,10 @@ ThemeData light = ThemeData(
 
 ThemeData dark = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: const Color(0xFF1C1C1D),
-  scaffoldBackgroundColor: const Color(0xFF1C1C1D),
+  primaryColor: const Color(0xFF202022),
+  scaffoldBackgroundColor: const Color(0xFF202022),
   colorScheme: const ColorScheme.dark(
-      background: Color(0xFF1C1C1D),
+      background: Color(0xFF202022),
       primary: Color(0xFF8BA7DE),
       onPrimary: Color(0xFF002F65),
       secondary: Color(0xFF8BA7DE),
@@ -87,23 +93,29 @@ ThemeData dark = ThemeData(
     ),
   ),
   appBarTheme: const AppBarTheme(
-      color: Color(0xFF1C1C1D),
+      color: Color(0xFF202022),
       elevation: 0,
       iconTheme: IconThemeData(color: Color(0xFFFFFFFF)),
       titleTextStyle: TextStyle(
           fontSize: 22, fontWeight: FontWeight.w400,
           color: Color(0xFFFFFFFF))),
   cardTheme: const CardTheme(
-    color: Color(0xFF2C2C2D),
+    color: Color(0xFF2C2C2F),
   ),
   dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFF1C1C1D),
+    backgroundColor: Color(0xFF202022),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(28)),
     ),
   ),
   bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: Color(0xFF1C1C1D),
+    backgroundColor: Color(0xFF202022),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0)
+      ),
+    ),
   ),
   inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFF8BA7DE),
@@ -117,20 +129,20 @@ ThemeData dark = ThemeData(
       ),
       enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.grey[800]!,
+            color: Colors.grey.shade800,
           ),
           borderRadius: BorderRadius.circular(10.0)),
       border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.grey[800]!,
+            color: Colors.grey.shade800,
           ),
           borderRadius: BorderRadius.circular(10.0))),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFF1C1C1D),
+    backgroundColor: Color(0xFF202022),
   ),
-  bottomAppBarColor: const Color(0xFF1C1C1D),
+  bottomAppBarColor: const Color(0xFF202022),
   navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFF1C1C1D),
+      backgroundColor: const Color(0xFF202022),
       indicatorColor: const Color(0xFF7592CC),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFFEAEAEA),

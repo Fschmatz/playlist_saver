@@ -13,6 +13,7 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.initState();
   }
 
@@ -31,12 +32,12 @@ class _AppState extends State<App> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
           statusBarIconBrightness: iconBrightness,
-          systemNavigationBarColor: bottomOverlayColor,
+          systemNavigationBarColor:  Colors.transparent,
           statusBarColor: topOverlayColor,
           systemStatusBarContrastEnforced: false,
           systemNavigationBarIconBrightness: iconBrightness,
         ),
-        child: const SafeArea(child: Home())
+        child: const Home()
     );
   }
 }

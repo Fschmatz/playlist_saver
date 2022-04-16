@@ -172,8 +172,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.primary)),
             ),
-            ListTile(
-              title: TextField(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
                 minLines: 1,
                 maxLines: 2,
                 maxLength: 500,
@@ -195,8 +196,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.primary)),
             ),
-            ListTile(
-              title: TextField(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
                 minLines: 1,
                 maxLines: 2,
                 maxLength: 300,
@@ -218,8 +220,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.primary)),
             ),
-            ListTile(
-              title: TextField(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
                 minLines: 1,
                 maxLines: 2,
                 maxLength: 300,
@@ -242,8 +245,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.primary)),
             ),
-            ListTile(
-              title: TextField(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
                 minLines: 1,
                 maxLines: 2,
                 maxLength: 300,
