@@ -19,7 +19,7 @@ class EditPlaylist extends StatefulWidget {
 }
 
 class _EditPlaylistState extends State<EditPlaylist> {
-  final dbPlaylist = PlaylistDao.instance;
+
   TextEditingController controllerPlaylistTitle = TextEditingController();
   TextEditingController controllerArtist = TextEditingController();
   TextEditingController controllerTags = TextEditingController();

@@ -49,6 +49,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
     Map<String, dynamic> row = {
       PlaylistDao.columnLink: controllerLink.text,
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
+      PlaylistDao.columnArchived: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
       PlaylistDao.columnTags: controllerTags.text,
       PlaylistDao.columnCover: base64Image.isEmpty ? null : bytes,
@@ -146,7 +147,6 @@ class _SavePlaylistState extends State<SavePlaylist> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    elevation: 0,
                     child: metaData == null
                         ? Container(
                             decoration: BoxDecoration(

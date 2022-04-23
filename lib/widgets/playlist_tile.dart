@@ -13,14 +13,14 @@ class PlaylistTile extends StatefulWidget {
   Playlist playlist;
   Function() refreshHome;
 
-  PlaylistTile({Key? key, required this.playlist, required this.refreshHome}) : super(key: key);
+  PlaylistTile({Key? key, required this.playlist, required this.refreshHome})
+      : super(key: key);
 }
 
 class _PlaylistTileState extends State<PlaylistTile> {
 
   _launchLink() {
-    String url = widget.playlist.link;
-    launch(url);
+    launchUrl(Uri.parse(widget.playlist.link));
   }
 
   void _delete() async {
@@ -28,7 +28,16 @@ class _PlaylistTileState extends State<PlaylistTile> {
     final deleted = await playlists.delete(widget.playlist.idPlaylist);
   }
 
-   void openBottomMenu() {
+  Future<void> _archivePlaylist() async {
+    final dbPlaylist = PlaylistDao.instance;
+    Map<String, dynamic> row = {
+      PlaylistDao.columnIdPlaylist: widget.playlist.idPlaylist,
+      PlaylistDao.columnArchived: widget.playlist.archived == 0 ? 1 : 0,
+    };
+    final update = await dbPlaylist.update(row);
+  }
+
+  void openBottomMenu() {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -37,6 +46,24 @@ class _PlaylistTileState extends State<PlaylistTile> {
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Wrap(
                 children: <Widget>[
+                  ListTile(
+                    leading: widget.playlist.archived == 0
+                        ? const Icon(Icons.archive_outlined)
+                        : const Icon(Icons.unarchive_outlined),
+                    title: widget.playlist.archived == 0
+                        ? const Text(
+                            "Archive playlist",
+                          )
+                        : const Text(
+                            "Unarchive playlist",
+                          ),
+                    onTap: () {
+                      _archivePlaylist();
+                      widget.refreshHome();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  const Divider(),
                   ListTile(
                     leading: const Icon(Icons.share_outlined),
                     title: const Text(
@@ -86,39 +113,39 @@ class _PlaylistTileState extends State<PlaylistTile> {
         });
   }
 
-   showAlertDialogOkDelete(BuildContext context) {
-     showDialog(
-       context: context,
-       builder: (BuildContext context) {
-         return AlertDialog(
-           title: const Text(
-             "Confirm",
-           ),
-           content: const Text(
-             "Delete ?",
-           ),
-           actions: [
-             TextButton(
-               child: const Text(
-                 "Yes",
-               ),
-               onPressed: () {
-                 _delete();
-                 widget.refreshHome();
-                 Navigator.of(context).pop();
-               },
-             )
-           ],
-         );
-       },
-     );
-   }
+  showAlertDialogOkDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            "Confirm",
+          ),
+          content: const Text(
+            "Delete ?",
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                "Yes",
+              ),
+              onPressed: () {
+                _delete();
+                widget.refreshHome();
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: _launchLink,
-      onLongPress : openBottomMenu,
+      onLongPress: openBottomMenu,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(14, 10, 14, 8),
         child: Column(
@@ -166,7 +193,9 @@ class _PlaylistTileState extends State<PlaylistTile> {
                           ),
                   ),
                 ),
-                const SizedBox(width: 10,),
+                const SizedBox(
+                  width: 10,
+                ),
                 Expanded(
                   flex: 3,
                   child: Column(
