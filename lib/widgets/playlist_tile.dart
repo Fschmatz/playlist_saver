@@ -20,7 +20,10 @@ class PlaylistTile extends StatefulWidget {
 class _PlaylistTileState extends State<PlaylistTile> {
 
   _launchLink() {
-    launchUrl(Uri.parse(widget.playlist.link));
+    launchUrl(
+      Uri.parse(widget.playlist.link),
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   void _delete() async {

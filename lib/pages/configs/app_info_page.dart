@@ -6,7 +6,10 @@ class AppInfoPage extends StatelessWidget {
   const AppInfoPage({Key? key}) : super(key: key);
 
   _launchGithub() {
-    launchUrl(Uri.parse(AppDetails.repositoryLink));
+    launchUrl(
+      Uri.parse(AppDetails.repositoryLink),
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   @override

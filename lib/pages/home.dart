@@ -14,7 +14,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int _currentTabIndex = 0;
   final List<Widget> _tabs = [
     PlaylistList(
@@ -32,39 +31,36 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              title: const Text('Playlist Saver'),
-              pinned: false,
-              floating: true,
-              snap: true,
-              actions: [
-                IconButton(
-                    icon: const Icon(
-                      Icons.settings_outlined,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) => const SettingsPage(),
-                            fullscreenDialog: true,
-                          ));
-                    }),
-              ],
-            ),
-          ];
-        },
-        body: _tabs[_currentTabIndex]
-      ),
-
-
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                title: const Text('Playlist Saver'),
+                pinned: false,
+                floating: true,
+                snap: true,
+                actions: [
+                  IconButton(
+                      icon: const Icon(
+                        Icons.settings_outlined,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) =>
+                                  const SettingsPage(),
+                              fullscreenDialog: true,
+                            ));
+                      }),
+                ],
+              ),
+            ];
+          },
+          body: _tabs[_currentTabIndex]),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentTabIndex,
         onDestinationSelected: (index) {

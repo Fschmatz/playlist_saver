@@ -72,9 +72,8 @@ class _PlaylistListState extends State<PlaylistList> {
                   ],
                 ),
         ),
-        floatingActionButton: widget.archivedValue == 1
-            ? null
-            : FloatingActionButton(
+        floatingActionButton: widget.archivedValue == 0
+            ? FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -89,6 +88,7 @@ class _PlaylistListState extends State<PlaylistList> {
                   Icons.add_outlined,
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
-              ));
+              )
+            : null);
   }
 }
