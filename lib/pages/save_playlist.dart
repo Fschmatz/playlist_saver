@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,9 @@ class _SavePlaylistState extends State<SavePlaylist> {
       metaData = await SpotifyApi.getData(controllerLink.text);
     } catch (e) {
       metaData = null;
+      Fluttertoast.showToast(
+        msg: "Error parsing data",
+      );
     }
     setState(() {
       metaData;
@@ -185,7 +189,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
               child: TextField(
                 autofocus: true,
                 minLines: 1,
-                maxLines: 2,
+                maxLines: 4,
                 maxLength: 500,
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 textCapitalization: TextCapitalization.sentences,
@@ -210,7 +214,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 minLines: 1,
-                maxLines: 2,
+                maxLines: 3,
                 maxLength: 300,
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 textCapitalization: TextCapitalization.sentences,

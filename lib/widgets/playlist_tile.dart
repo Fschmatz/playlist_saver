@@ -4,7 +4,7 @@ import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../class/playlist.dart';
-import '../pages/editPlaylist.dart';
+import '../pages/edit_playlist.dart';
 
 class PlaylistTile extends StatefulWidget {
   @override

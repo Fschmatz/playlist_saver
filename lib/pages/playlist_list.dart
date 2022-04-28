@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/class/playlist.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
-import 'package:playlist_saver/pages/savePlaylist.dart';
+import 'package:playlist_saver/pages/save_playlist.dart';
 import 'package:playlist_saver/widgets/playlist_tile.dart';
 
 class PlaylistList extends StatefulWidget {
