@@ -1,11 +1,11 @@
 class AppDetails{
 
-  static String appVersion = "1.2.0";
+  static String appVersion = "1.2.1";
   static String appName = "Playlist Saver Fschmatz";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-1.2.0
+1.2.1
 - Receive Share
 - Bug Fixes
 ''';

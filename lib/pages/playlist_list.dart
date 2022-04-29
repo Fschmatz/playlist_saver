@@ -20,11 +20,16 @@ class _PlaylistListState extends State<PlaylistList> {
 
   @override
   void initState() {
-    getAllPlaylists();
+    getAllPlaylists(false);
     super.initState();
   }
 
-  void getAllPlaylists() async {
+  void getAllPlaylists([bool refresh = true]) async {
+    if (refresh) {
+      setState(() {
+        loading = true;
+      });
+    }
     var resp = await dbPlaylist.queryAllRowsDescArchive(widget.archivedValue);
     setState(() {
       loading = false;
@@ -77,11 +82,10 @@ class _PlaylistListState extends State<PlaylistList> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute<void>(
+                      MaterialPageRoute(
                         builder: (BuildContext context) => SavePlaylist(
                           refreshHome: getAllPlaylists,
                         ),
-                        fullscreenDialog: true,
                       ));
                 },
                 child: Icon(

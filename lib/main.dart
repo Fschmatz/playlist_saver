@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
-import 'package:flutter/services.dart';
 import 'package:playlist_saver/share/share_save_playlist.dart';
-import 'package:playlist_saver/share/show_data_argument.dart';
 import 'package:playlist_saver/util/theme.dart';
 import 'app.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'share/init_data.dart';
+import 'class/init_data.dart';
+import 'class/show_data_argument.dart';
 
 const String homeRoute = "home";
 const String showDataRoute = "showData";
@@ -29,30 +28,29 @@ Future<void> main() async {
 
   runApp(
     EasyDynamicThemeWidget(
-      child: StartAppTheme(
+      child: StartAppRoutes(
         initData: initData,
       ),
     ),
   );
 }
 
-class StartAppTheme extends StatefulWidget {
-  const StartAppTheme({Key? key, required this.initData}) : super(key: key);
+class StartAppRoutes extends StatefulWidget {
+  const StartAppRoutes({Key? key, required this.initData}) : super(key: key);
 
   final InitData initData;
 
   @override
-  _StartAppThemeState createState() => _StartAppThemeState();
+  _StartAppRoutesState createState() => _StartAppRoutesState();
 }
 
-class _StartAppThemeState extends State<StartAppTheme> {
+class _StartAppRoutesState extends State<StartAppRoutes> {
   final _navKey = GlobalKey<NavigatorState>();
   late StreamSubscription _intentDataStreamSubscription;
 
   @override
   void initState() {
     super.initState();
-
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
       _navKey.currentState!.pushNamed(

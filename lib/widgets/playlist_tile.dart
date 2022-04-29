@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
@@ -43,7 +45,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
   void openBottomMenu() {
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext bc) {
+        builder: (BuildContext context) {
           return SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -85,15 +87,13 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
-
                       Navigator.push(
                           context,
-                          MaterialPageRoute<void>(
+                          MaterialPageRoute(
                             builder: (BuildContext context) => EditPlaylist(
                               playlist: widget.playlist,
                               refreshHome: widget.refreshHome,
                             ),
-                            fullscreenDialog: true,
                           ));
                     },
                   ),
