@@ -129,7 +129,7 @@ ThemeData dark = ThemeData(
     ),
   ),
   popupMenuTheme: const PopupMenuThemeData(
-    color: Color(0xFF303238),
+    color: Color(0xFF26282F),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(4)),
     ),

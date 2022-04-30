@@ -49,47 +49,30 @@ class DbCreator {
           )
           ''');
 
-    /*//direct inserts for tests
     Batch batch = db.batch();
-
-    batch.insert('todos', {
-      'id_todo': 1,
-      'name': 'My Todo'
-    });
-
-    batch.insert('tasks', {
-      'id_task': 1,
-      'title': 'Korolev',
-      'note': 'Higher! Faster than anyone!!!',
-      'state': 0,
-      'id_todo': 1
-    });
 
     batch.insert('tags', {
       'id_tag': 1,
-      'name': 'Test',
-      'color': 'Color(0xFFedd353)'
+      'name': 'New Album'
     });
-
     batch.insert('tags', {
       'id_tag': 2,
-      'name': 'Bug',
-      'color': 'Color(0xffe35b5b)'
+      'name': 'Artist'
+    });
+    batch.insert('tags', {
+      'id_tag': 3,
+      'name': 'Compilation'
+    });
+    batch.insert('tags', {
+      'id_tag': 4,
+      'name': 'Reading'
+    });
+    batch.insert('tags', {
+      'id_tag': 5,
+      'name': 'Lo-Fi'
     });
 
-    batch.insert('tasks_tags', {
-      'id_task': 1,
-      'id_tag': 2
-    });
-
-    batch.insert('tasks_tags', {
-      'id_task': 1,
-      'id_tag': 1
-    });
-
-
-    await batch.commit(noResult: true);*/
-
+    await batch.commit(noResult: true);
   }
 }
 

@@ -22,7 +22,6 @@ class PlaylistTile extends StatefulWidget {
 }
 
 class _PlaylistTileState extends State<PlaylistTile> {
-
   List<Map<String, dynamic>> tagsList = [];
   final tags = TagDao.instance;
   bool loadingTags = true;
@@ -245,21 +244,30 @@ class _PlaylistTileState extends State<PlaylistTile> {
                       tagsList.isEmpty
                           ? const SizedBox.shrink()
                           : Wrap(
-                        spacing: 10,
-                        runSpacing: -5,
-                        children:
-                        List<Widget>.generate(tagsList.length, (int index) {
-                          return Chip(
-                            labelPadding: const EdgeInsets.symmetric(vertical: -2,horizontal: 10),
-                            key: UniqueKey(),
-                            label: Text(tagsList[index]['name']),
-                            labelStyle: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
+                              runSpacing: 5,
+                              children: List<Widget>.generate(tagsList.length,
+                                  (int index) {
+                                return index == 0
+                                    ? Text(
+                                        tagsList[index]['name'],
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                      )
+                                    : Text(
+                                        " • " + tagsList[index]['name'],
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                      );
+                              }).toList(),
                             ),
-                          );
-                        }).toList(),
-                      ),
                     ],
                   ),
                 ),

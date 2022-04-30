@@ -140,15 +140,14 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
 
   @override
   Widget build(BuildContext context) {
-
     final Color? bottomOverlayColor =
         Theme.of(context).bottomNavigationBarTheme.backgroundColor;
     final Color? topOverlayColor =
         Theme.of(context).appBarTheme.backgroundColor;
     final Brightness iconBrightness =
-    Theme.of(context).brightness == Brightness.light
-        ? Brightness.dark
-        : Brightness.light;
+        Theme.of(context).brightness == Brightness.light
+            ? Brightness.dark
+            : Brightness.light;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
@@ -202,36 +201,37 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                 ListTile(
                   title: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child:
-                        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: metaData == null
-                            ? Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6)),
-                                width: 125,
-                                height: 125,
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.music_note_outlined,
-                                    size: 30,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: metaData == null
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6)),
+                                    width: 125,
+                                    height: 125,
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.music_note_outlined,
+                                        size: 30,
+                                      ),
+                                    ),
+                                  )
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.network(
+                                      metaData!.thumbnailUrl,
+                                      width: 125,
+                                      height: 125,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                              )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                child: Image.network(
-                                  metaData!.thumbnailUrl,
-                                  width: 125,
-                                  height: 125,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                      ),
-                    ]),
+                          ),
+                        ]),
                   ),
                 ),
                 ListTile(
@@ -319,46 +319,55 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                   title: tagsList.isEmpty
                       ? const SizedBox.shrink()
                       : Wrap(
-                    spacing: 10.0,
-                    runSpacing: 12.0,
-                    children:
-                    List<Widget>.generate(tagsList.length, (int index) {
-                      return ChoiceChip(
-                        key: UniqueKey(),
-                        selected: false,
-                        onSelected: (bool _selected) {
-                          if (selectedTags
-                              .contains(tagsList[index]['id_tag'])) {
-                            selectedTags.remove(tagsList[index]['id_tag']);
-                          } else {
-                            selectedTags.add(tagsList[index]['id_tag']);
-                          }
-                          setState(() {});
-                        },
-                        avatar:
-                        selectedTags.contains(tagsList[index]['id_tag'])
-                            ? const Icon(
-                          Icons.check_box_outlined,
-                          size: 20,
-                        )
-                            : const Icon(
-                          Icons.check_box_outline_blank_outlined,
-                          size: 20,
+                          spacing: 10.0,
+                          runSpacing: 12.0,
+                          children: List<Widget>.generate(tagsList.length,
+                              (int index) {
+                            return ChoiceChip(
+                              key: UniqueKey(),
+                              selected: false,
+                              onSelected: (bool _selected) {
+                                if (selectedTags
+                                    .contains(tagsList[index]['id_tag'])) {
+                                  selectedTags
+                                      .remove(tagsList[index]['id_tag']);
+                                } else {
+                                  selectedTags.add(tagsList[index]['id_tag']);
+                                }
+                                setState(() {});
+                              },
+                              avatar: selectedTags
+                                      .contains(tagsList[index]['id_tag'])
+                                  ? Icon(
+                                      Icons.check_box_outlined,
+                                      size: 20,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    )
+                                  : const Icon(
+                                      Icons.check_box_outline_blank_outlined,
+                                      size: 20,
+                                    ),
+                              elevation: 0,
+                              shape: StadiumBorder(
+                                  side: BorderSide(
+                                      color: Colors.grey.shade800
+                                          .withOpacity(0.3))),
+                              label: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 10, 5, 10),
+                                child: Text(tagsList[index]['name']),
+                              ),
+                              labelStyle: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: selectedTags
+                                          .contains(tagsList[index]['id_tag'])
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null),
+                            );
+                          }).toList(),
                         ),
-                        elevation: 0,
-                        shape: StadiumBorder(
-                            side: BorderSide(color: Colors.grey.shade800.withOpacity(0.3))),
-                        label: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 5, 10),
-                          child: Text(tagsList[index]['name']),
-                        ),
-                        labelStyle: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      );
-                    }).toList(),
-                  ),
                 ),
                 const SizedBox(
                   height: 50,

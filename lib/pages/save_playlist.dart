@@ -310,27 +310,35 @@ class _SavePlaylistState extends State<SavePlaylist> {
                             }
                             setState(() {});
                           },
-                          avatar:
-                              selectedTags.contains(tagsList[index]['id_tag'])
-                                  ? const Icon(
-                                      Icons.check_box_outlined,
-                                      size: 20,
-                                    )
-                                  : const Icon(
-                                      Icons.check_box_outline_blank_outlined,
-                                      size: 20,
-                                    ),
+                          avatar: selectedTags
+                                  .contains(tagsList[index]['id_tag'])
+                              ? Icon(
+                                  Icons.check_box_outlined,
+                                  size: 20,
+                                  color: Theme.of(context).colorScheme.primary,
+                                )
+                              : const Icon(
+                                  Icons.check_box_outline_blank_outlined,
+                                  size: 20,
+                                ),
                           elevation: 0,
                           shape: StadiumBorder(
-                              side: BorderSide(color: Colors.grey.shade800.withOpacity(0.3))),
+                              side: BorderSide(
+                                  color:
+                                      Colors.grey.shade800.withOpacity(0.3))),
                           label: Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 5, 10),
-                            child: Text(tagsList[index]['name']),
+                            child: Text(
+                              tagsList[index]['name'],
+                            ),
                           ),
-                          labelStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          labelStyle: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: selectedTags
+                                      .contains(tagsList[index]['id_tag'])
+                                  ? Theme.of(context).colorScheme.primary
+                                  : null),
                         );
                       }).toList(),
                     ),

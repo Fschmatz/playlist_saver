@@ -104,6 +104,7 @@ class _TagsManagerState extends State<TagsManager> {
                       ? IconButton(
                           icon: const Icon(
                             Icons.delete_outlined,
+                            size: 22,
                           ),
                           onPressed: () {
                             showAlertDialogOkDelete(
@@ -111,11 +112,12 @@ class _TagsManagerState extends State<TagsManager> {
                           })
                       : const SizedBox.shrink(),
                   const SizedBox(
-                    width: 12,
+                    width: 10,
                   ),
                   IconButton(
                       icon: const Icon(
                         Icons.edit_outlined,
+                        size: 22,
                       ),
                       onPressed: () {
                         Navigator.push(
