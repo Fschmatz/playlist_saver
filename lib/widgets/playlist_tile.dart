@@ -183,8 +183,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     alignment: Alignment.centerLeft,
                     child: widget.playlist.cover == null
                         ? SizedBox(
-                            height: 90,
-                            width: 90,
+                            height: 80,
+                            width: 80,
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
@@ -198,8 +198,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                             ),
                           )
                         : SizedBox(
-                            height: 90,
-                            width: 90,
+                            height: 80,
+                            width: 80,
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
@@ -210,13 +210,15 @@ class _PlaylistTileState extends State<PlaylistTile> {
                                 child: Image.memory(
                                   widget.playlist.cover!,
                                   fit: BoxFit.cover,
-                                  //filterQuality: FilterQuality.medium,
                                   gaplessPlayback: true,
                                 ),
                               ),
                             ),
                           ),
                   ),
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 Expanded(
                   flex: 3,
