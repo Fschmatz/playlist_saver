@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import '../class/playlist.dart';
+import '../db/playlists_tags_dao.dart';
+import '../db/tag_dao.dart';
 
 class EditPlaylist extends StatefulWidget {
   @override
@@ -19,25 +21,51 @@ class EditPlaylist extends StatefulWidget {
 }
 
 class _EditPlaylistState extends State<EditPlaylist> {
-
   TextEditingController controllerPlaylistTitle = TextEditingController();
   TextEditingController controllerArtist = TextEditingController();
   TextEditingController controllerTags = TextEditingController();
   TextEditingController controllerLink = TextEditingController();
   String base64Image = '';
+  final tags = TagDao.instance;
+  final playlistsTags = PlaylistsTagsDao.instance;
+  bool loadingTags = true;
+  List<Map<String, dynamic>> tagsList = [];
+  List<int> selectedTags = [];
+  List<int> tagsFromDbTask = [];
 
   @override
   void initState() {
     controllerLink.text = widget.playlist.link;
     controllerPlaylistTitle.text = widget.playlist.title;
     controllerArtist.text = widget.playlist.artist!;
-    controllerTags.text = widget.playlist.tags!;
-
+    getAllTags().then((value) => getTagsFromTask());
     super.initState();
   }
 
+  Future<void> getAllTags() async {
+    var resp = await tags.queryAllRowsByName();
+    setState(() {
+      tagsList = resp;
+      loadingTags = false;
+    });
+  }
+
+  void getTagsFromTask() async {
+    var resp =
+        await playlistsTags.queryTagsFromTaskId(widget.playlist.idPlaylist);
+    for (int i = 0; i < resp.length; i++) {
+      tagsFromDbTask.add(resp[i]['id_tag']);
+    }
+
+    setState(() {
+      selectedTags = tagsFromDbTask;
+      loadingTags = false;
+    });
+  }
 
   Future<void> _updatePlaylist() async {
+    final deletedTaskTag =
+        await playlistsTags.delete(widget.playlist.idPlaylist);
     final dbPlaylist = PlaylistDao.instance;
 
     Map<String, dynamic> row = {
@@ -45,9 +73,18 @@ class _EditPlaylistState extends State<EditPlaylist> {
       PlaylistDao.columnLink: controllerLink.text,
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
       PlaylistDao.columnArtist: controllerArtist.text,
-      PlaylistDao.columnTags: controllerTags.text,
     };
     final update = await dbPlaylist.update(row);
+
+    if (selectedTags.isNotEmpty) {
+      for (int i = 0; i < selectedTags.length; i++) {
+        Map<String, dynamic> rowsTaskTags = {
+          PlaylistsTagsDao.columnIdPlaylist: widget.playlist.idPlaylist,
+          PlaylistsTagsDao.columnIdTag: selectedTags[i],
+        };
+        final idsPlaylistsTags = await playlistsTags.insert(rowsTaskTags);
+      }
+    }
   }
 
   String checkErrors() {
@@ -129,7 +166,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
             ],
           ),
           body: ListView(children: [
-          /*  ListTile(
+            /*  ListTile(
               title: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child:
@@ -245,23 +282,50 @@ class _EditPlaylistState extends State<EditPlaylist> {
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.primary)),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                minLines: 1,
-                maxLines: 2,
-                maxLength: 300,
-                maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.name,
-                controller: controllerTags,
-                decoration: const InputDecoration(
-                  counterText: "",
-                  prefixIcon: Icon(
-                    Icons.sell_outlined,
-                  ),
-                ),
-              ),
+            ListTile(
+              title: tagsList.isEmpty
+                  ? const SizedBox.shrink()
+                  : Wrap(
+                      spacing: 10.0,
+                      runSpacing: 12.0,
+                      children:
+                          List<Widget>.generate(tagsList.length, (int index) {
+                        return ChoiceChip(
+                          key: UniqueKey(),
+                          selected: false,
+                          onSelected: (bool _selected) {
+                            if (selectedTags
+                                .contains(tagsList[index]['id_tag'])) {
+                              selectedTags.remove(tagsList[index]['id_tag']);
+                            } else {
+                              selectedTags.add(tagsList[index]['id_tag']);
+                            }
+                            setState(() {});
+                          },
+                          avatar:
+                              selectedTags.contains(tagsList[index]['id_tag'])
+                                  ? const Icon(
+                                      Icons.check_box_outlined,
+                                      size: 20,
+                                    )
+                                  : const Icon(
+                                      Icons.check_box_outline_blank_outlined,
+                                      size: 20,
+                                    ),
+                          elevation: 0,
+                          shape: StadiumBorder(
+                              side: BorderSide(color: Colors.grey.shade800.withOpacity(0.3))),
+                          label: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 5, 10),
+                            child: Text(tagsList[index]['name']),
+                          ),
+                          labelStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        );
+                      }).toList(),
+                    ),
             ),
             const SizedBox(
               height: 50,

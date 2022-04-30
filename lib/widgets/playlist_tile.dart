@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../class/playlist.dart';
+import '../db/tag_dao.dart';
 import '../pages/edit_playlist.dart';
 
 class PlaylistTile extends StatefulWidget {
@@ -20,6 +22,26 @@ class PlaylistTile extends StatefulWidget {
 }
 
 class _PlaylistTileState extends State<PlaylistTile> {
+
+  List<Map<String, dynamic>> tagsList = [];
+  final tags = TagDao.instance;
+  bool loadingTags = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getTags();
+  }
+
+  void getTags() async {
+    var resp = await tags.getTagsByIdTaskOrderName(widget.playlist.idPlaylist);
+    if (mounted) {
+      setState(() {
+        tagsList = resp;
+        loadingTags = false;
+      });
+    }
+  }
 
   _launchLink() {
     launchUrl(
@@ -152,6 +174,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(14, 10, 14, 8),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
               children: [
@@ -161,8 +184,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     alignment: Alignment.centerLeft,
                     child: widget.playlist.cover == null
                         ? SizedBox(
-                            height: 80,
-                            width: 80,
+                            height: 90,
+                            width: 90,
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
@@ -176,8 +199,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                             ),
                           )
                         : SizedBox(
-                            height: 80,
-                            width: 80,
+                            height: 90,
+                            width: 90,
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
@@ -195,9 +218,6 @@ class _PlaylistTileState extends State<PlaylistTile> {
                             ),
                           ),
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
                 ),
                 Expanded(
                   flex: 3,
@@ -222,18 +242,23 @@ class _PlaylistTileState extends State<PlaylistTile> {
                               fontSize: 16, color: Theme.of(context).hintColor),
                         ),
                       ),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      Visibility(
-                        visible: widget.playlist.tags!.isNotEmpty,
-                        child: Text(
-                          widget.playlist.tags!,
-                          style: TextStyle(
+                      tagsList.isEmpty
+                          ? const SizedBox.shrink()
+                          : Wrap(
+                        spacing: 10,
+                        runSpacing: -5,
+                        children:
+                        List<Widget>.generate(tagsList.length, (int index) {
+                          return Chip(
+                            labelPadding: const EdgeInsets.symmetric(vertical: -2,horizontal: 10),
+                            key: UniqueKey(),
+                            label: Text(tagsList[index]['name']),
+                            labelStyle: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ],
                   ),

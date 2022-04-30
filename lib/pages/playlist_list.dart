@@ -64,9 +64,8 @@ class _PlaylistListState extends State<PlaylistList> {
                             title: playlists[index]['title'],
                             archived: playlists[index]['archived'],
                             artist: playlists[index]['artist'],
-                            tags: playlists[index]['tags'],
                             cover: playlists[index]
-                                ['cover'], //playlists[index]['cover']
+                                ['cover'],
                           ),
                         );
                       },

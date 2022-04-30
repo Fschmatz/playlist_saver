@@ -28,15 +28,15 @@ ThemeData light = ThemeData(
       elevation: 0,
       iconTheme: IconThemeData(color: Color(0xFF000000)),
       titleTextStyle: TextStyle(
-          fontSize: 22, fontWeight: FontWeight.w400,
-          color: Color(0xFF000000))),
+          fontSize: 22, fontWeight: FontWeight.w400, color: Color(0xFF000000))),
   cardTheme: const CardTheme(
     color: Color(0xFFFAFAFA),
   ),
   inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFFFFFFFF),
-      focusColor:  Colors.blueAccent.shade400,
-      contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+      focusColor: Colors.blueAccent.shade400,
+      contentPadding:
+          const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: Colors.blueAccent.shade400,
@@ -57,13 +57,22 @@ ThemeData light = ThemeData(
     backgroundColor: Color(0xFFFFFFFF),
     selectedItemColor: Colors.blueAccent,
   ),
+  popupMenuTheme: const PopupMenuThemeData(
+    color: Color(0xFFFAFAFA),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(4)),
+    ),
+  ),
+  chipTheme: ChipThemeData(
+    elevation: 0,
+    backgroundColor: const Color(0xFFFFFFFF),
+    shape: StadiumBorder(side: BorderSide(color: Colors.grey.shade800.withOpacity(0.3))),
+  ),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFFFFFFFF),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16.0),
-          topRight: Radius.circular(16.0)
-      ),
+          topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
     ),
   ),
   bottomAppBarColor: const Color(0xFFFFFFFF),
@@ -83,10 +92,10 @@ ThemeData dark = ThemeData(
   primaryColor: const Color(0xFF202228),
   scaffoldBackgroundColor: const Color(0xFF202228),
   colorScheme: const ColorScheme.dark(
-      background: Color(0xFF202228),
-      primary: Color(0xFF8BA7DE),
-      onPrimary: Color(0xFF002F65),
-      secondary: Color(0xFF8BA7DE),
+    background: Color(0xFF202228),
+    primary: Color(0xFF8BA7DE),
+    onPrimary: Color(0xFF002F65),
+    secondary: Color(0xFF8BA7DE),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Color(0xFF8BA7DE),
@@ -99,10 +108,12 @@ ThemeData dark = ThemeData(
       elevation: 0,
       iconTheme: IconThemeData(color: Color(0xFFFFFFFF)),
       titleTextStyle: TextStyle(
-          fontSize: 22, fontWeight: FontWeight.w400,
-          color: Color(0xFFFFFFFF))),
+          fontSize: 22, fontWeight: FontWeight.w400, color: Color(0xFFFFFFFF))),
   cardTheme: const CardTheme(
-    color: Color(0xFF303238),
+    color: Color(0xFF26282F),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+    ),
   ),
   dialogTheme: const DialogTheme(
     backgroundColor: Color(0xFF202228),
@@ -114,15 +125,26 @@ ThemeData dark = ThemeData(
     backgroundColor: Color(0xFF202228),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16.0),
-          topRight: Radius.circular(16.0)
-      ),
+          topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
     ),
+  ),
+  popupMenuTheme: const PopupMenuThemeData(
+    color: Color(0xFF303238),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(4)),
+    ),
+  ),
+  chipTheme: ChipThemeData(
+    elevation: 0,
+    backgroundColor: const Color(0xFF202228),
+    shape: StadiumBorder(
+        side: BorderSide(color: Colors.grey.shade800.withOpacity(0.3))),
   ),
   inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFF8BA7DE),
       focusColor: const Color(0xFF8BA7DE),
-      contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+      contentPadding:
+          const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
           color: Color(0xFF8BA7DE),
@@ -152,4 +174,3 @@ ThemeData dark = ThemeData(
       labelTextStyle: MaterialStateProperty.all(const TextStyle(
           color: Color(0xFFEAEAEA), fontWeight: FontWeight.w500))),
 );
-

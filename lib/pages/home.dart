@@ -3,6 +3,7 @@ import 'package:playlist_saver/class/playlist.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:playlist_saver/pages/playlist_list.dart';
 import 'package:playlist_saver/pages/save_playlist.dart';
+import 'package:playlist_saver/pages/tags/tags_manager.dart';
 import 'package:playlist_saver/widgets/playlist_tile.dart';
 import 'configs/settings_page.dart';
 
@@ -31,6 +32,19 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
+  void refresh() {
+    setState(() {
+      PlaylistList(
+        key: UniqueKey(),
+        archivedValue: 0,
+      );
+      PlaylistList(
+        key: UniqueKey(),
+        archivedValue: 1,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +57,47 @@ class _HomeState extends State<Home> {
                 floating: true,
                 snap: true,
                 actions: [
+                  PopupMenuButton<int>(
+                      icon: const Icon(Icons.more_vert_outlined),
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuItem<int>>[
+                            const PopupMenuItem<int>(
+                                value: 0, child: Text('Tags')),
+                            const PopupMenuItem<int>(
+                                value: 1, child: Text('Settings')),
+                          ],
+                      onSelected: (int value) {
+                        if (value == 0) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    TagsManager(),
+                              )).then((value) => refresh());
+                        } else if (value == 1) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const SettingsPage(),
+                              ));
+                        }
+                      })
+                ],
+
+                /*  IconButton(
+                      icon: const Icon(
+                        Icons.local_offer_outlined,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                              TagsManager(),
+                            )).then((value) => refresh());
+                      }),
+                  const SizedBox(width: 10,),
                   IconButton(
                       icon: const Icon(
                         Icons.settings_outlined,
@@ -55,7 +110,7 @@ class _HomeState extends State<Home> {
                                   const SettingsPage(),
                             ));
                       }),
-                ],
+                ],*/
               ),
             ];
           },

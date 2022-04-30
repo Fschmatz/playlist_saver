@@ -7,6 +7,7 @@ import 'app.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'class/init_data.dart';
 import 'class/show_data_argument.dart';
+import 'db/db_creator.dart';
 
 const String homeRoute = "home";
 const String showDataRoute = "showData";
@@ -25,6 +26,9 @@ Future<InitData> init() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   InitData initData = await init();
+
+  final dbCreator = DbCreator.instance;
+  dbCreator.initDatabase();
 
   runApp(
     EasyDynamicThemeWidget(

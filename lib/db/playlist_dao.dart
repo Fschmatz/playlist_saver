@@ -9,13 +9,12 @@ class PlaylistDao {
   static const _databaseName = "PlaylistSaver.db";
   static const _databaseVersion = 1;
 
-  static const table = 'playlist';
+  static const table = 'playlists';
   static const columnIdPlaylist = 'id_playlist';
   static const columnLink = 'link';
   static const columnTitle = 'title';
   static const columnArchived = 'archived';
   static const columnArtist = 'artist';
-  static const columnTags = 'tags';
   static const columnCover = 'cover';
 
   static Database? _database;
@@ -29,22 +28,7 @@ class PlaylistDao {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     return await openDatabase(path,
-        version: _databaseVersion,
-        onCreate: _onCreate);
-  }
-
-  Future _onCreate(Database db, int version) async {
-    await db.execute('''
-          CREATE TABLE $table (
-            $columnIdPlaylist INTEGER PRIMARY KEY,     
-            $columnLink TEXT NOT NULL,       
-            $columnTitle TEXT NOT NULL,   
-            $columnArchived INTEGER NOT NULL,        
-            $columnArtist TEXT,          
-            $columnTags TEXT,    
-            $columnCover BLOB
-          )
-          ''');
+        version: _databaseVersion);
   }
 
   Future<List<Map<String, dynamic>>> queryAllRows() async {

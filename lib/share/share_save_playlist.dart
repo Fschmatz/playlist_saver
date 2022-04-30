@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import '../app.dart';
+import '../db/playlists_tags_dao.dart';
+import '../db/tag_dao.dart';
 
 class ShareSavePlaylist extends StatefulWidget {
   @override
@@ -24,12 +26,26 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
   TextEditingController controllerLink = TextEditingController();
   SpotifyMetadata? metaData;
   String base64Image = '';
+  final tags = TagDao.instance;
+  final playlistsTags = PlaylistsTagsDao.instance;
+  bool loadingTags = true;
+  List<Map<String, dynamic>> tagsList = [];
+  List<int> selectedTags = [];
 
   @override
   void initState() {
     controllerLink.text = widget.sharedText!;
+    getAllTags();
     _fetchMetadata();
     super.initState();
+  }
+
+  Future<void> getAllTags() async {
+    var resp = await tags.queryAllRowsByName();
+    setState(() {
+      tagsList = resp;
+      loadingTags = false;
+    });
   }
 
   void _fetchMetadata() async {
@@ -63,10 +79,19 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
       PlaylistDao.columnArchived: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
-      PlaylistDao.columnTags: controllerTags.text,
       PlaylistDao.columnCover: base64Image.isEmpty ? null : bytes,
     };
-    final id = await dbPlaylist.insert(row);
+    final idPlaylist = await dbPlaylist.insert(row);
+
+    if (selectedTags.isNotEmpty) {
+      for (int i = 0; i < selectedTags.length; i++) {
+        Map<String, dynamic> rowsTaskTags = {
+          PlaylistsTagsDao.columnIdPlaylist: idPlaylist,
+          PlaylistsTagsDao.columnIdTag: selectedTags[i],
+        };
+        final idsPlaylistsTags = await playlistsTags.insert(rowsTaskTags);
+      }
+    }
   }
 
   String checkErrors() {
@@ -290,22 +315,49 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).colorScheme.primary)),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    minLines: 1,
-                    maxLines: 2,
-                    maxLength: 300,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerTags,
-                    decoration: const InputDecoration(
-                      counterText: "",
-                      prefixIcon: Icon(
-                        Icons.sell_outlined,
-                      ),
-                    ),
+                ListTile(
+                  title: tagsList.isEmpty
+                      ? const SizedBox.shrink()
+                      : Wrap(
+                    spacing: 10.0,
+                    runSpacing: 12.0,
+                    children:
+                    List<Widget>.generate(tagsList.length, (int index) {
+                      return ChoiceChip(
+                        key: UniqueKey(),
+                        selected: false,
+                        onSelected: (bool _selected) {
+                          if (selectedTags
+                              .contains(tagsList[index]['id_tag'])) {
+                            selectedTags.remove(tagsList[index]['id_tag']);
+                          } else {
+                            selectedTags.add(tagsList[index]['id_tag']);
+                          }
+                          setState(() {});
+                        },
+                        avatar:
+                        selectedTags.contains(tagsList[index]['id_tag'])
+                            ? const Icon(
+                          Icons.check_box_outlined,
+                          size: 20,
+                        )
+                            : const Icon(
+                          Icons.check_box_outline_blank_outlined,
+                          size: 20,
+                        ),
+                        elevation: 0,
+                        shape: StadiumBorder(
+                            side: BorderSide(color: Colors.grey.shade800.withOpacity(0.3))),
+                        label: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 5, 10),
+                          child: Text(tagsList[index]['name']),
+                        ),
+                        labelStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
                 const SizedBox(
