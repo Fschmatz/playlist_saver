@@ -71,6 +71,10 @@ class DbCreator {
       'id_tag': 5,
       'name': 'Lo-Fi'
     });
+    batch.insert('tags', {
+      'id_tag': 6,
+      'name': 'Live'
+    });
 
     await batch.commit(noResult: true);
   }

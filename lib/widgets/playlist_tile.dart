@@ -241,6 +241,9 @@ class _PlaylistTileState extends State<PlaylistTile> {
                               fontSize: 16, color: Theme.of(context).hintColor),
                         ),
                       ),
+                      const SizedBox(
+                        height: 7,
+                      ),
                       tagsList.isEmpty
                           ? const SizedBox.shrink()
                           : Wrap(
