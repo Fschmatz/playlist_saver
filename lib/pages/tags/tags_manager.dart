@@ -6,7 +6,7 @@ import 'edit_tag.dart';
 import 'new_tag.dart';
 
 class TagsManager extends StatefulWidget {
-  TagsManager({Key? key}) : super(key: key);
+  const TagsManager({Key? key}) : super(key: key);
 
   @override
   _TagsManagerState createState() => _TagsManagerState();
@@ -15,7 +15,7 @@ class TagsManager extends StatefulWidget {
 class _TagsManagerState extends State<TagsManager> {
   bool loadingTags = true;
   final tags = TagDao.instance;
-  final tasksTags = PlaylistsTagsDao.instance;
+  final playlistsTags = PlaylistsTagsDao.instance;
   List<Map<String, dynamic>> _tagsList = [];
 
   @override
@@ -26,7 +26,7 @@ class _TagsManagerState extends State<TagsManager> {
 
   Future<void> _delete(int idTag) async {
     final deleted = await tags.delete(idTag);
-    final deletedTaskTag = await tasksTags.deleteWithTagId(idTag);
+    final deletedPlaylistTag = await playlistsTags.deleteWithTagId(idTag);
   }
 
   Future<void> getTags() async {
@@ -85,9 +85,7 @@ class _TagsManagerState extends State<TagsManager> {
         ],
       ),
       body: ListView.separated(
-        separatorBuilder:
-            (BuildContext context, int index) =>
-        const Divider(),
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
         shrinkWrap: true,
         itemCount: _tagsList.length,
         itemBuilder: (BuildContext context, int index) {
@@ -97,17 +95,15 @@ class _TagsManagerState extends State<TagsManager> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _tagsList.length > 1
-                    ? IconButton(
-                        icon: const Icon(
-                          Icons.delete_outlined,
-                          size: 20,
-                        ),
-                        onPressed: () {
-                          showAlertDialogOkDelete(
-                              context, _tagsList[index]['id_tag']);
-                        })
-                    : const SizedBox.shrink(),
+                IconButton(
+                    icon: const Icon(
+                      Icons.delete_outlined,
+                      size: 20,
+                    ),
+                    onPressed: () {
+                      showAlertDialogOkDelete(
+                          context, _tagsList[index]['id_tag']);
+                    }),
                 const SizedBox(
                   width: 15,
                 ),
