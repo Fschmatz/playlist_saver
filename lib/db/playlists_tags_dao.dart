@@ -51,4 +51,9 @@ class PlaylistsTagsDao {
     return await db.delete('$table WHERE $columnIdTag = $idTag');
   }
 
+  Future<int> deleteWithIdPlaylist(int idPlaylist) async {
+    Database db = await instance.database;
+    return await db.delete('$table WHERE $columnIdPlaylist = $idPlaylist');
+  }
+
 }

@@ -7,6 +7,7 @@ import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../class/playlist.dart';
+import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
 import '../pages/edit_playlist.dart';
 
@@ -51,7 +52,9 @@ class _PlaylistTileState extends State<PlaylistTile> {
 
   void _delete() async {
     final playlists = PlaylistDao.instance;
+    final tasksTags = PlaylistsTagsDao.instance;
     final deleted = await playlists.delete(widget.playlist.idPlaylist);
+    final deletedTaskTag = await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
   }
 
   Future<void> _archivePlaylist() async {
