@@ -73,12 +73,12 @@ ThemeData light = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFFF7F7FA),
+    backgroundColor: Color(0xFFF7F7FB),
     selectedItemColor: Colors.blueAccent,
   ),
-  bottomAppBarColor: const Color(0xFFF7F7FA),
+  bottomAppBarColor: const Color(0xFFF7F7FB),
   navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFFF7F7FA),
+      backgroundColor: const Color(0xFFF7F7FB),
       indicatorColor: Colors.blueAccent,
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFF050505),

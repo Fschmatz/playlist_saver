@@ -68,7 +68,7 @@ class _TagsManagerState extends State<TagsManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Manage Tags"),
+        title: const Text("Tags"),
         actions: [
           IconButton(
             icon: const Icon(
@@ -87,52 +87,48 @@ class _TagsManagerState extends State<TagsManager> {
       body: ListView.separated(
         separatorBuilder:
             (BuildContext context, int index) =>
-        const SizedBox(
-          height: 5,
-        ),
+        const Divider(),
         shrinkWrap: true,
         itemCount: _tagsList.length,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            margin: const EdgeInsets.fromLTRB(16, 5, 16, 5),
-            child: ListTile(
-              title: Text(_tagsList[index]['name']),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _tagsList.length > 1
-                      ? IconButton(
-                          icon: const Icon(
-                            Icons.delete_outlined,
-                            size: 22,
-                          ),
-                          onPressed: () {
-                            showAlertDialogOkDelete(
-                                context, _tagsList[index]['id_tag']);
-                          })
-                      : const SizedBox.shrink(),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                      icon: const Icon(
-                        Icons.edit_outlined,
-                        size: 22,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => EditTag(
-                                tag: Tag(
-                                  _tagsList[index]['id_tag'],
-                                  _tagsList[index]['name'],
-                                ),
+          return ListTile(
+            contentPadding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+            title: Text(_tagsList[index]['name']),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _tagsList.length > 1
+                    ? IconButton(
+                        icon: const Icon(
+                          Icons.delete_outlined,
+                          size: 20,
+                        ),
+                        onPressed: () {
+                          showAlertDialogOkDelete(
+                              context, _tagsList[index]['id_tag']);
+                        })
+                    : const SizedBox.shrink(),
+                const SizedBox(
+                  width: 15,
+                ),
+                IconButton(
+                    icon: const Icon(
+                      Icons.edit_outlined,
+                      size: 20,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => EditTag(
+                              tag: Tag(
+                                _tagsList[index]['id_tag'],
+                                _tagsList[index]['name'],
                               ),
-                            )).then((value) => getTags());
-                      }),
-                ],
-              ),
+                            ),
+                          )).then((value) => getTags());
+                    }),
+              ],
             ),
           );
         },

@@ -76,23 +76,6 @@ class _PlaylistListState extends State<PlaylistList> {
                   ],
                 ),
         ),
-       /* floatingActionButton: widget.archivedValue == 0
-            ? FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => SavePlaylist(
-                          refreshHome: getAllPlaylists,
-                        ),
-                      ));
-                },
-                child: Icon(
-                  Icons.add_outlined,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              )
-            : null*/
     );
   }
 }
