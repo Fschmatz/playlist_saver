@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/pages/playlist_list.dart';
+import 'package:playlist_saver/pages/save_playlist.dart';
 import 'package:playlist_saver/pages/tags/tags_manager.dart';
 import 'configs/settings_page.dart';
 
@@ -12,7 +13,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentTabIndex = 0;
-  final List<Widget> _tabs = [
+  List<Widget> _tabs = [
     PlaylistList(
       key: UniqueKey(),
       archivedValue: 0,
@@ -23,21 +24,18 @@ class _HomeState extends State<Home> {
     ),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   void refresh() {
     setState(() {
-      PlaylistList(
-        key: UniqueKey(),
-        archivedValue: 0,
-      );
-      PlaylistList(
-        key: UniqueKey(),
-        archivedValue: 1,
-      );
+      _tabs = [
+        PlaylistList(
+          key: UniqueKey(),
+          archivedValue: 0,
+        ),
+        PlaylistList(
+          key: UniqueKey(),
+          archivedValue: 1,
+        ),
+      ];
     });
   }
 
@@ -58,19 +56,29 @@ class _HomeState extends State<Home> {
                       itemBuilder: (BuildContext context) =>
                           <PopupMenuItem<int>>[
                             const PopupMenuItem<int>(
-                                value: 0, child: Text('Tags')),
+                                value: 0, child: Text('Add playlist')),
                             const PopupMenuItem<int>(
-                                value: 1, child: Text('Settings')),
+                                value: 1, child: Text('Tags')),
+                            const PopupMenuItem<int>(
+                                value: 2, child: Text('Settings')),
                           ],
                       onSelected: (int value) {
                         if (value == 0) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
+                                builder: (BuildContext context) => SavePlaylist(
+                                  refreshHome: refresh,
+                                ),
+                              ));
+                        } else if (value == 1) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     TagsManager(),
                               )).then((value) => refresh());
-                        } else if (value == 1) {
+                        } else if (value == 2) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -80,33 +88,6 @@ class _HomeState extends State<Home> {
                         }
                       })
                 ],
-
-                /*  IconButton(
-                      icon: const Icon(
-                        Icons.local_offer_outlined,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                              TagsManager(),
-                            )).then((value) => refresh());
-                      }),
-                  const SizedBox(width: 10,),
-                  IconButton(
-                      icon: const Icon(
-                        Icons.settings_outlined,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  const SettingsPage(),
-                            ));
-                      }),
-                ],*/
               ),
             ];
           },

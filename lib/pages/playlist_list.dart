@@ -20,11 +20,11 @@ class _PlaylistListState extends State<PlaylistList> {
 
   @override
   void initState() {
-    getAllPlaylists(false);
+    getPlaylists(false);
     super.initState();
   }
 
-  void getAllPlaylists([bool refresh = true]) async {
+  void getPlaylists([bool refresh = true]) async {
     if (refresh) {
       setState(() {
         loading = true;
@@ -57,7 +57,7 @@ class _PlaylistListState extends State<PlaylistList> {
                       itemBuilder: (context, int index) {
                         return PlaylistTile(
                           key: UniqueKey(),
-                          refreshHome: getAllPlaylists,
+                          refreshHome: getPlaylists,
                           playlist: Playlist(
                             idPlaylist: playlists[index]['id_playlist'],
                             link: playlists[index]['link'],
@@ -76,7 +76,7 @@ class _PlaylistListState extends State<PlaylistList> {
                   ],
                 ),
         ),
-        floatingActionButton: widget.archivedValue == 0
+       /* floatingActionButton: widget.archivedValue == 0
             ? FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
@@ -92,6 +92,7 @@ class _PlaylistListState extends State<PlaylistList> {
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
               )
-            : null);
+            : null*/
+    );
   }
 }

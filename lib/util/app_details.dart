@@ -5,9 +5,11 @@ class AppDetails{
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-1.3.0
+1.3.1
 - Tags
 - Tags Manager
+- Clear Intent
+- UI Changes
 ''';
 
   static String changelogsOld = '''

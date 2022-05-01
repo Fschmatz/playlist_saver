@@ -53,12 +53,9 @@ ThemeData light = ThemeData(
             color: Colors.grey,
           ),
           borderRadius: BorderRadius.circular(10.0))),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFFFFFFFF),
-    selectedItemColor: Colors.blueAccent,
-  ),
+
   popupMenuTheme: const PopupMenuThemeData(
-    color: Color(0xFFFAFAFA),
+    color: Color(0xFFF8F8F9),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(4)),
     ),
@@ -75,9 +72,13 @@ ThemeData light = ThemeData(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
     ),
   ),
-  bottomAppBarColor: const Color(0xFFFFFFFF),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    backgroundColor: Color(0xFFF7F7FA),
+    selectedItemColor: Colors.blueAccent,
+  ),
+  bottomAppBarColor: const Color(0xFFF7F7FA),
   navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFFFFFFFF),
+      backgroundColor: const Color(0xFFF7F7FA),
       indicatorColor: Colors.blueAccent,
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFF050505),
@@ -129,7 +130,7 @@ ThemeData dark = ThemeData(
     ),
   ),
   popupMenuTheme: const PopupMenuThemeData(
-    color: Color(0xFF26282F),
+    color: Color(0xFF282A31),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(4)),
     ),
@@ -162,11 +163,11 @@ ThemeData dark = ThemeData(
           ),
           borderRadius: BorderRadius.circular(10.0))),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFF202228),
+    backgroundColor: Color(0xFF26282F),
   ),
-  bottomAppBarColor: const Color(0xFF202228),
+  bottomAppBarColor: const Color(0xFF26282F),
   navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFF202228),
+      backgroundColor: const Color(0xFF26282F),
       indicatorColor: const Color(0xFF7592CC),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFFEAEAEA),

@@ -19,6 +19,7 @@ Future<InitData> init() async {
   if (sharedValue != null) {
     sharedText = sharedValue;
     routeName = showDataRoute;
+    ReceiveSharingIntent.reset();
   }
   return InitData(sharedText, routeName);
 }
