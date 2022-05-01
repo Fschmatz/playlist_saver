@@ -39,6 +39,7 @@ dependencies:
   path_provider:
   receive_sharing_intent: ^1.4.5
   fluttertoast:
+  web_scraper: ^0.1.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

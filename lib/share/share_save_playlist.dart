@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
+import 'package:web_scraper/web_scraper.dart';
 import '../app.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
@@ -49,6 +50,7 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
   }
 
   void _fetchMetadata() async {
+    String artistName = await parseArtistName();
     try {
       metaData = await SpotifyApi.getData(controllerLink.text);
     } catch (e) {
@@ -60,7 +62,19 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
     setState(() {
       metaData;
       controllerPlaylistTitle.text = metaData!.title;
+      controllerArtist.text = artistName;
     });
+  }
+
+  Future<String> parseArtistName() async {
+    final webScraper = WebScraper();
+    if (await webScraper.loadFullURL(controllerLink.text)) {
+      List<Map<String, dynamic>> elements = webScraper.getElement('head > meta:nth-child(6)', ['content']);
+      List<String> artistDataElement = elements[0]['attributes']['content'].toString().split('·');
+      return artistDataElement[0].trim();
+    } else {
+      return '';
+    }
   }
 
   Future<void> _savePlaylist() async {
