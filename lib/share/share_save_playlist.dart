@@ -213,40 +213,44 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
               ),
               body: ListView(children: [
                 ListTile(
-                  title: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: metaData == null
-                                ? Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    width: 125,
-                                    height: 125,
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.music_note_outlined,
-                                        size: 30,
-                                      ),
-                                    ),
-                                  )
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    child: Image.network(
-                                      metaData!.thumbnailUrl,
-                                      width: 125,
-                                      height: 125,
-                                      fit: BoxFit.cover,
+                  title: Text("Cover",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.primary)),
+                ),
+                ListTile(
+                  title: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: metaData == null
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  width: 125,
+                                  height: 125,
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.music_note_outlined,
+                                      size: 30,
                                     ),
                                   ),
-                          ),
-                        ]),
-                  ),
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(6),
+                                  child: Image.network(
+                                    metaData!.thumbnailUrl,
+                                    width: 125,
+                                    height: 125,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                        ),
+                      ]),
                 ),
                 ListTile(
                   title: Text("Link",
