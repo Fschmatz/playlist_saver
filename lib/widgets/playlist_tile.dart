@@ -186,8 +186,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     alignment: Alignment.centerLeft,
                     child: widget.playlist.cover == null
                         ? SizedBox(
-                            height: 80,
-                            width: 80,
+                            height: 85,
+                            width: 85,
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
@@ -201,8 +201,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                             ),
                           )
                         : SizedBox(
-                            height: 80,
-                            width: 80,
+                            height: 85,
+                            width: 85,
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(

@@ -21,7 +21,6 @@ Future<InitData> init() async {
     routeName = showDataRoute;
 
     ReceiveSharingIntent.reset();
-    sharedValue = '';
   }
   return InitData(sharedText, routeName);
 }
@@ -69,8 +68,8 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
 
   @override
   void dispose() {
-    super.dispose();
     _intentDataStreamSubscription.cancel();
+    super.dispose();
   }
 
   @override
