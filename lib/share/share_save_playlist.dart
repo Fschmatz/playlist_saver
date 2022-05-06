@@ -69,8 +69,10 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
   Future<String> parseArtistName() async {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
-      List<Map<String, dynamic>> elements = webScraper.getElement('head > meta:nth-child(6)', ['content']);
-      List<String> artistDataElement = elements[0]['attributes']['content'].toString().split('·');
+      List<Map<String, dynamic>> elements =
+          webScraper.getElement('head > meta:nth-child(6)', ['content']);
+      List<String> artistDataElement =
+          elements[0]['attributes']['content'].toString().split('·');
       return artistDataElement[0].trim();
     } else {
       return '';
@@ -196,13 +198,12 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                     onPressed: () {
                       if (checkErrors().isEmpty) {
                         _savePlaylist().then((v) => {
-                              Navigator.of(context).pop(),
                               Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const App()),
-                                (Route<dynamic> route) => false,
-                              )
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          const App()),
+                                  ModalRoute.withName('/'))
                             });
                       } else {
                         showAlertDialogErrors(context);

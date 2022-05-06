@@ -111,7 +111,7 @@ ThemeData dark = ThemeData(
       titleTextStyle: TextStyle(
           fontSize: 22, fontWeight: FontWeight.w400, color: Color(0xFFFFFFFF))),
   cardTheme: const CardTheme(
-    color: Color(0xFF26282F),
+    color: Color(0xFF272930),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(12)),
     ),
@@ -163,11 +163,11 @@ ThemeData dark = ThemeData(
           ),
           borderRadius: BorderRadius.circular(10.0))),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFF26282F),
+    backgroundColor: Color(0xFF272930),
   ),
-  bottomAppBarColor: const Color(0xFF26282F),
+  bottomAppBarColor: const Color(0xFF272930),
   navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFF26282F),
+      backgroundColor: const Color(0xFF272930),
       indicatorColor: const Color(0xFF7592CC),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFFEAEAEA),

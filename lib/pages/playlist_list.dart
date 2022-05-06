@@ -41,7 +41,7 @@ class _PlaylistListState extends State<PlaylistList> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 650),
+          duration: const Duration(milliseconds: 600),
           child: loading
               ? const Center(child: SizedBox.shrink())
               : ListView(
