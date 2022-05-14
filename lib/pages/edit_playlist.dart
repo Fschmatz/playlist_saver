@@ -313,11 +313,12 @@ class _EditPlaylistState extends State<EditPlaylist> {
                                   Icons.check_box_outline_blank_outlined,
                                   size: 20,
                                 ),
-                          elevation: 0,
                           shape: StadiumBorder(
                               side: BorderSide(
-                                  color:
-                                      Colors.grey.shade800.withOpacity(0.3))),
+                                  color: selectedTags
+                                          .contains(tagsList[index]['id_tag'])
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Colors.grey.shade800.withOpacity(0.4))),
                           label: Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 5, 10),
                             child: Text(tagsList[index]['name']),

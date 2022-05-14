@@ -76,7 +76,7 @@ class _HomeState extends State<Home> {
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    TagsManager(),
+                                    const TagsManager(),
                               )).then((value) => refresh());
                         } else if (value == 2) {
                           Navigator.push(
@@ -104,7 +104,6 @@ class _HomeState extends State<Home> {
             icon: Icon(Icons.queue_music_outlined),
             selectedIcon: Icon(
               Icons.queue_music,
-              color: Colors.black87,
             ),
             label: 'Listen',
           ),
@@ -112,7 +111,6 @@ class _HomeState extends State<Home> {
             icon: Icon(Icons.archive_outlined),
             selectedIcon: Icon(
               Icons.archive,
-              color: Colors.black87,
             ),
             label: 'Archive',
           ),

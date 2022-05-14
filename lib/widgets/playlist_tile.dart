@@ -54,7 +54,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
     final playlists = PlaylistDao.instance;
     final tasksTags = PlaylistsTagsDao.instance;
     final deleted = await playlists.delete(widget.playlist.idPlaylist);
-    final deletedTaskTag = await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
+    final deletedTaskTag =
+        await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
   }
 
   Future<void> _archivePlaylist() async {
@@ -76,6 +77,17 @@ class _PlaylistTileState extends State<PlaylistTile> {
               child: Wrap(
                 children: <Widget>[
                   ListTile(
+                    leading: const Icon(Icons.share_outlined),
+                    title: const Text(
+                      "Share playlist",
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Share.share(widget.playlist.link);
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
                     leading: widget.playlist.archived == 0
                         ? const Icon(Icons.archive_outlined)
                         : const Icon(Icons.unarchive_outlined),
@@ -90,17 +102,6 @@ class _PlaylistTileState extends State<PlaylistTile> {
                       _archivePlaylist();
                       widget.refreshHome();
                       Navigator.of(context).pop();
-                    },
-                  ),
-                  const Divider(),
-                  ListTile(
-                    leading: const Icon(Icons.share_outlined),
-                    title: const Text(
-                      "Share playlist",
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      Share.share(widget.playlist.link);
                     },
                   ),
                   const Divider(),
@@ -186,8 +187,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     alignment: Alignment.centerLeft,
                     child: widget.playlist.cover == null
                         ? SizedBox(
-                            height: 85,
-                            width: 85,
+                            height: 83,
+                            width: 83,
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
@@ -201,8 +202,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                             ),
                           )
                         : SizedBox(
-                            height: 85,
-                            width: 85,
+                            height: 83,
+                            width: 83,
                             child: Card(
                               elevation: 1,
                               shape: RoundedRectangleBorder(
@@ -243,11 +244,14 @@ class _PlaylistTileState extends State<PlaylistTile> {
                         child: Text(
                           widget.playlist.artist!,
                           style: TextStyle(
-                              fontSize: 16, color: Theme.of(context).hintColor),
+                              fontSize: 14, color: Theme.of(context).hintColor),
                         ),
                       ),
-                      const SizedBox(
-                        height: 7,
+                      Visibility(
+                        visible: widget.playlist.artist!.isNotEmpty,
+                        child: const SizedBox(
+                          height: 7,
+                        ),
                       ),
                       tagsList.isEmpty
                           ? const SizedBox.shrink()

@@ -53,7 +53,6 @@ ThemeData light = ThemeData(
             color: Colors.grey,
           ),
           borderRadius: BorderRadius.circular(10.0))),
-
   popupMenuTheme: const PopupMenuThemeData(
     color: Color(0xFFF8F8F9),
     shape: RoundedRectangleBorder(
@@ -73,13 +72,12 @@ ThemeData light = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFFF7F7FB),
-    selectedItemColor: Colors.blueAccent,
+    backgroundColor: Color(0xFFE1E2EC),
   ),
-  bottomAppBarColor: const Color(0xFFF7F7FB),
+  bottomAppBarColor: const Color(0xFFE1E2EC),
   navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFFF7F7FB),
-      indicatorColor: Colors.blueAccent,
+      backgroundColor: const Color(0xFFE1E2EC),
+      indicatorColor: const Color(0xFFB5C0DC),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFF050505),
       )),
@@ -123,7 +121,7 @@ ThemeData dark = ThemeData(
     ),
   ),
   bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: Color(0xFF202228),
+    backgroundColor: Color(0xFF272930),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
@@ -168,10 +166,10 @@ ThemeData dark = ThemeData(
   bottomAppBarColor: const Color(0xFF272930),
   navigationBarTheme: NavigationBarThemeData(
       backgroundColor: const Color(0xFF272930),
-      indicatorColor: const Color(0xFF7592CC),
+      indicatorColor: const Color(0xFF475677),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
-        color: Color(0xFFEAEAEA),
+        color: Color(0xFFE2E2E8),
       )),
       labelTextStyle: MaterialStateProperty.all(const TextStyle(
-          color: Color(0xFFEAEAEA), fontWeight: FontWeight.w500))),
+          color: Color(0xFFE2E2E8), fontWeight: FontWeight.w500))),
 );
