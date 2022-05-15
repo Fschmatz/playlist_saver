@@ -5,15 +5,15 @@ ThemeData light = ThemeData(
   brightness: Brightness.light,
   primaryColor: const Color(0xFFFFFFFF),
   scaffoldBackgroundColor: const Color(0xFFFFFFFF),
-  colorScheme: ColorScheme.light(
-    background: const Color(0xFFFFFFFF),
-    primary: Color(0xFF2F5DA8),
-    onPrimary: const Color(0xFFFFFFFF),
-    secondary: Color(0xFF2F5DA8),
+  colorScheme: const ColorScheme.light(
+    background: Color(0xFFFFFFFF),
+    primary: Color(0xFF3368BE),
+    onPrimary: Color(0xFFFFFFFF),
+    secondary: Color(0xFF3368BE),
   ),
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: Color(0xFF2F5DA8),
-    shape: const RoundedRectangleBorder(
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: Color(0xFF3368BE),
+    shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(16)),
     ),
   ),
@@ -34,12 +34,12 @@ ThemeData light = ThemeData(
   ),
   inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFFFFFFFF),
-      focusColor: Color(0xFF2F5DA8),
+      focusColor: const Color(0xFF3368BE),
       contentPadding:
           const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(
-          color: Color(0xFF2F5DA8),
+        borderSide: const BorderSide(
+          color: Color(0xFF3368BE),
         ),
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -115,7 +115,7 @@ ThemeData dark = ThemeData(
     ),
   ),
   dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFF202228),
+    backgroundColor: Color(0xFF272930),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(28)),
     ),
