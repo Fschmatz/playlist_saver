@@ -7,12 +7,12 @@ ThemeData light = ThemeData(
   scaffoldBackgroundColor: const Color(0xFFFFFFFF),
   colorScheme: const ColorScheme.light(
     background: Color(0xFFFFFFFF),
-    primary: Color(0xFF3368BE),
+    primary: Color(0xFF3A77D9),
     onPrimary: Color(0xFFFFFFFF),
-    secondary: Color(0xFF3368BE),
+    secondary: Color(0xFF3A77D9),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: Color(0xFF3368BE),
+    backgroundColor: Color(0xFF3A77D9),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(16)),
     ),
@@ -34,12 +34,12 @@ ThemeData light = ThemeData(
   ),
   inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFFFFFFFF),
-      focusColor: const Color(0xFF3368BE),
+      focusColor: const Color(0xFF3A77D9),
       contentPadding:
           const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: Color(0xFF3368BE),
+          color: Color(0xFF3A77D9),
         ),
         borderRadius: BorderRadius.circular(10.0),
       ),
