@@ -1,11 +1,12 @@
 class AppDetails{
 
-  static String appVersion = "1.3.6";
+  static String appVersion = "1.3.7";
   static String appName = "Playlist Saver Fschmatz";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-1.3.6
+1.3.7
+- Print Playlists
 - Parse Artist Name
 - Tags
 - Tags Manager

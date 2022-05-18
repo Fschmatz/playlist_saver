@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
                             const PopupMenuItem<int>(
                                 value: 0, child: Text('Add playlist')),
                             const PopupMenuItem<int>(
-                                value: 1, child: Text('Tags')),
+                                value: 1, child: Text('Manage Tags')),
                             const PopupMenuItem<int>(
                                 value: 2, child: Text('Settings')),
                           ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import '../../util/app_details.dart';
 import '../../util/dialog_select_theme.dart';
+import '../print_playlist_list.dart';
 import 'app_info_page.dart';
 import 'changelog_page.dart';
 
@@ -68,6 +69,18 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               subtitle: Text(
                 getThemeStringFormatted(),
+              ),
+            ),
+            ListTile(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PrintPlaylistList(),
+                    fullscreenDialog: true,
+                  )),
+              leading: const Icon(Icons.print_outlined),
+              title: const Text(
+                "Print Playlists",
               ),
             ),
             ListTile(
