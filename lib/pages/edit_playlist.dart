@@ -319,10 +319,8 @@ class _EditPlaylistState extends State<EditPlaylist> {
                                           .contains(tagsList[index]['id_tag'])
                                       ? Theme.of(context).colorScheme.primary
                                       : Colors.grey.shade800.withOpacity(0.4))),
-                          label: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 5, 10),
-                            child: Text(tagsList[index]['name']),
-                          ),
+                          label: Text(tagsList[index]['name']),
+                          labelPadding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
                           labelStyle: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
