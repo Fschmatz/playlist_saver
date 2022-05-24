@@ -276,7 +276,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 : Padding(
                     padding: const EdgeInsets.all(16),
                     child: Wrap(
-                      spacing: 10.0,
+                      spacing: 12.0,
                       runSpacing: 12.0,
                       children:
                           List<Widget>.generate(tagsList.length, (int index) {
