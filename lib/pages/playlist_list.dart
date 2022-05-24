@@ -42,7 +42,7 @@ class _PlaylistListState extends State<PlaylistList> {
     return Scaffold(
         body: AnimatedSwitcher(
           duration: const Duration(milliseconds: 600),
-          child: loading
+          child: (loading)
               ? const Center(child: SizedBox.shrink())
               : ListView(
                   children: [

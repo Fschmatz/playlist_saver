@@ -35,24 +35,22 @@ ThemeData light = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFFFFFFFF),
       focusColor: const Color(0xFF3A77D9),
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-      focusedBorder: OutlineInputBorder(
+           focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
           color: Color(0xFF3A77D9),
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(8.0),
       ),
       enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(
             color: Colors.grey,
           ),
-          borderRadius: BorderRadius.circular(10.0)),
+          borderRadius: BorderRadius.circular(8.0)),
       border: OutlineInputBorder(
           borderSide: const BorderSide(
             color: Colors.grey,
           ),
-          borderRadius: BorderRadius.circular(10.0))),
+          borderRadius: BorderRadius.circular(8.0))),
   popupMenuTheme: const PopupMenuThemeData(
     color: Color(0xFFF8F8F9),
     shape: RoundedRectangleBorder(
@@ -142,24 +140,22 @@ ThemeData dark = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFF8BA7DE),
       focusColor: const Color(0xFF8BA7DE),
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
           color: Color(0xFF8BA7DE),
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(8.0),
       ),
       enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.grey.shade800,
           ),
-          borderRadius: BorderRadius.circular(10.0)),
+          borderRadius: BorderRadius.circular(8.0)),
       border: OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.grey.shade800,
           ),
-          borderRadius: BorderRadius.circular(10.0))),
+          borderRadius: BorderRadius.circular(8.0))),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Color(0xFF272930),
   ),

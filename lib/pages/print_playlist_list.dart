@@ -65,7 +65,7 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
         children: [
-          loading
+          (loading)
               ? const SizedBox.shrink()
               : SelectableText(
                   formattedList,

@@ -32,6 +32,8 @@ class _EditPlaylistState extends State<EditPlaylist> {
   List<Map<String, dynamic>> tagsList = [];
   List<int> selectedTags = [];
   List<int> tagsFromDbTask = [];
+  bool _validTitle = true;
+  bool _validLink = true;
 
   @override
   void initState() {
@@ -87,41 +89,17 @@ class _EditPlaylistState extends State<EditPlaylist> {
     }
   }
 
-  String checkErrors() {
-    String erros = "";
+  bool validateTextFields() {
+    String errors = "";
     if (controllerLink.text.isEmpty) {
-      erros += "Insert link\n";
+      errors += "Link";
+      _validLink = false;
     }
     if (controllerPlaylistTitle.text.isEmpty) {
-      erros += "Insert title\n";
+      errors += "Title";
+      _validTitle = false;
     }
-    return erros;
-  }
-
-  showAlertDialogErrors(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(
-            "Error",
-          ),
-          content: Text(
-            checkErrors(),
-          ),
-          actions: [
-            TextButton(
-              child: const Text(
-                "Ok",
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      },
-    );
+    return errors.isEmpty ? true : false;
   }
 
   void _loseFocus() {
@@ -141,124 +119,61 @@ class _EditPlaylistState extends State<EditPlaylist> {
           appBar: AppBar(
             title: const Text('Edit Playlist'),
             actions: [
-              /*IconButton(
-                icon: const Icon(Icons.refresh_outlined),
-                tooltip: 'Load data',
-                onPressed: () {
-                  _fetchMetadata();
-                },
-              ),
-              const SizedBox(
-                width: 10,
-              ),*/
               IconButton(
                 icon: const Icon(Icons.save_outlined),
                 tooltip: 'Save',
                 onPressed: () {
-                  if (checkErrors().isEmpty) {
+                  if (validateTextFields()) {
                     _updatePlaylist().then((v) =>
                         {widget.refreshHome(), Navigator.of(context).pop()});
                   } else {
-                    showAlertDialogErrors(context);
+                    setState(() {
+                      _validLink;
+                      _validTitle;
+                    });
                   }
                 },
               ),
             ],
           ),
           body: ListView(children: [
-            /*  ListTile(
-              title: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    elevation: 0,
-                    child: metaData == null
-                        ? Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6)),
-                            width: 125,
-                            height: 125,
-                            child: const Center(
-                              child: Icon(
-                                Icons.music_note_outlined,
-                                size: 30,
-                              ),
-                            ),
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: Image.network(
-                              metaData!.thumbnailUrl,
-                              width: 125,
-                              height: 125,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                  ),
-                ]),
-              ),
-            ),*/
-            ListTile(
-              title: Text("Link",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary)),
-            ),
+
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(16),
               child: TextField(
                 minLines: 1,
-                maxLines: 2,
+                maxLines: 4,
                 maxLength: 500,
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 textCapitalization: TextCapitalization.sentences,
                 keyboardType: TextInputType.name,
                 controller: controllerLink,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.link_outlined),
-                  helperText: "* Required",
-                  counterText: "",
-                ),
+                decoration: InputDecoration(
+                    labelText: "Link",
+                    helperText: "* Required",
+                    counterText: "",
+                    errorText: (_validLink) ? null : "Link is empty"),
               ),
             ),
-            ListTile(
-              title: Text("Title",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary)),
-            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(16),
               child: TextField(
                 minLines: 1,
-                maxLines: 2,
+                maxLines: 3,
                 maxLength: 300,
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 textCapitalization: TextCapitalization.sentences,
                 keyboardType: TextInputType.name,
                 controller: controllerPlaylistTitle,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.notes_outlined),
-                  helperText: "* Required",
-                  counterText: "",
-                ),
+                decoration: InputDecoration(
+                    labelText: "Title",
+                    helperText: "* Required",
+                    counterText: "",
+                    errorText: (_validTitle) ? null : "Title is empty"),
               ),
             ),
-            ListTile(
-              title: Text("Artist",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary)),
-            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(16),
               child: TextField(
                 minLines: 1,
                 maxLines: 2,
@@ -268,69 +183,72 @@ class _EditPlaylistState extends State<EditPlaylist> {
                 keyboardType: TextInputType.name,
                 controller: controllerArtist,
                 decoration: const InputDecoration(
+                  labelText: "Artist",
                   counterText: "",
-                  prefixIcon: Icon(
-                    Icons.person_outline_outlined,
-                  ),
                 ),
               ),
             ),
-            ListTile(
-              title: Text("Tags",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary)),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 16, 5),
+              child: Text(
+                'Tags',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).textTheme.headline1!.color),
+              ),
             ),
-            ListTile(
-              title: tagsList.isEmpty
-                  ? const SizedBox.shrink()
-                  : Wrap(
-                      spacing: 10.0,
-                      runSpacing: 12.0,
-                      children:
-                          List<Widget>.generate(tagsList.length, (int index) {
-                        return ChoiceChip(
-                          key: UniqueKey(),
-                          selected: false,
-                          onSelected: (bool _selected) {
-                            if (selectedTags
-                                .contains(tagsList[index]['id_tag'])) {
-                              selectedTags.remove(tagsList[index]['id_tag']);
-                            } else {
-                              selectedTags.add(tagsList[index]['id_tag']);
-                            }
-                            setState(() {});
-                          },
-                          avatar: selectedTags
-                                  .contains(tagsList[index]['id_tag'])
-                              ? Icon(
-                                  Icons.check_box_outlined,
-                                  size: 20,
-                                  color: Theme.of(context).colorScheme.primary,
-                                )
-                              : const Icon(
-                                  Icons.check_box_outline_blank_outlined,
-                                  size: 20,
-                                ),
-                          shape: StadiumBorder(
-                              side: BorderSide(
-                                  color: selectedTags
-                                          .contains(tagsList[index]['id_tag'])
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Colors.grey.shade800.withOpacity(0.4))),
-                          label: Text(tagsList[index]['name']),
-                          labelPadding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
-                          labelStyle: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: selectedTags
-                                      .contains(tagsList[index]['id_tag'])
-                                  ? Theme.of(context).colorScheme.primary
-                                  : null),
-                        );
-                      }).toList(),
+            (tagsList.isEmpty)
+                ? const SizedBox.shrink()
+                : Padding(
+              padding: const EdgeInsets.all(16),
+              child: Wrap(
+                spacing: 10.0,
+                runSpacing: 12.0,
+                children:
+                List<Widget>.generate(tagsList.length, (int index) {
+                  return ChoiceChip(
+                    key: UniqueKey(),
+                    selected: false,
+                    onSelected: (bool _selected) {
+                      if (selectedTags
+                          .contains(tagsList[index]['id_tag'])) {
+                        selectedTags.remove(tagsList[index]['id_tag']);
+                      } else {
+                        selectedTags.add(tagsList[index]['id_tag']);
+                      }
+                      setState(() {});
+                    },
+                    avatar: selectedTags
+                        .contains(tagsList[index]['id_tag'])
+                        ? Icon(
+                      Icons.check_box_outlined,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.primary,
+                    )
+                        : const Icon(
+                      Icons.check_box_outline_blank_outlined,
+                      size: 20,
                     ),
+                    shape: StadiumBorder(
+                        side: BorderSide(
+                            color: selectedTags
+                                .contains(tagsList[index]['id_tag'])
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.grey.shade800.withOpacity(0.4))),
+                    label: Text(
+                      tagsList[index]['name'],
+                    ),
+                    labelPadding: const EdgeInsets.fromLTRB(0, 8, 10, 8),
+                    labelStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: selectedTags
+                            .contains(tagsList[index]['id_tag'])
+                            ? Theme.of(context).colorScheme.primary
+                            : null),
+                  );
+                }).toList(),
+              ),
             ),
             const SizedBox(
               height: 50,

@@ -31,6 +31,8 @@ class _SavePlaylistState extends State<SavePlaylist> {
   bool loadingTags = true;
   List<Map<String, dynamic>> tagsList = [];
   List<int> selectedTags = [];
+  bool _validTitle = true;
+  bool _validLink = true;
 
   @override
   void initState() {
@@ -66,8 +68,10 @@ class _SavePlaylistState extends State<SavePlaylist> {
   Future<String> parseArtistName() async {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
-      List<Map<String, dynamic>> elements = webScraper.getElement('head > meta:nth-child(6)', ['content']);
-      List<String> artistDataElement = elements[0]['attributes']['content'].toString().split('·');
+      List<Map<String, dynamic>> elements =
+          webScraper.getElement('head > meta:nth-child(6)', ['content']);
+      List<String> artistDataElement =
+          elements[0]['attributes']['content'].toString().split('·');
       return artistDataElement[0].trim();
     } else {
       return '';
@@ -105,41 +109,17 @@ class _SavePlaylistState extends State<SavePlaylist> {
     }
   }
 
-  String checkErrors() {
-    String erros = "";
+  bool validateTextFields() {
+    String errors = "";
     if (controllerLink.text.isEmpty) {
-      erros += "Insert link\n";
+      errors += "Link";
+      _validLink = false;
     }
     if (controllerPlaylistTitle.text.isEmpty) {
-      erros += "Insert title\n";
+      errors += "Title";
+      _validTitle = false;
     }
-    return erros;
-  }
-
-  showAlertDialogErrors(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(
-            "Error",
-          ),
-          content: Text(
-            checkErrors(),
-          ),
-          actions: [
-            TextButton(
-              child: const Text(
-                "Ok",
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      },
-    );
+    return errors.isEmpty ? true : false;
   }
 
   void _loseFocus() {
@@ -173,66 +153,65 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 icon: const Icon(Icons.save_outlined),
                 tooltip: 'Save',
                 onPressed: () {
-                  if (checkErrors().isEmpty) {
+                  if (validateTextFields()) {
                     _savePlaylist().then((v) => {
                           widget.refreshHome!(),
                           Navigator.of(context).pop(),
                         });
                   } else {
-                    showAlertDialogErrors(context);
+                    setState(() {
+                      _validLink;
+                      _validTitle;
+                    });
                   }
                 },
               ),
             ],
           ),
           body: ListView(children: [
-            ListTile(
-              title: Text("Cover",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary)),
-            ),
-            ListTile(
-              title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 16, 5),
+              child: Text(
+                'Cover',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).textTheme.headline1!.color),
               ),
-              child: metaData == null
-                  ? Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6)),
-                      width: 125,
-                      height: 125,
-                      child: const Center(
-                        child: Icon(
-                          Icons.music_note_outlined,
-                          size: 30,
-                        ),
-                      ),
-                    )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: Image.network(
-                        metaData!.thumbnailUrl,
-                        width: 125,
-                        height: 125,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ]),
             ),
             ListTile(
-              title: Text("Link",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary)),
+              title:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: metaData == null
+                      ? Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6)),
+                          width: 125,
+                          height: 125,
+                          child: const Center(
+                            child: Icon(
+                              Icons.music_note_outlined,
+                              size: 30,
+                            ),
+                          ),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: Image.network(
+                            metaData!.thumbnailUrl,
+                            width: 125,
+                            height: 125,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                ),
+              ]),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(16),
               child: TextField(
                 autofocus: true,
                 minLines: 1,
@@ -243,22 +222,15 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 keyboardType: TextInputType.name,
                 controller: controllerLink,
                 onSubmitted: (e) => _fetchMetadata(),
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.link_outlined),
-                  helperText: "* Required",
-                  counterText: "",
-                ),
+                decoration: InputDecoration(
+                    labelText: "Link",
+                    helperText: "* Required",
+                    counterText: "",
+                    errorText: (_validLink) ? null : "Link is empty"),
               ),
             ),
-            ListTile(
-              title: Text("Title",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary)),
-            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(16),
               child: TextField(
                 minLines: 1,
                 maxLines: 3,
@@ -267,22 +239,15 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 textCapitalization: TextCapitalization.sentences,
                 keyboardType: TextInputType.name,
                 controller: controllerPlaylistTitle,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.notes_outlined),
-                  helperText: "* Required",
-                  counterText: "",
-                ),
+                decoration: InputDecoration(
+                    labelText: "Title",
+                    helperText: "* Required",
+                    counterText: "",
+                    errorText: (_validTitle) ? null : "Title is empty"),
               ),
             ),
-            ListTile(
-              title: Text("Artist",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary)),
-            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(16),
               child: TextField(
                 minLines: 1,
                 maxLines: 2,
@@ -292,24 +257,25 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 keyboardType: TextInputType.name,
                 controller: controllerArtist,
                 decoration: const InputDecoration(
+                  labelText: "Artist",
                   counterText: "",
-                  prefixIcon: Icon(
-                    Icons.person_outline_outlined,
-                  ),
                 ),
               ),
             ),
-            ListTile(
-              title: Text("Tags",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary)),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 16, 5),
+              child: Text(
+                'Tags',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).textTheme.headline1!.color),
+              ),
             ),
-            ListTile(
-              title: tagsList.isEmpty
-                  ? const SizedBox.shrink()
-                  : Wrap(
+            (tagsList.isEmpty)
+                ? const SizedBox.shrink()
+                : Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Wrap(
                       spacing: 10.0,
                       runSpacing: 12.0,
                       children:
@@ -341,12 +307,12 @@ class _SavePlaylistState extends State<SavePlaylist> {
                               side: BorderSide(
                                   color: selectedTags
                                           .contains(tagsList[index]['id_tag'])
-                                      ?  Theme.of(context).colorScheme.primary
+                                      ? Theme.of(context).colorScheme.primary
                                       : Colors.grey.shade800.withOpacity(0.4))),
                           label: Text(
                             tagsList[index]['name'],
                           ),
-                          labelPadding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
+                          labelPadding: const EdgeInsets.fromLTRB(0, 8, 10, 8),
                           labelStyle: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -357,7 +323,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                         );
                       }).toList(),
                     ),
-            ),
+                  ),
             const SizedBox(
               height: 50,
             ),

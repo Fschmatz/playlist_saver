@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../class/tag.dart';
 import '../../db/tag_dao.dart';
-import '../../widgets/dialog_alert_error.dart';
 
 class EditTag extends StatefulWidget {
 
@@ -17,8 +16,7 @@ class _EditTagState extends State<EditTag> {
 
   final tags = TagDao.instance;
   TextEditingController customControllerName = TextEditingController();
-  Color pickerColor = const Color(0xFFe35b5b);
-  Color currentColor = const Color(0xFFe35b5b);
+  bool _validName = true;
 
   @override
   void initState() {
@@ -34,14 +32,14 @@ class _EditTagState extends State<EditTag> {
     final update = await tags.update(row);
   }
 
-  String checkForErrors() {
+  bool validateTextFields() {
     String errors = "";
     if (customControllerName.text.isEmpty) {
-      errors += "Name is empty\n";
+      errors += "Name";
+      _validName = false;
     }
-    return errors;
+    return errors.isEmpty ? true : false;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -54,17 +52,13 @@ class _EditTagState extends State<EditTag> {
               Icons.save_outlined,
             ),
             onPressed: () async {
-              String errors = checkForErrors();
-              if (errors.isEmpty) {
+              if (validateTextFields()) {
                 _updateTag();
                 Navigator.of(context).pop();
               } else {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return  dialogAlertErrors(errors,context);
-                  },
-                );
+                setState(() {
+                  _validName;
+                });
               }
             },
           )
@@ -73,27 +67,20 @@ class _EditTagState extends State<EditTag> {
       ),
       body: ListView(
         children: [
-          ListTile(
-            title: Text("Name",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.secondary)),
-          ),
-          ListTile(
-            title: TextField(
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: TextField(
+              autofocus: true,
               minLines: 1,
               maxLength: 30,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: customControllerName,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                counterText: "",
-                helperText: "* Required",
-                prefixIcon: Icon(
-                  Icons.notes_outlined,
-                ),
+              decoration:  InputDecoration(
+                  counterText: "",
+                  helperText: "* Required",
+                  labelText: "Name",
+                  errorText: (_validName) ? null : "Name is empty"
               ),
             ),
           ),

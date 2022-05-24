@@ -88,10 +88,10 @@ class _PlaylistTileState extends State<PlaylistTile> {
                   ),
                   const Divider(),
                   ListTile(
-                    leading: widget.playlist.archived == 0
+                    leading: (widget.playlist.archived == 0)
                         ? const Icon(Icons.archive_outlined)
                         : const Icon(Icons.unarchive_outlined),
-                    title: widget.playlist.archived == 0
+                    title: (widget.playlist.archived == 0)
                         ? const Text(
                             "Archive playlist",
                           )
@@ -185,7 +185,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                   flex: 1,
                   child: Container(
                     alignment: Alignment.centerLeft,
-                    child: widget.playlist.cover == null
+                    child: (widget.playlist.cover == null)
                         ? SizedBox(
                             height: 83,
                             width: 83,
@@ -253,7 +253,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                           height: 7,
                         ),
                       ),
-                      tagsList.isEmpty
+                      (tagsList.isEmpty)
                           ? const SizedBox.shrink()
                           : Wrap(
                               runSpacing: 5,
