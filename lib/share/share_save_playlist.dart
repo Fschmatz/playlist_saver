@@ -194,16 +194,9 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                 ],
               ),
               body:  ListView(children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 10, 16, 5),
-                  child: Text(
-                    'Cover',
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).textTheme.headline1!.color),
-                  ),
-                ),
+
                 ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
                   title:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Card(
@@ -236,7 +229,7 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                   ]),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
                   child: TextField(
                     minLines: 1,
                     maxLines: 4,
@@ -254,7 +247,7 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
                   child: TextField(
                     minLines: 1,
                     maxLines: 3,
@@ -271,7 +264,7 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
                   child: TextField(
                     minLines: 1,
                     maxLines: 2,
@@ -287,12 +280,24 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 10, 16, 5),
-                  child: Text(
-                    'Tags',
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).textTheme.headline1!.color),
+                  padding: const EdgeInsets.fromLTRB(28, 12, 25, 5),
+                  child: Row(
+                    children:  [
+                      Text(
+                        "Tags",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).textTheme.headline6!.color!.withOpacity(0.6),
+                        ),
+                      ),
+                      const Expanded(
+                        child: Divider(
+                          indent: 12,
+                          thickness: 1,
+                          height: 1,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 (tagsList.isEmpty)
@@ -336,9 +341,9 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                         label: Text(
                           tagsList[index]['name'],
                         ),
-                        labelPadding: const EdgeInsets.fromLTRB(0, 8, 10, 8),
+                        labelPadding: const EdgeInsets.fromLTRB(0, 4, 10, 4),
                         labelStyle: TextStyle(
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.w400,
                             color: selectedTags
                                 .contains(tagsList[index]['id_tag'])

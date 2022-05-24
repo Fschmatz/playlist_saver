@@ -139,7 +139,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
           body: ListView(children: [
 
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
               child: TextField(
                 minLines: 1,
                 maxLines: 4,
@@ -156,7 +156,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
               child: TextField(
                 minLines: 1,
                 maxLines: 3,
@@ -173,7 +173,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
               child: TextField(
                 minLines: 1,
                 maxLines: 2,
@@ -188,13 +188,35 @@ class _EditPlaylistState extends State<EditPlaylist> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 16, 5),
+
+            /*Padding(
+              padding: const EdgeInsets.fromLTRB(30, 10, 16, 0),
               child: Text(
                 'Tags',
                 style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     color: Theme.of(context).textTheme.headline1!.color),
+              ),
+            ),*/
+            Padding(
+              padding: const EdgeInsets.fromLTRB(28, 12, 25, 5),
+              child: Row(
+                children:  [
+                  Text(
+                    "Tags",
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).textTheme.headline6!.color!.withOpacity(0.6),
+                    ),
+                  ),
+                  const Expanded(
+                    child: Divider(
+                      indent: 12,
+                      thickness: 1,
+                      height: 1,
+                    ),
+                  ),
+                ],
               ),
             ),
             (tagsList.isEmpty)
@@ -238,9 +260,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
                     label: Text(
                       tagsList[index]['name'],
                     ),
-                    labelPadding: const EdgeInsets.fromLTRB(0, 8, 10, 8),
+                    labelPadding: const EdgeInsets.fromLTRB(0, 4, 10, 4),
                     labelStyle: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: selectedTags
                             .contains(tagsList[index]['id_tag'])

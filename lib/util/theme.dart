@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 ThemeData light = ThemeData(
   //useMaterial3: true,
   brightness: Brightness.light,
-  primaryColor: const Color(0xFFFFFFFF),
-  scaffoldBackgroundColor: const Color(0xFFFFFFFF),
+  primaryColor: const Color(0xFFFDFBFF),
+  scaffoldBackgroundColor: const Color(0xFFFDFBFF),
   colorScheme: const ColorScheme.light(
-    background: Color(0xFFFFFFFF),
+    background: Color(0xFFFDFBFF),
     primary: Color(0xFF3A77D9),
     onPrimary: Color(0xFFFFFFFF),
     secondary: Color(0xFF3A77D9),
@@ -18,22 +18,22 @@ ThemeData light = ThemeData(
     ),
   ),
   dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFFFFFFFF),
+    backgroundColor: Color(0xFFFDFBFF),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(28)),
     ),
   ),
   appBarTheme: const AppBarTheme(
-      color: Color(0xFFFFFFFF),
+      color: Color(0xFFFDFBFF),
       elevation: 0,
       iconTheme: IconThemeData(color: Color(0xFF000000)),
       titleTextStyle: TextStyle(
           fontSize: 22, fontWeight: FontWeight.w400, color: Color(0xFF000000))),
   cardTheme: const CardTheme(
-    color: Color(0xFFFAFAFA),
+    color: Color(0xFFFFFFFF),
   ),
   inputDecorationTheme: InputDecorationTheme(
-      fillColor: const Color(0xFFFFFFFF),
+      fillColor: const Color(0xFFFDFBFF),
       focusColor: const Color(0xFF3A77D9),
            focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
@@ -43,12 +43,12 @@ ThemeData light = ThemeData(
       ),
       enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(
-            color: Colors.grey,
+            color: Color(0xFF74777F),
           ),
           borderRadius: BorderRadius.circular(8.0)),
       border: OutlineInputBorder(
           borderSide: const BorderSide(
-            color: Colors.grey,
+            color:  Color(0xFF74777F),
           ),
           borderRadius: BorderRadius.circular(8.0))),
   popupMenuTheme: const PopupMenuThemeData(
@@ -59,11 +59,11 @@ ThemeData light = ThemeData(
   ),
   chipTheme: ChipThemeData(
     elevation: 0,
-    backgroundColor: const Color(0xFFFFFFFF),
+    backgroundColor: const Color(0xFFFDFBFF),
     shape: StadiumBorder(side: BorderSide(color: Colors.grey.shade800.withOpacity(0.3))),
   ),
   bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: Color(0xFFFFFFFF),
+    backgroundColor: Color(0xFFFDFBFF),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
@@ -147,13 +147,13 @@ ThemeData dark = ThemeData(
         borderRadius: BorderRadius.circular(8.0),
       ),
       enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.grey.shade800,
+          borderSide: const BorderSide(
+            color:  Color(0xFF8D9099),
           ),
           borderRadius: BorderRadius.circular(8.0)),
       border: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.grey.shade800,
+          borderSide: const BorderSide(
+            color: Color(0xFF8D9099),
           ),
           borderRadius: BorderRadius.circular(8.0))),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
