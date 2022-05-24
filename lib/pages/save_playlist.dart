@@ -170,7 +170,8 @@ class _SavePlaylistState extends State<SavePlaylist> {
           ),
           body: ListView(children: [
             ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               title:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Card(
@@ -203,7 +204,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
               ]),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: TextField(
                 autofocus: true,
                 minLines: 1,
@@ -222,7 +223,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: TextField(
                 minLines: 1,
                 maxLines: 3,
@@ -239,7 +240,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: TextField(
                 minLines: 1,
                 maxLines: 2,
@@ -254,31 +255,20 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 ),
               ),
             ),
+            const Divider(),
             Padding(
-              padding: const EdgeInsets.fromLTRB(28, 12, 25, 5),
-              child: Row(
-                children:  [
-                  Text(
-                    "Tags",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).textTheme.headline6!.color!.withOpacity(0.6),
-                    ),
-                  ),
-                  const Expanded(
-                    child: Divider(
-                      indent: 12,
-                      thickness: 1,
-                      height: 1,
-                    ),
-                  ),
-                ],
+              padding: const EdgeInsets.fromLTRB(18, 10, 25, 5),
+              child: Text(
+                "Select tags:",
+                style:
+                    TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
               ),
             ),
             (tagsList.isEmpty)
                 ? const SizedBox.shrink()
                 : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
                     child: Wrap(
                       spacing: 12.0,
                       runSpacing: 12.0,
@@ -312,13 +302,13 @@ class _SavePlaylistState extends State<SavePlaylist> {
                                   color: selectedTags
                                           .contains(tagsList[index]['id_tag'])
                                       ? Theme.of(context).colorScheme.primary
-                                      : Colors.grey.shade800.withOpacity(0.4))),
+                                      : Colors.grey.shade800.withOpacity(0.8))),
                           label: Text(
                             tagsList[index]['name'],
                           ),
                           labelPadding: const EdgeInsets.fromLTRB(0, 4, 10, 4),
                           labelStyle: TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               fontWeight: FontWeight.w400,
                               color: selectedTags
                                       .contains(tagsList[index]['id_tag'])
