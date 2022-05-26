@@ -107,19 +107,19 @@ ThemeData dark = ThemeData(
       titleTextStyle: TextStyle(
           fontSize: 22, fontWeight: FontWeight.w400, color: Color(0xFFFFFFFF))),
   cardTheme: const CardTheme(
-    color: Color(0xFF272930),
+    color: Color(0xFF26282F),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(12)),
     ),
   ),
   dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFF272930),
+    backgroundColor: Color(0xFF26282F),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(28)),
     ),
   ),
   bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: Color(0xFF272930),
+    backgroundColor: Color(0xFF26282F),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
@@ -157,11 +157,11 @@ ThemeData dark = ThemeData(
           ),
           borderRadius: BorderRadius.circular(8.0))),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFF272930),
+    backgroundColor: Color(0xFF26282F),
   ),
-  bottomAppBarColor: const Color(0xFF272930),
+  bottomAppBarColor: const Color(0xFF26282F),
   navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFF272930),
+      backgroundColor: const Color(0xFF26282F),
       indicatorColor: const Color(0xFF475677),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFFE2E2E8),

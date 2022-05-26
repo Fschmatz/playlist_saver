@@ -19,7 +19,7 @@ Future<InitData> init() async {
   if (sharedValue != null) {
     sharedText = sharedValue;
     routeName = showDataRoute;
-    ReceiveSharingIntent.reset();
+    //ReceiveSharingIntent.reset();
   }
   return InitData(sharedText, routeName);
 }
@@ -99,6 +99,7 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
               }
             }
         }
+        return null;
       },
       initialRoute: widget.initData.routeName,
     );
