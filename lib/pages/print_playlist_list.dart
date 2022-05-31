@@ -71,6 +71,7 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
                   formattedList,
                   style: const TextStyle(fontSize: 16),
                 ),
+          const SizedBox(height: 30,)
         ],
       ),
     );
