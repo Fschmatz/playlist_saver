@@ -105,7 +105,7 @@ class _TagsManagerState extends State<TagsManager> {
                           context, _tagsList[index]['id_tag']);
                     }),
                 const SizedBox(
-                  width: 15,
+                  width: 20,
                 ),
                 IconButton(
                     icon: const Icon(

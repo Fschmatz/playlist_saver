@@ -11,7 +11,11 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
+
+  @override
+  bool get wantKeepAlive => true;
+
   int _currentTabIndex = 0;
   List<Widget> _tabs = [
     PlaylistList(

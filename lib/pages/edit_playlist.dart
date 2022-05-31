@@ -191,7 +191,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
             Padding(
               padding: const EdgeInsets.fromLTRB(18, 10, 25, 5),
               child: Text(
-                "Select tags:",
+                "Add tags",
                 style:
                     TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
               ),
@@ -234,7 +234,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
                                   color: selectedTags
                                           .contains(tagsList[index]['id_tag'])
                                       ? Theme.of(context).colorScheme.primary
-                                      : Colors.grey.shade800.withOpacity(0.8))),
+                                      : Colors.grey.shade800.withOpacity(0.5))),
                           label: Text(
                             tagsList[index]['name'],
                           ),

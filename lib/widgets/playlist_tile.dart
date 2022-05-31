@@ -29,8 +29,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
 
   @override
   void initState() {
-    super.initState();
     getTags();
+    super.initState();
   }
 
   void getTags() async {
@@ -224,7 +224,9 @@ class _PlaylistTileState extends State<PlaylistTile> {
                 const SizedBox(
                   height: 10,
                 ),
-                Expanded(
+                (loadingTags)
+                    ? const SizedBox.shrink()
+                    : Expanded(
                   flex: 3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
