@@ -6,51 +6,51 @@ class AppDetails{
 
   static String changelogCurrent = '''  
 1.4.1
-- Print Playlists
-- Clear Intent
-- Bug Fix
-- UI Changes
+- Print playlists
+- Clear intent
+- Bug fix
+- UI changes
 ''';
 
   static String changelogsOld = '''
 1.3.8
-- Parse Artist Name
+- Parse artist name
 - Tags
-- Tags Manager
+- Tags manager
 
 1.2.1
-- Receive Share
-- Bug Fixes
+- Receive share
+- Bug fixes
 
 1.1.0
-- Added Archive Page
-- UI Changes
+- Added archive page
+- UI changes
 
 1.0.0
-- Technically Usable
-- Share Link
-- Edit Playlist
+- Technically usable
+- Share link
+- Edit playlist
 
 0.6.0
-- Open Link
-- Delete Playlist
-- Bug Fixes
+- Open link
+- Delete playlist
+- Bug fixes
 
 0.5.0
 - Home
 
 0.4.0
-- Get API Data
+- Get API data
 
 0.3.0
-- Save Playlist Page
+- Save playlist page
 - DB
 
 0.2.0
 - Theme
 
 0.1.0
-- Project Start 
+- Project start 
 ''';
 
 }

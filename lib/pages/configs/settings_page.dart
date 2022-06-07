@@ -65,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   }),
               leading: const Icon(Icons.brightness_6_outlined),
               title: const Text(
-                "App Theme",
+                "App theme",
               ),
               subtitle: Text(
                 getThemeStringFormatted(),
@@ -76,11 +76,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => PrintPlaylistList(),
-                    fullscreenDialog: true,
                   )),
               leading: const Icon(Icons.print_outlined),
               title: const Text(
-                "Print Playlists",
+                "Print playlists",
               ),
             ),
             ListTile(
@@ -95,7 +94,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Icons.info_outline,
               ),
               title: const Text(
-                "App Info",
+                "App info",
               ),
               onTap: () {
                 Navigator.push(

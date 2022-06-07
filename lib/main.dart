@@ -56,6 +56,8 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
   @override
   void initState() {
     super.initState();
+
+    //app in memory
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
       _navKey.currentState!.pushNamed(

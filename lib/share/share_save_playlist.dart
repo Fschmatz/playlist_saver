@@ -181,7 +181,7 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           const App()),
-                                  ModalRoute.withName('/'))
+                                  (route) => false)
                             });
                       } else {
                         setState(() {

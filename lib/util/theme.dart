@@ -16,23 +16,14 @@ ThemeData light = ThemeData(
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Color(0xFF3A77D9),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(16)),
-    ),
   ),
   dialogTheme: const DialogTheme(
     backgroundColor: Color(0xFFFDFBFF),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(28)),
-    ),
   ),
   appBarTheme: const AppBarTheme(
       surfaceTintColor: Color(0xFFFDFBFF),
       color: Color(0xFFFDFBFF),
-      elevation: 0,
-      iconTheme: IconThemeData(color: Color(0xFF000000)),
-      titleTextStyle: TextStyle(
-          fontSize: 22, fontWeight: FontWeight.w400, color: Color(0xFF000000))),
+  ),
   cardTheme: const CardTheme(
     color: Color(0xFFFFFFFF),
   ),
@@ -57,9 +48,6 @@ ThemeData light = ThemeData(
           borderRadius: BorderRadius.circular(8.0))),
   popupMenuTheme: const PopupMenuThemeData(
     color: Color(0xFFF8F8F9),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(4)),
-    ),
   ),
   chipTheme: ChipThemeData(
     elevation: 0,
@@ -103,28 +91,16 @@ ThemeData dark = ThemeData(
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Color(0xFF8BA7DE),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(16)),
-    ),
   ),
   appBarTheme: const AppBarTheme(
       surfaceTintColor: Color(0xFF202228),
       color: Color(0xFF202228),
-      elevation: 0,
-      iconTheme: IconThemeData(color: Color(0xFFFFFFFF)),
-      titleTextStyle: TextStyle(
-          fontSize: 22, fontWeight: FontWeight.w400, color: Color(0xFFFFFFFF))),
+      ),
   cardTheme: const CardTheme(
     color: Color(0xFF26282F),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(12)),
-    ),
   ),
   dialogTheme: const DialogTheme(
     backgroundColor: Color(0xFF26282F),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(28)),
-    ),
   ),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFF26282F),
@@ -134,10 +110,7 @@ ThemeData dark = ThemeData(
     ),
   ),
   popupMenuTheme: const PopupMenuThemeData(
-    color: Color(0xFF282A31),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(4)),
-    ),
+    color: Color(0xFF292B32)
   ),
   chipTheme: ChipThemeData(
     elevation: 0,
