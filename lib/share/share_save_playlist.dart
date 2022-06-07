@@ -16,8 +16,9 @@ class ShareSavePlaylist extends StatefulWidget {
   _ShareSavePlaylistState createState() => _ShareSavePlaylistState();
 
   String? sharedText = "";
+  Function() clearIntent;
 
-  ShareSavePlaylist({Key? key, this.sharedText}) : super(key: key);
+  ShareSavePlaylist({Key? key, this.sharedText,required this.clearIntent}) : super(key: key);
 }
 
 class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
@@ -113,23 +114,16 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
   }
 
   bool validateTextFields() {
-    String errors = "";
+    bool ok = true;
     if (controllerLink.text.isEmpty) {
-      errors += "Link";
+      ok = false;
       _validLink = false;
     }
     if (controllerPlaylistTitle.text.isEmpty) {
-      errors += "Title";
+      ok = false;
       _validTitle = false;
     }
-    return errors.isEmpty ? true : false;
-  }
-
-  void _loseFocus() {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-    if (!currentFocus.hasPrimaryFocus) {
-      currentFocus.unfocus();
-    }
+    return ok;
   }
 
   @override
@@ -152,201 +146,197 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
         systemNavigationBarIconBrightness: iconBrightness,
       ),
       child: SafeArea(
-        child: GestureDetector(
-          onTap: () {
-            _loseFocus();
-          },
-          child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Save Shared Playlist'),
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.refresh_outlined),
-                    tooltip: 'Load data',
-                    onPressed: () {
-                      _fetchMetadata();
-                    },
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.save_outlined),
-                    tooltip: 'Save',
-                    onPressed: () {
-                      if (validateTextFields()) {
-                        _savePlaylist().then((v) => {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          const App()),
-                                  (route) => false)
-                            });
-                      } else {
-                        setState(() {
-                          _validLink;
-                          _validTitle;
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
-              body:  ListView(children: [
-
-                ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
-                  title:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: metaData == null
-                          ? Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6)),
-                        width: 125,
-                        height: 125,
-                        child: const Center(
-                          child: Icon(
-                            Icons.music_note_outlined,
-                            size: 30,
-                          ),
-                        ),
-                      )
-                          : ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
-                        child: Image.network(
-                          metaData!.thumbnailUrl,
-                          width: 125,
-                          height: 125,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ]),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
-                  child: TextField(
-                    minLines: 1,
-                    maxLines: 4,
-                    maxLength: 500,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerLink,
-                    onSubmitted: (e) => _fetchMetadata(),
-                    decoration: InputDecoration(
-                        labelText: "Link",
-                        helperText: "* Required",
-                        counterText: "",
-                        errorText: _validLink ? null : "Link is empty"),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
-                  child: TextField(
-                    minLines: 1,
-                    maxLines: 3,
-                    maxLength: 300,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerPlaylistTitle,
-                    decoration: InputDecoration(
-                        labelText: "Title",
-                        helperText: "* Required",
-                        counterText: "",
-                        errorText: _validTitle ? null : "Title is empty"),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
-                  child: TextField(
-                    minLines: 1,
-                    maxLines: 2,
-                    maxLength: 300,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.name,
-                    controller: controllerArtist,
-                    decoration: const InputDecoration(
-                      labelText: "Artist",
-                      counterText: "",
-                    ),
-                  ),
-                ),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(18, 10, 25, 5),
-                  child: Text(
-                    "Add tags",
-                    style:
-                    TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
-                  ),
-                ),
-                (tagsList.isEmpty)
-                    ? const SizedBox.shrink()
-                    : Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 16),
-                  child: Wrap(
-                    spacing: 12.0,
-                    runSpacing: 12.0,
-                    children:
-                    List<Widget>.generate(tagsList.length, (int index) {
-                      return ChoiceChip(
-                        key: UniqueKey(),
-                        selected: false,
-                        onSelected: (bool _selected) {
-                          if (selectedTags
-                              .contains(tagsList[index]['id_tag'])) {
-                            selectedTags.remove(tagsList[index]['id_tag']);
-                          } else {
-                            selectedTags.add(tagsList[index]['id_tag']);
-                          }
-                          setState(() {});
-                        },
-                        avatar: selectedTags
-                            .contains(tagsList[index]['id_tag'])
-                            ? Icon(
-                          Icons.check_box_outlined,
-                          size: 20,
-                          color: Theme.of(context).colorScheme.primary,
-                        )
-                            : const Icon(
-                          Icons.check_box_outline_blank_outlined,
-                          size: 20,
-                        ),
-                        shape: StadiumBorder(
-                            side: BorderSide(
-                                color: selectedTags
-                                    .contains(tagsList[index]['id_tag'])
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Colors.grey.shade800.withOpacity(0.5))),
-                        label: Text(
-                          tagsList[index]['name'],
-                        ),
-                        labelPadding: const EdgeInsets.fromLTRB(0, 4, 10, 4),
-                        labelStyle: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: selectedTags
-                                .contains(tagsList[index]['id_tag'])
-                                ? Theme.of(context).colorScheme.primary
-                                : null),
-                      );
-                    }).toList(),
-                  ),
+        child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Save Shared Playlist'),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.refresh_outlined),
+                  tooltip: 'Load data',
+                  onPressed: () {
+                    _fetchMetadata();
+                  },
                 ),
                 const SizedBox(
-                  height: 50,
+                  width: 10,
                 ),
-              ])),
-        ),
+                IconButton(
+                  icon: const Icon(Icons.save_outlined),
+                  tooltip: 'Save',
+                  onPressed: () {
+                    if (validateTextFields()) {
+                      _savePlaylist().then((v) => {
+                            widget.clearIntent(),
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        const App()),
+                                (route) => false)
+                          });
+                    } else {
+                      setState(() {
+                        _validLink;
+                        _validTitle;
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
+            body:  ListView(children: [
+
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+                title:
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: metaData == null
+                        ? Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6)),
+                      width: 125,
+                      height: 125,
+                      child: const Center(
+                        child: Icon(
+                          Icons.music_note_outlined,
+                          size: 30,
+                        ),
+                      ),
+                    )
+                        : ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image.network(
+                        metaData!.thumbnailUrl,
+                        width: 125,
+                        height: 125,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+                child: TextField(
+                  minLines: 1,
+                  maxLines: 4,
+                  maxLength: 500,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                  textCapitalization: TextCapitalization.sentences,
+                  keyboardType: TextInputType.name,
+                  controller: controllerLink,
+                  onSubmitted: (e) => _fetchMetadata(),
+                  decoration: InputDecoration(
+                      labelText: "Link",
+                      helperText: "* Required",
+                      counterText: "",
+                      errorText: _validLink ? null : "Link is empty"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+                child: TextField(
+                  minLines: 1,
+                  maxLines: 3,
+                  maxLength: 300,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                  textCapitalization: TextCapitalization.sentences,
+                  keyboardType: TextInputType.name,
+                  controller: controllerPlaylistTitle,
+                  decoration: InputDecoration(
+                      labelText: "Title",
+                      helperText: "* Required",
+                      counterText: "",
+                      errorText: _validTitle ? null : "Title is empty"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+                child: TextField(
+                  minLines: 1,
+                  maxLines: 2,
+                  maxLength: 300,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                  textCapitalization: TextCapitalization.sentences,
+                  keyboardType: TextInputType.name,
+                  controller: controllerArtist,
+                  decoration: const InputDecoration(
+                    labelText: "Artist",
+                    counterText: "",
+                  ),
+                ),
+              ),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(18, 10, 25, 5),
+                child: Text(
+                  "Add tags",
+                  style:
+                  TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
+                ),
+              ),
+              (tagsList.isEmpty)
+                  ? const SizedBox.shrink()
+                  : Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 16),
+                child: Wrap(
+                  spacing: 12.0,
+                  runSpacing: 12.0,
+                  children:
+                  List<Widget>.generate(tagsList.length, (int index) {
+                    return ChoiceChip(
+                      key: UniqueKey(),
+                      selected: false,
+                      onSelected: (bool _selected) {
+                        if (selectedTags
+                            .contains(tagsList[index]['id_tag'])) {
+                          selectedTags.remove(tagsList[index]['id_tag']);
+                        } else {
+                          selectedTags.add(tagsList[index]['id_tag']);
+                        }
+                        setState(() {});
+                      },
+                      avatar: selectedTags
+                          .contains(tagsList[index]['id_tag'])
+                          ? Icon(
+                        Icons.check_box_outlined,
+                        size: 20,
+                        color: Theme.of(context).colorScheme.primary,
+                      )
+                          : const Icon(
+                        Icons.check_box_outline_blank_outlined,
+                        size: 20,
+                      ),
+                      shape: StadiumBorder(
+                          side: BorderSide(
+                              color: selectedTags
+                                  .contains(tagsList[index]['id_tag'])
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Colors.grey.shade800.withOpacity(0.5))),
+                      label: Text(
+                        tagsList[index]['name'],
+                      ),
+                      labelPadding: const EdgeInsets.fromLTRB(0, 4, 10, 4),
+                      labelStyle: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: selectedTags
+                              .contains(tagsList[index]['id_tag'])
+                              ? Theme.of(context).colorScheme.primary
+                              : null),
+                    );
+                  }).toList(),
+                ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+            ])),
       ),
     );
   }

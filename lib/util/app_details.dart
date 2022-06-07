@@ -1,14 +1,15 @@
 class AppDetails{
 
-  static String appVersion = "1.4.1";
+  static String appVersion = "1.4.2";
   static String appName = "Playlist Saver Fschmatz";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-1.4.1
+1.4.2
 - Print playlists
 - Clear intent
 - Bug fix
+- Show playlist and artist name when sharing 
 - UI changes
 ''';
 

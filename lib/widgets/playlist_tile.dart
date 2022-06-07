@@ -83,7 +83,9 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
-                      Share.share(widget.playlist.link);
+                      Share.share(
+                          "${widget.playlist.title} - ${widget.playlist.artist!}\n\n${widget.playlist.link}"
+                      );
                     },
                   ),
                   const Divider(),

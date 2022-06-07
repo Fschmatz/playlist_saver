@@ -33,12 +33,11 @@ class _EditTagState extends State<EditTag> {
   }
 
   bool validateTextFields() {
-    String errors = "";
     if (customControllerName.text.isEmpty) {
-      errors += "Name";
       _validName = false;
+      return false;
     }
-    return errors.isEmpty ? true : false;
+    return true;
   }
 
   @override
