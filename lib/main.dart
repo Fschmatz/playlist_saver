@@ -67,10 +67,6 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
     });
   }
 
-  void clearIntent(){
-    ReceiveSharingIntent.reset();
-  }
-
   @override
   void dispose() {
     _intentDataStreamSubscription.cancel();
@@ -96,18 +92,16 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
                 return MaterialPageRoute(
                     builder: (_) => ShareSavePlaylist(
                           sharedText: args.sharedText,
-                      clearIntent: clearIntent,
                         ));
               } else {
                 return MaterialPageRoute(
                     builder: (_) => ShareSavePlaylist(
                           sharedText: widget.initData.sharedText,
-                      clearIntent: clearIntent,
                         ));
               }
             }
         }
-        return null;
+        return MaterialPageRoute(builder: (_) => const App());
       },
       initialRoute: widget.initData.routeName,
     );

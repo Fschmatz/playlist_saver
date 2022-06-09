@@ -16,9 +16,8 @@ class ShareSavePlaylist extends StatefulWidget {
   _ShareSavePlaylistState createState() => _ShareSavePlaylistState();
 
   String? sharedText = "";
-  Function() clearIntent;
 
-  ShareSavePlaylist({Key? key, this.sharedText,required this.clearIntent}) : super(key: key);
+  ShareSavePlaylist({Key? key, this.sharedText}) : super(key: key);
 }
 
 class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
@@ -166,7 +165,6 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                   onPressed: () {
                     if (validateTextFields()) {
                       _savePlaylist().then((v) => {
-                            widget.clearIntent(),
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(

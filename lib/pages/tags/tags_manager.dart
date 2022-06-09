@@ -68,7 +68,7 @@ class _TagsManagerState extends State<TagsManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Tags"),
+        title: const Text("Manage Tags"),
         actions: [
           IconButton(
             icon: const Icon(
@@ -85,7 +85,7 @@ class _TagsManagerState extends State<TagsManager> {
         ],
       ),
       body: ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
+        separatorBuilder: (BuildContext context, int index) => const Divider(height: 5,),
         shrinkWrap: true,
         itemCount: _tagsList.length,
         itemBuilder: (BuildContext context, int index) {
