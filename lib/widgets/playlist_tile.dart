@@ -19,10 +19,10 @@ class PlaylistTile extends StatefulWidget {
 
   PlaylistTile(
       {Key? key,
-      required this.playlist,
-      required this.refreshHome,
-      required this.index,
-      required this.removeFromList})
+        required this.playlist,
+        required this.refreshHome,
+        required this.index,
+        required this.removeFromList})
       : super(key: key);
 }
 
@@ -60,7 +60,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
     final tasksTags = PlaylistsTagsDao.instance;
     final deleted = await playlists.delete(widget.playlist.idPlaylist);
     final deletedTaskTag =
-        await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
+    await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
   }
 
   Future<void> _archivePlaylist() async {
@@ -99,11 +99,11 @@ class _PlaylistTileState extends State<PlaylistTile> {
                         : const Icon(Icons.unarchive_outlined),
                     title: (widget.playlist.archived == 0)
                         ? const Text(
-                            "Archive playlist",
-                          )
+                      "Archive playlist",
+                    )
                         : const Text(
-                            "Unarchive playlist",
-                          ),
+                      "Unarchive playlist",
+                    ),
                     onTap: () {
                       _archivePlaylist();
                       widget.refreshHome();
@@ -186,38 +186,38 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     alignment: Alignment.centerLeft,
                     child: (widget.playlist.cover == null)
                         ? SizedBox(
-                            height: 83,
-                            width: 83,
-                            child: Card(
-                              elevation: 1,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Icon(
-                                Icons.music_note_outlined,
-                                size: 30,
-                                color: Theme.of(context).hintColor,
-                              ),
-                            ),
-                          )
+                      height: 83,
+                      width: 83,
+                      child: Card(
+                        elevation: 1,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Icon(
+                          Icons.music_note_outlined,
+                          size: 30,
+                          color: Theme.of(context).hintColor,
+                        ),
+                      ),
+                    )
                         : SizedBox(
-                            height: 83,
-                            width: 83,
-                            child: Card(
-                              elevation: 1,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                child: Image.memory(
-                                  widget.playlist.cover!,
-                                  fit: BoxFit.cover,
-                                  gaplessPlayback: true,
-                                ),
-                              ),
-                            ),
+                      height: 83,
+                      width: 83,
+                      child: Card(
+                        elevation: 1,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: Image.memory(
+                            widget.playlist.cover!,
+                            fit: BoxFit.cover,
+                            gaplessPlayback: true,
                           ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -226,65 +226,65 @@ class _PlaylistTileState extends State<PlaylistTile> {
                 (loadingTags)
                     ? const SizedBox.shrink()
                     : Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.playlist.title,
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            const SizedBox(
-                              height: 7,
-                            ),
-                            Visibility(
-                              visible: widget.playlist.artist!.isNotEmpty,
-                              child: Text(
-                                widget.playlist.artist!,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Theme.of(context).hintColor),
-                              ),
-                            ),
-                            Visibility(
-                              visible: widget.playlist.artist!.isNotEmpty,
-                              child: const SizedBox(
-                                height: 7,
-                              ),
-                            ),
-                            (tagsList.isEmpty)
-                                ? const SizedBox.shrink()
-                                : Wrap(
-                                    runSpacing: 5,
-                                    children: List<Widget>.generate(
-                                        tagsList.length, (int index) {
-                                      return index == 0
-                                          ? Text(
-                                              tagsList[index]['name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary),
-                                            )
-                                          : Text(
-                                              " • " + tagsList[index]['name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary),
-                                            );
-                                    }).toList(),
-                                  ),
-                          ],
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.playlist.title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      Visibility(
+                        visible: widget.playlist.artist!.isNotEmpty,
+                        child: Text(
+                          widget.playlist.artist!,
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).hintColor),
                         ),
                       ),
+                      Visibility(
+                        visible: widget.playlist.artist!.isNotEmpty,
+                        child: const SizedBox(
+                          height: 7,
+                        ),
+                      ),
+                      (tagsList.isEmpty)
+                          ? const SizedBox.shrink()
+                          : Wrap(
+                        runSpacing: 5,
+                        children: List<Widget>.generate(
+                            tagsList.length, (int index) {
+                          return index == 0
+                              ? Text(
+                            tagsList[index]['name'],
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary),
+                          )
+                              : Text(
+                            " • " + tagsList[index]['name'],
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ],

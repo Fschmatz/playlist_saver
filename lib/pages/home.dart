@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/pages/playlist_list.dart';
 import 'package:playlist_saver/pages/save_playlist.dart';
@@ -11,8 +12,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home>{
-
+class _HomeState extends State<Home> {
   int _currentTabIndex = 0;
   List<Widget> _tabs = [
     PlaylistList(
@@ -55,14 +55,14 @@ class _HomeState extends State<Home>{
                   PopupMenuButton<int>(
                       icon: const Icon(Icons.more_vert_outlined),
                       itemBuilder: (BuildContext context) =>
-                          <PopupMenuItem<int>>[
-                            const PopupMenuItem<int>(
-                                value: 0, child: Text('Add playlist')),
-                            const PopupMenuItem<int>(
-                                value: 1, child: Text('Manage tags')),
-                            const PopupMenuItem<int>(
-                                value: 2, child: Text('Settings')),
-                          ],
+                      <PopupMenuItem<int>>[
+                        const PopupMenuItem<int>(
+                            value: 0, child: Text('Add playlist')),
+                        const PopupMenuItem<int>(
+                            value: 1, child: Text('Manage tags')),
+                        const PopupMenuItem<int>(
+                            value: 2, child: Text('Settings')),
+                      ],
                       onSelected: (int value) {
                         if (value == 0) {
                           Navigator.push(
@@ -77,14 +77,14 @@ class _HomeState extends State<Home>{
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    const TagsManager(),
+                                const TagsManager(),
                               )).then((value) => refresh());
                         } else if (value == 2) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    const SettingsPage(),
+                                const SettingsPage(),
                               ));
                         }
                       })
@@ -92,7 +92,15 @@ class _HomeState extends State<Home>{
               ),
             ];
           },
-          body: _tabs[_currentTabIndex]),
+          body: PageTransitionSwitcher(
+              transitionBuilder: (child, animation, secondaryAnimation) =>
+                  FadeThroughTransition(
+                    fillColor: Theme.of(context).scaffoldBackgroundColor,
+                    animation: animation,
+                    secondaryAnimation: secondaryAnimation,
+                    child: child,
+                  ),
+              child: _tabs[_currentTabIndex])),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentTabIndex,
         onDestinationSelected: (index) {
@@ -120,3 +128,4 @@ class _HomeState extends State<Home>{
     );
   }
 }
+
