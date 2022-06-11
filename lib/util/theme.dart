@@ -47,7 +47,7 @@ ThemeData light = ThemeData(
           ),
           borderRadius: BorderRadius.circular(8.0))),
   popupMenuTheme: const PopupMenuThemeData(
-    color: Color(0xFFF8F8F9),
+    color: Color(0xFFF3F0F5),
   ),
   chipTheme: ChipThemeData(
     elevation: 0,
@@ -60,6 +60,17 @@ ThemeData light = ThemeData(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
     ),
+  ),
+  snackBarTheme: const SnackBarThemeData(
+      backgroundColor: Color(0xFFB5C0DC),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      ),
+      contentTextStyle: TextStyle(
+        color: Color(0xFF050505),
+      ),
+      actionTextColor: Color(0xFF3A77D9),
+      behavior: SnackBarBehavior.floating
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Color(0xFFE1E2EC),
@@ -101,6 +112,17 @@ ThemeData dark = ThemeData(
   ),
   dialogTheme: const DialogTheme(
     backgroundColor: Color(0xFF26282F),
+  ),
+  snackBarTheme: const SnackBarThemeData(
+    backgroundColor: Color(0xFF36383F),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+    ),
+    contentTextStyle: TextStyle(
+      color: Color(0xFFE2E2E8),
+    ),
+    actionTextColor: Color(0xFF8BA7DE),
+    behavior: SnackBarBehavior.floating
   ),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFF26282F),

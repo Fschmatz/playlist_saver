@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/class/playlist.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
@@ -37,45 +39,59 @@ class _PlaylistListState extends State<PlaylistList> {
     });
   }
 
+  void removeFromList(int index) {
+   setState(() {
+     loading = true;
+      playlists = List.from(playlists)..removeAt(index);
+    });
+   //fade animation
+   Timer(const Duration(milliseconds: 100), () {
+     setState(() {
+       loading = false;
+     });
+   });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 600),
-          child: (loading)
-              ? const Center(child: SizedBox.shrink())
-              : ListView(
-                  children: [
-                    ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const SizedBox(
-                        height: 4,
-                      ),
-                      physics: const ScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: playlists.length,
-                      itemBuilder: (context, int index) {
-                        return PlaylistTile(
-                          key: UniqueKey(),
-                          refreshHome: getPlaylists,
-                          playlist: Playlist(
-                            idPlaylist: playlists[index]['id_playlist'],
-                            link: playlists[index]['link'],
-                            title: playlists[index]['title'],
-                            archived: playlists[index]['archived'],
-                            artist: playlists[index]['artist'],
-                            cover: playlists[index]
-                                ['cover'],
-                          ),
-                        );
-                      },
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 600),
+        child: (loading)
+            ? const Center(child: SizedBox.shrink())
+            : ListView(
+                children: [
+                  ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                      height: 4,
                     ),
-                    const SizedBox(
-                      height: 50,
-                    )
-                  ],
-                ),
-        ),
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: playlists.length,
+                    itemBuilder: (context, int index) {
+                      return PlaylistTile(
+                        key: UniqueKey(),
+                        removeFromList: removeFromList,
+                        index: index,
+                        refreshHome: getPlaylists,
+                        playlist: Playlist(
+                          idPlaylist: playlists[index]['id_playlist'],
+                          link: playlists[index]['link'],
+                          title: playlists[index]['title'],
+                          archived: playlists[index]['archived'],
+                          artist: playlists[index]['artist'],
+                          cover: playlists[index]['cover'],
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  )
+                ],
+              ),
+      ),
     );
   }
 }

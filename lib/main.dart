@@ -15,11 +15,14 @@ const String showDataRoute = "showData";
 Future<InitData> init() async {
   String sharedText = "";
   String routeName = homeRoute;
+
+  //app not in memory
   String? sharedValue = await ReceiveSharingIntent.getInitialText();
   if (sharedValue != null) {
     sharedText = sharedValue;
     routeName = showDataRoute;
-    //ReceiveSharingIntent.reset();
+    sharedValue = null;
+    ReceiveSharingIntent.reset();
   }
   return InitData(sharedText, routeName);
 }
