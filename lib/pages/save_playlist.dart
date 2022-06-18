@@ -9,6 +9,7 @@ import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
 import '../db/tag_dao.dart';
 import '../db/playlists_tags_dao.dart';
+import '../util/utils_functions.dart';
 
 class SavePlaylist extends StatefulWidget {
   @override
@@ -125,6 +126,9 @@ class _SavePlaylistState extends State<SavePlaylist> {
 
   @override
   Widget build(BuildContext context) {
+
+    final Brightness tagTextBrightness = Theme.of(context).brightness;
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Save Playlist'),
@@ -247,7 +251,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
           ),
           const Divider(),
           Padding(
-            padding: const EdgeInsets.fromLTRB(18, 10, 25, 5),
+            padding: const EdgeInsets.fromLTRB(18, 5, 25, 0),
             child: Text(
               "Add tags",
               style:
@@ -257,57 +261,80 @@ class _SavePlaylistState extends State<SavePlaylist> {
           (tagsList.isEmpty)
               ? const SizedBox.shrink()
               : Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 16),
-                  child: Wrap(
-                    spacing: 12.0,
-                    runSpacing: 12.0,
-                    children:
-                        List<Widget>.generate(tagsList.length, (int index) {
-                      return ChoiceChip(
-                        key: UniqueKey(),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          if (selectedTags
-                              .contains(tagsList[index]['id_tag'])) {
-                            selectedTags.remove(tagsList[index]['id_tag']);
-                          } else {
-                            selectedTags.add(tagsList[index]['id_tag']);
-                          }
-                          setState(() {});
-                        },
-                        avatar: selectedTags
-                                .contains(tagsList[index]['id_tag'])
-                            ? Icon(
-                                Icons.check_box_outlined,
-                                size: 20,
-                                color: Theme.of(context).colorScheme.primary,
-                              )
-                            : const Icon(
-                                Icons.check_box_outline_blank_outlined,
-                                size: 20,
-                              ),
-                        shape: StadiumBorder(
-                            side: BorderSide(
-                                color: selectedTags
-                                        .contains(tagsList[index]['id_tag'])
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Colors.grey.shade800.withOpacity(0.5))),
-                        label: Text(
-                          tagsList[index]['name'],
-                        ),
-                        labelPadding: const EdgeInsets.fromLTRB(0, 4, 10, 4),
-                        labelStyle: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: selectedTags
-                                    .contains(tagsList[index]['id_tag'])
-                                ? Theme.of(context).colorScheme.primary
-                                : null),
-                      );
-                    }).toList(),
+            padding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Wrap(
+              spacing: 10.0,
+              runSpacing: 5.0,
+              children:
+              List<Widget>.generate(tagsList.length, (int index) {
+                return FilterChip(
+                  key: UniqueKey(),
+                  selected: false,
+                  onSelected: (bool selected) {
+                    if (selectedTags
+                        .contains(tagsList[index]['id_tag'])) {
+                      selectedTags.remove(tagsList[index]['id_tag']);
+                    } else {
+                      selectedTags.add(tagsList[index]['id_tag']);
+                    }
+                    setState(() {});
+                  },
+                  avatar: selectedTags.contains(tagsList[index]['id_tag'])
+                      ? Icon(
+                    Icons.check,
+                    size: 18,
+                    color: Theme.of(context).colorScheme.primary,
+                  )
+                      : null,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      side: BorderSide(
+                          color: selectedTags
+                              .contains(tagsList[index]['id_tag'])
+                              ? tagTextBrightness == Brightness.dark
+                              ? darkenColor(
+                              Theme.of(context)
+                                  .colorScheme
+                                  .primary,
+                              65)
+                              : lightenColor(
+                              Theme.of(context)
+                                  .colorScheme
+                                  .primary,
+                              70)
+                              : Theme.of(context)
+                              .inputDecorationTheme
+                              .border!
+                              .borderSide
+                              .color
+                              .withOpacity(0.2))),
+                  label: Text(
+                    tagsList[index]['name'],
                   ),
-                ),
+                  labelPadding:
+                  selectedTags.contains(tagsList[index]['id_tag'])
+                      ? const EdgeInsets.only(left: 8, right: 16)
+                      : const EdgeInsets.symmetric(horizontal: 16),
+                  backgroundColor: selectedTags
+                      .contains(tagsList[index]['id_tag'])
+                      ? tagTextBrightness == Brightness.dark
+                      ? darkenColor(
+                      Theme.of(context).colorScheme.primary, 65)
+                      : lightenColor(
+                      Theme.of(context).colorScheme.primary, 70)
+                      : Theme.of(context).scaffoldBackgroundColor,
+                  labelStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color:
+                      selectedTags.contains(tagsList[index]['id_tag'])
+                          ? Theme.of(context).colorScheme.primary
+                          : null),
+                );
+              }).toList(),
+            ),
+          ),
           const SizedBox(
             height: 50,
           ),

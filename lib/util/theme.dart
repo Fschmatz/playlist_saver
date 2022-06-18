@@ -89,10 +89,10 @@ ThemeData dark = ThemeData(
     titleMedium: TextStyle(fontWeight: FontWeight.w400),
   ),
   brightness: Brightness.dark,
-  primaryColor: const Color(0xFF202228),
-  scaffoldBackgroundColor: const Color(0xFF202228),
+  primaryColor: const Color(0xFF202226),
+  scaffoldBackgroundColor: const Color(0xFF202226),
   colorScheme: const ColorScheme.dark(
-    background: Color(0xFF202228),
+    background: Color(0xFF202226),
     primary: Color(0xFF8BA7DE),
     onPrimary: Color(0xFF002F65),
     secondary: Color(0xFF8BA7DE),
@@ -101,14 +101,14 @@ ThemeData dark = ThemeData(
     backgroundColor: Color(0xFF8BA7DE),
   ),
   appBarTheme: const AppBarTheme(
-      surfaceTintColor: Color(0xFF202228),
-      color: Color(0xFF202228),
+      surfaceTintColor: Color(0xFF202226),
+      color: Color(0xFF202226),
       ),
   cardTheme: const CardTheme(
-    color: Color(0xFF26282F),
+    color: Color(0xFF26282D),
   ),
   dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFF26282F),
+    backgroundColor: Color(0xFF26282D),
   ),
   snackBarTheme: const SnackBarThemeData(
     backgroundColor: Color(0xFF36383F),
@@ -119,7 +119,7 @@ ThemeData dark = ThemeData(
     behavior: SnackBarBehavior.floating
   ),
   bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: Color(0xFF26282F),
+    backgroundColor: Color(0xFF26282D),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
@@ -130,7 +130,7 @@ ThemeData dark = ThemeData(
   ),
   chipTheme: ChipThemeData(
     elevation: 0,
-    backgroundColor: const Color(0xFF202228),
+    backgroundColor: const Color(0xFF202226),
     shape: StadiumBorder(
         side: BorderSide(color: Colors.grey.shade800.withOpacity(0.3))),
   ),
@@ -154,12 +154,12 @@ ThemeData dark = ThemeData(
           ),
           borderRadius: BorderRadius.circular(8.0))),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFF26282F),
+    backgroundColor: Color(0xFF26282D),
   ),
-  bottomAppBarColor: const Color(0xFF26282F),
+  bottomAppBarColor: const Color(0xFF26282D),
   navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFF26282F),
-      indicatorColor: const Color(0xFF475677),
+      backgroundColor: const Color(0xFF26282D),
+      indicatorColor: const Color(0xFF485B83),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFFE2E2E8),
       )),

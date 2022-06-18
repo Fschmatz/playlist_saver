@@ -4,20 +4,23 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:playlist_saver/class/init_data.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
 import '../app.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
+import '../util/utils_functions.dart';
 
 class ShareSavePlaylist extends StatefulWidget {
   @override
   _ShareSavePlaylistState createState() => _ShareSavePlaylistState();
 
   String? sharedText = "";
+  bool outsideMemory;
 
-  ShareSavePlaylist({Key? key, this.sharedText}) : super(key: key);
+  ShareSavePlaylist({Key? key, this.sharedText, required this.outsideMemory}) : super(key: key);
 }
 
 class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
@@ -61,11 +64,13 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
         msg: "Error parsing data",
       );
     }
-    setState(() {
-      metaData;
-      controllerPlaylistTitle.text = metaData!.title;
-      controllerArtist.text = artistName;
-    });
+    if(mounted) {
+      setState(() {
+        metaData;
+        controllerPlaylistTitle.text = metaData!.title;
+        controllerArtist.text = artistName;
+      });
+    }
   }
 
   Future<String> parseArtistName() async {
@@ -136,6 +141,8 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
             ? Brightness.dark
             : Brightness.light;
 
+    final Brightness tagTextBrightness = Theme.of(context).brightness;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarIconBrightness: iconBrightness,
@@ -164,6 +171,11 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                   tooltip: 'Save',
                   onPressed: () {
                     if (validateTextFields()) {
+                      if(widget.outsideMemory){
+                        //save the last link who came from outside
+                        InitData initData = InitData('', '');
+                        initData.saveToPrefs(widget.sharedText!);
+                      }
                       _savePlaylist().then((v) => {
                             Navigator.pushAndRemoveUntil(
                                 context,
@@ -270,7 +282,7 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
               ),
               const Divider(),
               Padding(
-                padding: const EdgeInsets.fromLTRB(18, 10, 25, 5),
+                padding: const EdgeInsets.fromLTRB(18, 5, 25, 0),
                 child: Text(
                   "Add tags",
                   style:
@@ -280,17 +292,17 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
               (tagsList.isEmpty)
                   ? const SizedBox.shrink()
                   : Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 16),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: Wrap(
-                  spacing: 12.0,
-                  runSpacing: 12.0,
+                  spacing: 10.0,
+                  runSpacing: 5.0,
                   children:
                   List<Widget>.generate(tagsList.length, (int index) {
-                    return ChoiceChip(
+                    return FilterChip(
                       key: UniqueKey(),
                       selected: false,
-                      onSelected: (bool _selected) {
+                      onSelected: (bool selected) {
                         if (selectedTags
                             .contains(tagsList[index]['id_tag'])) {
                           selectedTags.remove(tagsList[index]['id_tag']);
@@ -299,32 +311,55 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                         }
                         setState(() {});
                       },
-                      avatar: selectedTags
-                          .contains(tagsList[index]['id_tag'])
+                      avatar: selectedTags.contains(tagsList[index]['id_tag'])
                           ? Icon(
-                        Icons.check_box_outlined,
-                        size: 20,
+                        Icons.check,
+                        size: 18,
                         color: Theme.of(context).colorScheme.primary,
                       )
-                          : const Icon(
-                        Icons.check_box_outline_blank_outlined,
-                        size: 20,
-                      ),
-                      shape: StadiumBorder(
+                          : null,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
                           side: BorderSide(
                               color: selectedTags
                                   .contains(tagsList[index]['id_tag'])
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Colors.grey.shade800.withOpacity(0.5))),
+                                  ? tagTextBrightness == Brightness.dark
+                                  ? darkenColor(
+                                  Theme.of(context)
+                                      .colorScheme
+                                      .primary,
+                                  65)
+                                  : lightenColor(
+                                  Theme.of(context)
+                                      .colorScheme
+                                      .primary,
+                                  70)
+                                  : Theme.of(context)
+                                  .inputDecorationTheme
+                                  .border!
+                                  .borderSide
+                                  .color
+                                  .withOpacity(0.2))),
                       label: Text(
                         tagsList[index]['name'],
                       ),
-                      labelPadding: const EdgeInsets.fromLTRB(0, 4, 10, 4),
+                      labelPadding:
+                      selectedTags.contains(tagsList[index]['id_tag'])
+                          ? const EdgeInsets.only(left: 8, right: 16)
+                          : const EdgeInsets.symmetric(horizontal: 16),
+                      backgroundColor: selectedTags
+                          .contains(tagsList[index]['id_tag'])
+                          ? tagTextBrightness == Brightness.dark
+                          ? darkenColor(
+                          Theme.of(context).colorScheme.primary, 65)
+                          : lightenColor(
+                          Theme.of(context).colorScheme.primary, 70)
+                          : Theme.of(context).scaffoldBackgroundColor,
                       labelStyle: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          color: selectedTags
-                              .contains(tagsList[index]['id_tag'])
+                          color:
+                          selectedTags.contains(tagsList[index]['id_tag'])
                               ? Theme.of(context).colorScheme.primary
                               : null),
                     );

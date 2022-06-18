@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:playlist_saver/share/share_save_playlist.dart';
 import 'package:playlist_saver/util/theme.dart';
+import 'package:share_handler/share_handler.dart';
 import 'app.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'class/init_data.dart';
 import 'class/show_data_argument.dart';
 import 'db/db_creator.dart';
@@ -15,14 +16,17 @@ const String showDataRoute = "showData";
 Future<InitData> init() async {
   String sharedText = "";
   String routeName = homeRoute;
+  ShareHandlerPlatform handler = ShareHandlerPlatform.instance;
+
+  InitData loadInitData = InitData('', '');
+  String? lastSave = await loadInitData.loadFromPrefs();
 
   //app not in memory
-  String? sharedValue = await ReceiveSharingIntent.getInitialText();
-  if (sharedValue != null) {
-    sharedText = sharedValue;
+  SharedMedia? sharedValue = await handler.getInitialSharedMedia();
+
+  if (sharedValue != null && sharedValue.content.toString() != lastSave) {
+    sharedText = sharedValue.content.toString();
     routeName = showDataRoute;
-    sharedValue = null;
-    ReceiveSharingIntent.reset();
   }
   return InitData(sharedText, routeName);
 }
@@ -44,36 +48,36 @@ Future<void> main() async {
 }
 
 class StartAppRoutes extends StatefulWidget {
-  const StartAppRoutes({Key? key, required this.initData}) : super(key: key);
+  StartAppRoutes({Key? key, required this.initData}) : super(key: key);
 
-  final InitData initData;
+  InitData initData;
 
   @override
   _StartAppRoutesState createState() => _StartAppRoutesState();
 }
 
 class _StartAppRoutesState extends State<StartAppRoutes> {
-  final _navKey = GlobalKey<NavigatorState>();
-  late StreamSubscription _intentDataStreamSubscription;
+  GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
+  SharedMedia? media;
 
   @override
   void initState() {
     super.initState();
-
-    //app in memory
-    _intentDataStreamSubscription =
-        ReceiveSharingIntent.getTextStream().listen((String value) {
-      _navKey.currentState!.pushNamed(
-        showDataRoute,
-        arguments: ShowDataArgument(value),
-      );
-    });
+    initPlatformState();
   }
 
-  @override
-  void dispose() {
-    _intentDataStreamSubscription.cancel();
-    super.dispose();
+  //app in memory
+  Future<void> initPlatformState() async {
+    final handler = ShareHandlerPlatform.instance;
+    media = await handler.getInitialSharedMedia();
+
+    handler.sharedMediaStream.listen((SharedMedia media) {
+      if (!mounted) return;
+      _navKey.currentState!.pushNamed(
+        showDataRoute,
+        arguments: ShowDataArgument(media.content.toString()),
+      );
+    });
   }
 
   @override
@@ -95,11 +99,13 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
                 return MaterialPageRoute(
                     builder: (_) => ShareSavePlaylist(
                           sharedText: args.sharedText,
+                          outsideMemory: false,
                         ));
               } else {
                 return MaterialPageRoute(
                     builder: (_) => ShareSavePlaylist(
                           sharedText: widget.initData.sharedText,
+                          outsideMemory: true,
                         ));
               }
             }
