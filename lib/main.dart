@@ -24,9 +24,11 @@ Future<InitData> init() async {
   //app not in memory
   SharedMedia? sharedValue = await handler.getInitialSharedMedia();
 
-  if (sharedValue != null && sharedValue.content.toString() != lastSave) {
-    sharedText = sharedValue.content.toString();
-    routeName = showDataRoute;
+  if (sharedValue != null) {
+    if (sharedValue.content.toString() != lastSave) {
+      sharedText = sharedValue.content.toString();
+      routeName = showDataRoute;
+    }
   }
   return InitData(sharedText, routeName);
 }

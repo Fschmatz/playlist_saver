@@ -1,11 +1,11 @@
 class AppDetails{
 
-  static String appVersion = "1.4.4";
+  static String appVersion = "1.4.5";
   static String appName = "Playlist Saver Fschmatz";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-1.4.4
+1.4.5
 - Print playlists
 - Clear intent
 - Show SnackBar on delete
