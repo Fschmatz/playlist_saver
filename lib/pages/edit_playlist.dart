@@ -194,8 +194,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   child: Wrap(
-                    spacing: 10.0,
-                    runSpacing: 5.0,
+                    spacing: 8.0,
                     children:
                         List<Widget>.generate(tagsList.length, (int index) {
                       return FilterChip(
@@ -238,7 +237,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
                                         .border!
                                         .borderSide
                                         .color
-                                        .withOpacity(0.2))),
+                                        .withOpacity(0.3))),
                         label: Text(
                           tagsList[index]['name'],
                         ),
