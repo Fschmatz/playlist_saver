@@ -209,13 +209,6 @@ class _EditPlaylistState extends State<EditPlaylist> {
                           }
                           setState(() {});
                         },
-                        avatar: selectedTags.contains(tagsList[index]['id_tag'])
-                            ? Icon(
-                                Icons.check,
-                                size: 18,
-                                color: Theme.of(context).colorScheme.primary,
-                              )
-                            : null,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             side: BorderSide(
@@ -241,10 +234,6 @@ class _EditPlaylistState extends State<EditPlaylist> {
                         label: Text(
                           tagsList[index]['name'],
                         ),
-                        labelPadding:
-                            selectedTags.contains(tagsList[index]['id_tag'])
-                                ? const EdgeInsets.only(left: 8, right: 16)
-                                : const EdgeInsets.symmetric(horizontal: 16),
                         backgroundColor: selectedTags
                                 .contains(tagsList[index]['id_tag'])
                             ? tagTextBrightness == Brightness.dark
@@ -254,12 +243,10 @@ class _EditPlaylistState extends State<EditPlaylist> {
                                     Theme.of(context).colorScheme.primary, 70)
                             : Theme.of(context).scaffoldBackgroundColor,
                         labelStyle: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
                             color:
                                 selectedTags.contains(tagsList[index]['id_tag'])
                                     ? Theme.of(context).colorScheme.primary
-                                    : null),
+                                    : Theme.of(context).textTheme.headline6!.color),
                       );
                     }).toList(),
                   ),

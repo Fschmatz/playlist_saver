@@ -123,10 +123,8 @@ class _SavePlaylistState extends State<SavePlaylist> {
     return ok;
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     final Brightness tagTextBrightness = Theme.of(context).brightness;
 
     return Scaffold(
@@ -166,8 +164,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
           ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            title:
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6),
@@ -261,79 +258,66 @@ class _SavePlaylistState extends State<SavePlaylist> {
           (tagsList.isEmpty)
               ? const SizedBox.shrink()
               : Padding(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Wrap(
-              spacing: 8.0,
-              children:
-              List<Widget>.generate(tagsList.length, (int index) {
-                return FilterChip(
-                  key: UniqueKey(),
-                  selected: false,
-                  onSelected: (bool selected) {
-                    if (selectedTags
-                        .contains(tagsList[index]['id_tag'])) {
-                      selectedTags.remove(tagsList[index]['id_tag']);
-                    } else {
-                      selectedTags.add(tagsList[index]['id_tag']);
-                    }
-                    setState(() {});
-                  },
-                  avatar: selectedTags.contains(tagsList[index]['id_tag'])
-                      ? Icon(
-                    Icons.check,
-                    size: 18,
-                    color: Theme.of(context).colorScheme.primary,
-                  )
-                      : null,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      side: BorderSide(
-                          color: selectedTags
-                              .contains(tagsList[index]['id_tag'])
-                              ? tagTextBrightness == Brightness.dark
-                              ? darkenColor(
-                              Theme.of(context)
-                                  .colorScheme
-                                  .primary,
-                              65)
-                              : lightenColor(
-                              Theme.of(context)
-                                  .colorScheme
-                                  .primary,
-                              70)
-                              : Theme.of(context)
-                              .inputDecorationTheme
-                              .border!
-                              .borderSide
-                              .color
-                              .withOpacity(0.3))),
-                  label: Text(
-                    tagsList[index]['name'],
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Wrap(
+                    spacing: 8.0,
+                    children:
+                        List<Widget>.generate(tagsList.length, (int index) {
+                      return FilterChip(
+                        key: UniqueKey(),
+                        selected: false,
+                        onSelected: (bool selected) {
+                          if (selectedTags
+                              .contains(tagsList[index]['id_tag'])) {
+                            selectedTags.remove(tagsList[index]['id_tag']);
+                          } else {
+                            selectedTags.add(tagsList[index]['id_tag']);
+                          }
+                          setState(() {});
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            side: BorderSide(
+                                color: selectedTags
+                                        .contains(tagsList[index]['id_tag'])
+                                    ? tagTextBrightness == Brightness.dark
+                                        ? darkenColor(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            65)
+                                        : lightenColor(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            70)
+                                    : Theme.of(context)
+                                        .inputDecorationTheme
+                                        .border!
+                                        .borderSide
+                                        .color
+                                        .withOpacity(0.3))),
+                        label: Text(
+                          tagsList[index]['name'],
+                        ),
+                        backgroundColor: selectedTags
+                                .contains(tagsList[index]['id_tag'])
+                            ? tagTextBrightness == Brightness.dark
+                                ? darkenColor(
+                                    Theme.of(context).colorScheme.primary, 65)
+                                : lightenColor(
+                                    Theme.of(context).colorScheme.primary, 70)
+                            : Theme.of(context).scaffoldBackgroundColor,
+                        labelStyle: TextStyle(
+                            color:
+                                selectedTags.contains(tagsList[index]['id_tag'])
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).textTheme.headline6!.color),
+                      );
+                    }).toList(),
                   ),
-                  labelPadding:
-                  selectedTags.contains(tagsList[index]['id_tag'])
-                      ? const EdgeInsets.only(left: 8, right: 16)
-                      : const EdgeInsets.symmetric(horizontal: 16),
-                  backgroundColor: selectedTags
-                      .contains(tagsList[index]['id_tag'])
-                      ? tagTextBrightness == Brightness.dark
-                      ? darkenColor(
-                      Theme.of(context).colorScheme.primary, 65)
-                      : lightenColor(
-                      Theme.of(context).colorScheme.primary, 70)
-                      : Theme.of(context).scaffoldBackgroundColor,
-                  labelStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color:
-                      selectedTags.contains(tagsList[index]['id_tag'])
-                          ? Theme.of(context).colorScheme.primary
-                          : null),
-                );
-              }).toList(),
-            ),
-          ),
+                ),
           const SizedBox(
             height: 50,
           ),

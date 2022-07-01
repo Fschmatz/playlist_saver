@@ -21,8 +21,8 @@ ThemeData light = ThemeData(
     backgroundColor: Color(0xFFFDFBFF),
   ),
   appBarTheme: const AppBarTheme(
-      surfaceTintColor: Color(0xFFFDFBFF),
-      color: Color(0xFFFDFBFF),
+    surfaceTintColor: Color(0xFFFDFBFF),
+    color: Color(0xFFFDFBFF),
   ),
   cardTheme: const CardTheme(
     color: Color(0xFFFFFFFF),
@@ -30,7 +30,7 @@ ThemeData light = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFFFDFBFF),
       focusColor: const Color(0xFF3A77D9),
-           focusedBorder: OutlineInputBorder(
+      focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
           color: Color(0xFF3A77D9),
         ),
@@ -43,16 +43,23 @@ ThemeData light = ThemeData(
           borderRadius: BorderRadius.circular(8.0)),
       border: OutlineInputBorder(
           borderSide: const BorderSide(
-            color:  Color(0xFF74777F),
+            color: Color(0xFF74777F),
           ),
           borderRadius: BorderRadius.circular(8.0))),
   popupMenuTheme: const PopupMenuThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+    ),
     color: Color(0xFFF3F0F5),
   ),
-  chipTheme: ChipThemeData(
+  chipTheme: const ChipThemeData(
     elevation: 0,
-    backgroundColor: const Color(0xFFFDFBFF),
-    shape: StadiumBorder(side: BorderSide(color: Colors.grey.shade800.withOpacity(0.3))),
+    backgroundColor: Color(0xFFFDFBFF),
+    labelPadding: EdgeInsets.symmetric(horizontal: 16),
+    labelStyle: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+    ),
   ),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFFFDFBFF),
@@ -67,8 +74,7 @@ ThemeData light = ThemeData(
         color: Color(0xFF050505),
       ),
       actionTextColor: Color(0xFF3A77D9),
-      behavior: SnackBarBehavior.floating
-  ),
+      behavior: SnackBarBehavior.floating),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Color(0xFFE1E2EC),
   ),
@@ -101,9 +107,9 @@ ThemeData dark = ThemeData(
     backgroundColor: Color(0xFF8BA7DE),
   ),
   appBarTheme: const AppBarTheme(
-      surfaceTintColor: Color(0xFF202226),
-      color: Color(0xFF202226),
-      ),
+    surfaceTintColor: Color(0xFF202226),
+    color: Color(0xFF202226),
+  ),
   cardTheme: const CardTheme(
     color: Color(0xFF26282D),
   ),
@@ -111,13 +117,12 @@ ThemeData dark = ThemeData(
     backgroundColor: Color(0xFF26282D),
   ),
   snackBarTheme: const SnackBarThemeData(
-    backgroundColor: Color(0xFF36383F),
-    contentTextStyle: TextStyle(
-      color: Color(0xFFE2E2E8),
-    ),
-    actionTextColor: Color(0xFF8BA7DE),
-    behavior: SnackBarBehavior.floating
-  ),
+      backgroundColor: Color(0xFF36383F),
+      contentTextStyle: TextStyle(
+        color: Color(0xFFE2E2E8),
+      ),
+      actionTextColor: Color(0xFF8BA7DE),
+      behavior: SnackBarBehavior.floating),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFF26282D),
     shape: RoundedRectangleBorder(
@@ -126,13 +131,18 @@ ThemeData dark = ThemeData(
     ),
   ),
   popupMenuTheme: const PopupMenuThemeData(
-    color: Color(0xFF292B32)
-  ),
-  chipTheme: ChipThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      ),
+      color: Color(0xFF292B32)),
+  chipTheme: const ChipThemeData(
     elevation: 0,
-    backgroundColor: const Color(0xFF202226),
-    shape: StadiumBorder(
-        side: BorderSide(color: Colors.grey.shade800.withOpacity(0.3))),
+    backgroundColor: Color(0xFF202226),
+    labelPadding: EdgeInsets.symmetric(horizontal: 16),
+    labelStyle: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+    ),
   ),
   inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFF8BA7DE),
@@ -145,7 +155,7 @@ ThemeData dark = ThemeData(
       ),
       enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(
-            color:  Color(0xFF8D9099),
+            color: Color(0xFF8D9099),
           ),
           borderRadius: BorderRadius.circular(8.0)),
       border: OutlineInputBorder(

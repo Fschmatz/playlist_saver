@@ -19,10 +19,10 @@ class PlaylistTile extends StatefulWidget {
 
   PlaylistTile(
       {Key? key,
-        required this.playlist,
-        required this.refreshHome,
-        required this.index,
-        required this.removeFromList})
+      required this.playlist,
+      required this.refreshHome,
+      required this.index,
+      required this.removeFromList})
       : super(key: key);
 }
 
@@ -60,7 +60,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
     final tasksTags = PlaylistsTagsDao.instance;
     final deleted = await playlists.delete(widget.playlist.idPlaylist);
     final deletedTaskTag =
-    await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
+        await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
   }
 
   Future<void> _archivePlaylist() async {
@@ -82,9 +82,16 @@ class _PlaylistTileState extends State<PlaylistTile> {
               child: Wrap(
                 children: <Widget>[
                   ListTile(
+                    title: Text(
+                      "${widget.playlist.title}\n${widget.playlist.artist!}",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const Divider(),
+                  ListTile(
                     leading: const Icon(Icons.share_outlined),
                     title: const Text(
-                      "Share playlist",
+                      "Share",
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -92,29 +99,27 @@ class _PlaylistTileState extends State<PlaylistTile> {
                           "${widget.playlist.title} - ${widget.playlist.artist!}\n\n${widget.playlist.link}");
                     },
                   ),
-                  const Divider(),
                   ListTile(
                     leading: (widget.playlist.archived == 0)
                         ? const Icon(Icons.archive_outlined)
                         : const Icon(Icons.unarchive_outlined),
                     title: (widget.playlist.archived == 0)
                         ? const Text(
-                      "Archive playlist",
-                    )
+                            "Archive",
+                          )
                         : const Text(
-                      "Unarchive playlist",
-                    ),
+                            "Unarchive",
+                          ),
                     onTap: () {
                       _archivePlaylist();
                       widget.refreshHome();
                       Navigator.of(context).pop();
                     },
                   ),
-                  const Divider(),
                   ListTile(
                     leading: const Icon(Icons.edit_outlined),
                     title: const Text(
-                      "Edit playlist",
+                      "Edit",
                     ),
                     onTap: () {
                       Navigator.of(context).pop();
@@ -128,11 +133,10 @@ class _PlaylistTileState extends State<PlaylistTile> {
                           ));
                     },
                   ),
-                  const Divider(),
                   ListTile(
                     leading: const Icon(Icons.delete_outline_outlined),
                     title: const Text(
-                      "Delete playlist",
+                      "Delete",
                       style: TextStyle(fontSize: 16),
                     ),
                     onTap: () {
@@ -140,7 +144,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                       Navigator.of(context).pop();
                       _showSnackBar();
                       Timer(const Duration(seconds: 5), () {
-                        if(deleteAfterTimer) {
+                        if (deleteAfterTimer) {
                           _delete();
                         }
                       });
@@ -186,38 +190,38 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     alignment: Alignment.centerLeft,
                     child: (widget.playlist.cover == null)
                         ? SizedBox(
-                      height: 83,
-                      width: 83,
-                      child: Card(
-                        elevation: 1,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Icon(
-                          Icons.music_note_outlined,
-                          size: 30,
-                          color: Theme.of(context).hintColor,
-                        ),
-                      ),
-                    )
+                            height: 83,
+                            width: 83,
+                            child: Card(
+                              elevation: 1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Icon(
+                                Icons.music_note_outlined,
+                                size: 30,
+                                color: Theme.of(context).hintColor,
+                              ),
+                            ),
+                          )
                         : SizedBox(
-                      height: 83,
-                      width: 83,
-                      child: Card(
-                        elevation: 1,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: Image.memory(
-                            widget.playlist.cover!,
-                            fit: BoxFit.cover,
-                            gaplessPlayback: true,
+                            height: 83,
+                            width: 83,
+                            child: Card(
+                              elevation: 1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                child: Image.memory(
+                                  widget.playlist.cover!,
+                                  fit: BoxFit.cover,
+                                  gaplessPlayback: true,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
                   ),
                 ),
                 const SizedBox(
@@ -226,65 +230,65 @@ class _PlaylistTileState extends State<PlaylistTile> {
                 (loadingTags)
                     ? const SizedBox.shrink()
                     : Expanded(
-                  flex: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.playlist.title,
-                        style: const TextStyle(
-                          fontSize: 16,
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.playlist.title,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            const SizedBox(
+                              height: 7,
+                            ),
+                            Visibility(
+                              visible: widget.playlist.artist!.isNotEmpty,
+                              child: Text(
+                                widget.playlist.artist!,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(context).hintColor),
+                              ),
+                            ),
+                            Visibility(
+                              visible: widget.playlist.artist!.isNotEmpty,
+                              child: const SizedBox(
+                                height: 7,
+                              ),
+                            ),
+                            (tagsList.isEmpty)
+                                ? const SizedBox.shrink()
+                                : Wrap(
+                                    runSpacing: 5,
+                                    children: List<Widget>.generate(
+                                        tagsList.length, (int index) {
+                                      return index == 0
+                                          ? Text(
+                                              tagsList[index]['name'],
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary),
+                                            )
+                                          : Text(
+                                              " • " + tagsList[index]['name'],
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary),
+                                            );
+                                    }).toList(),
+                                  ),
+                          ],
                         ),
-                        textAlign: TextAlign.left,
                       ),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      Visibility(
-                        visible: widget.playlist.artist!.isNotEmpty,
-                        child: Text(
-                          widget.playlist.artist!,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).hintColor),
-                        ),
-                      ),
-                      Visibility(
-                        visible: widget.playlist.artist!.isNotEmpty,
-                        child: const SizedBox(
-                          height: 7,
-                        ),
-                      ),
-                      (tagsList.isEmpty)
-                          ? const SizedBox.shrink()
-                          : Wrap(
-                        runSpacing: 5,
-                        children: List<Widget>.generate(
-                            tagsList.length, (int index) {
-                          return index == 0
-                              ? Text(
-                            tagsList[index]['name'],
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary),
-                          )
-                              : Text(
-                            " • " + tagsList[index]['name'],
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary),
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ],
