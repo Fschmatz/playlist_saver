@@ -47,6 +47,7 @@ ThemeData light = ThemeData(
           ),
           borderRadius: BorderRadius.circular(8.0))),
   popupMenuTheme: const PopupMenuThemeData(
+    elevation: 1,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
@@ -95,10 +96,10 @@ ThemeData dark = ThemeData(
     titleMedium: TextStyle(fontWeight: FontWeight.w400),
   ),
   brightness: Brightness.dark,
-  primaryColor: const Color(0xFF202226),
-  scaffoldBackgroundColor: const Color(0xFF202226),
+  primaryColor: const Color(0xFF1D1D22),
+  scaffoldBackgroundColor: const Color(0xFF1D1D22),
   colorScheme: const ColorScheme.dark(
-    background: Color(0xFF202226),
+    background: Color(0xFF1D1D22),
     primary: Color(0xFF8BA7DE),
     onPrimary: Color(0xFF002F65),
     secondary: Color(0xFF8BA7DE),
@@ -107,37 +108,38 @@ ThemeData dark = ThemeData(
     backgroundColor: Color(0xFF8BA7DE),
   ),
   appBarTheme: const AppBarTheme(
-    surfaceTintColor: Color(0xFF202226),
-    color: Color(0xFF202226),
+    surfaceTintColor: Color(0xFF1D1D22),
+    color: Color(0xFF1D1D22),
   ),
   cardTheme: const CardTheme(
-    color: Color(0xFF26282D),
+    color: Color(0xFF26262D),
   ),
   dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFF26282D),
+    backgroundColor: Color(0xFF26262D),
   ),
   snackBarTheme: const SnackBarThemeData(
-      backgroundColor: Color(0xFF36383F),
+      backgroundColor: Color(0xFF36363F),
       contentTextStyle: TextStyle(
         color: Color(0xFFE2E2E8),
       ),
       actionTextColor: Color(0xFF8BA7DE),
       behavior: SnackBarBehavior.floating),
   bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: Color(0xFF26282D),
+    backgroundColor: Color(0xFF26262D),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
     ),
   ),
   popupMenuTheme: const PopupMenuThemeData(
+      elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ),
-      color: Color(0xFF292B32)),
+      color: Color(0xFF303036)),
   chipTheme: const ChipThemeData(
     elevation: 0,
-    backgroundColor: Color(0xFF202226),
+    backgroundColor: Color(0xFF1D1D22),
     labelPadding: EdgeInsets.symmetric(horizontal: 16),
     labelStyle: TextStyle(
       fontSize: 14,
@@ -164,12 +166,12 @@ ThemeData dark = ThemeData(
           ),
           borderRadius: BorderRadius.circular(8.0))),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFF26282D),
+    backgroundColor: Color(0xFF26262D),
   ),
-  bottomAppBarColor: const Color(0xFF26282D),
+  bottomAppBarColor: const Color(0xFF26262D),
   navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFF26282D),
-      indicatorColor: const Color(0xFF3D5280),
+      backgroundColor: const Color(0xFF26262D),
+      indicatorColor: const Color(0xFF445A8C),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFFE2E2E8),
       )),

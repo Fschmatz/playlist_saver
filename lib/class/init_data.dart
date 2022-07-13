@@ -6,7 +6,7 @@ class InitData {
 
    InitData(this.sharedText, this.routeName);
 
-   // test saving the last link
+   //test saving the last link
    final String key = 'lastSavedLink';
    SharedPreferences? prefs;
 
@@ -14,9 +14,9 @@ class InitData {
      prefs ??= await SharedPreferences.getInstance();
    }
 
-   loadFromPrefs() async {
+   Future<String> loadFromPrefs() async {
      await _initPrefs();
-     return prefs!.getString(key) ?? '';
+     return prefs!.getString(key) ?? 'empty';
    }
 
    saveToPrefs(String link) async {

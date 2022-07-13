@@ -83,7 +83,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                 children: <Widget>[
                   ListTile(
                     title: Text(
-                      "${widget.playlist.title}\n${widget.playlist.artist!}",
+                      widget.playlist.title,
                       textAlign: TextAlign.center,
                     ),
                   ),

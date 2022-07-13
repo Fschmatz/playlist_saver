@@ -18,17 +18,20 @@ Future<InitData> init() async {
   String routeName = homeRoute;
   final handler = ShareHandlerPlatform.instance;
 
-  InitData loadInitData = InitData('', '');
-  String? lastSave = await loadInitData.loadFromPrefs();
-
   //app not in memory
   SharedMedia? sharedValue = await handler.getInitialSharedMedia();
 
-  if (sharedValue != null && sharedValue.content != lastSave) {
-    sharedText = sharedValue.content!;
-    routeName = showDataRoute;
-    handler.resetInitialSharedMedia();
+  if (sharedValue != null) {
+    InitData loadInitData = InitData('', '');
+    String lastSave = await loadInitData.loadFromPrefs();
+
+    if(sharedValue.content != lastSave){
+      sharedText = sharedValue.content!;
+      routeName = showDataRoute;
+    }
   }
+
+  handler.resetInitialSharedMedia();
   return InitData(sharedText, routeName);
 }
 
@@ -58,7 +61,7 @@ class StartAppRoutes extends StatefulWidget {
 }
 
 class _StartAppRoutesState extends State<StartAppRoutes> {
-  GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
   SharedMedia? media;
 
   @override
@@ -78,6 +81,7 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
         showDataRoute,
         arguments: ShowDataArgument(media.content.toString()),
       );
+      handler.resetInitialSharedMedia();
     });
   }
 

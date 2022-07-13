@@ -246,7 +246,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
                             color:
                                 selectedTags.contains(tagsList[index]['id_tag'])
                                     ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context).textTheme.headline6!.color),
+                                    : Theme.of(context).textTheme.headline6!.color!.withOpacity(0.9)),
                       );
                     }).toList(),
                   ),
