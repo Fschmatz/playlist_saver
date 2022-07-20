@@ -274,7 +274,7 @@ packages:
       name: share_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.12"
+    version: "0.0.16"
   share_handler_android:
     dependency: transitive
     description:
@@ -288,7 +288,7 @@ packages:
       name: share_handler_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.7"
+    version: "0.0.9"
   share_handler_platform_interface:
     dependency: transitive
     description:

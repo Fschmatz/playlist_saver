@@ -96,10 +96,10 @@ ThemeData dark = ThemeData(
     titleMedium: TextStyle(fontWeight: FontWeight.w400),
   ),
   brightness: Brightness.dark,
-  primaryColor: const Color(0xFF1D1D22),
-  scaffoldBackgroundColor: const Color(0xFF1D1D22),
+  primaryColor: const Color(0xFF1B1B1F),
+  scaffoldBackgroundColor: const Color(0xFF1B1B1F),
   colorScheme: const ColorScheme.dark(
-    background: Color(0xFF1D1D22),
+    background: Color(0xFF1B1B1F),
     primary: Color(0xFF8BA7DE),
     onPrimary: Color(0xFF002F65),
     secondary: Color(0xFF8BA7DE),
@@ -108,8 +108,8 @@ ThemeData dark = ThemeData(
     backgroundColor: Color(0xFF8BA7DE),
   ),
   appBarTheme: const AppBarTheme(
-    surfaceTintColor: Color(0xFF1D1D22),
-    color: Color(0xFF1D1D22),
+    surfaceTintColor: Color(0xFF1B1B1F),
+    color: Color(0xFF1B1B1F),
   ),
   cardTheme: const CardTheme(
     color: Color(0xFF26262D),
@@ -139,7 +139,7 @@ ThemeData dark = ThemeData(
       color: Color(0xFF303036)),
   chipTheme: const ChipThemeData(
     elevation: 0,
-    backgroundColor: Color(0xFF1D1D22),
+    backgroundColor: Color(0xFF1B1B1F),
     labelPadding: EdgeInsets.symmetric(horizontal: 16),
     labelStyle: TextStyle(
       fontSize: 14,

@@ -69,65 +69,82 @@ class _TagsManagerState extends State<TagsManager> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Manage Tags"),
-        actions: [
+        /*actions: [
           IconButton(
             icon: const Icon(
               Icons.add_outlined,
             ),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => const NewTag(),
-                  )).then((value) => getTags());
+
             },
+          ),
+        ],*/
+      ),
+      body: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),//NeverScrollableScrollPhysics
+        children: [
+          ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            separatorBuilder: (BuildContext context, int index) => const Divider(height: 5,),
+            shrinkWrap: true,
+            itemCount: _tagsList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                contentPadding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                title: Text(_tagsList[index]['name']),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                        icon: const Icon(
+                          Icons.delete_outlined,
+                        ),
+                        onPressed: () {
+                          showAlertDialogOkDelete(
+                              context, _tagsList[index]['id_tag']);
+                        }),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    IconButton(
+                        icon: const Icon(
+                          Icons.edit_outlined,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => EditTag(
+                                  tag: Tag(
+                                    _tagsList[index]['id_tag'],
+                                    _tagsList[index]['name'],
+                                  ),
+                                ),
+                              )).then((value) => getTags());
+                        }),
+                  ],
+                ),
+              );
+            },
+          ),
+          const SizedBox(
+            height: 100,
           ),
         ],
       ),
-      body: ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => const Divider(height: 5,),
-        shrinkWrap: true,
-        itemCount: _tagsList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            contentPadding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            title: Text(_tagsList[index]['name']),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                    icon: const Icon(
-                      Icons.delete_outlined,
-                      size: 20,
-                    ),
-                    onPressed: () {
-                      showAlertDialogOkDelete(
-                          context, _tagsList[index]['id_tag']);
-                    }),
-                const SizedBox(
-                  width: 20,
-                ),
-                IconButton(
-                    icon: const Icon(
-                      Icons.edit_outlined,
-                      size: 20,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => EditTag(
-                              tag: Tag(
-                                _tagsList[index]['id_tag'],
-                                _tagsList[index]['name'],
-                              ),
-                            ),
-                          )).then((value) => getTags());
-                    }),
-              ],
-            ),
-          );
+      floatingActionButton: FloatingActionButton(
+        heroTag: null,
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => const NewTag(),
+              )).then((value) => getTags());
         },
+        child: Icon(
+          Icons.add_outlined,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
       ),
     );
   }

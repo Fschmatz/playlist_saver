@@ -32,7 +32,8 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
       formattedList += "\n• " + _listPlaylistsListen[i]['title'] + "\n";
       formattedList += _listPlaylistsListen[i]['link'] + "\n";
     }
-    formattedList += '\n\nARCHIVE - ' +
+    formattedList += '\n********************\n\n';
+    formattedList += 'ARCHIVE - ' +
         _listPlaylistArchive.length.toString() +
         ' Playlists\n';
     for (int i = 0; i < _listPlaylistArchive.length; i++) {
