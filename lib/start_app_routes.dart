@@ -1,15 +1,12 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:playlist_saver/share/share_save_playlist.dart';
 import 'package:playlist_saver/util/theme.dart';
 import 'package:share_handler/share_handler.dart';
-
 import 'app.dart';
 import 'class/init_data.dart';
 import 'class/show_data_argument.dart';
 import 'main.dart';
-
 
 class StartAppRoutes extends StatefulWidget {
   StartAppRoutes({Key? key, required this.initData}) : super(key: key);
@@ -36,12 +33,12 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
     media = await handler.getInitialSharedMedia();
 
     handler.sharedMediaStream.listen((SharedMedia media) {
-      if (!mounted) return;
+      //if (!mounted) return;
       _navKey.currentState!.pushNamed(
         showDataRoute,
         arguments: ShowDataArgument(media.content.toString()),
       );
-      //handler.resetInitialSharedMedia();
+      handler.resetInitialSharedMedia();
     });
   }
 
@@ -60,24 +57,18 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
           case showDataRoute:
             {
               if (settings.arguments != null) {
-
                 final args = settings.arguments as ShowDataArgument;
-                Clipboard.setData(ClipboardData(text: args.sharedText));
-
                 return MaterialPageRoute(
                     builder: (_) => ShareSavePlaylist(
-                      sharedText: args.sharedText,
-                      outsideMemory: false,
-                    ));
+                          sharedText: args.sharedText,
+                          outsideMemory: false,
+                        ));
               } else {
-
-                Clipboard.setData(ClipboardData(text: widget.initData.sharedText));
-
                 return MaterialPageRoute(
                     builder: (_) => ShareSavePlaylist(
-                      sharedText: widget.initData.sharedText,
-                      outsideMemory: true,
-                    ));
+                          sharedText: widget.initData.sharedText,
+                          outsideMemory: true,
+                        ));
               }
             }
         }
@@ -87,4 +78,3 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
     );
   }
 }
-

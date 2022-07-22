@@ -81,7 +81,7 @@ class _TagsManagerState extends State<TagsManager> {
         ],*/
       ),
       body: ListView(
-        physics: const AlwaysScrollableScrollPhysics(),//NeverScrollableScrollPhysics
+        physics: const AlwaysScrollableScrollPhysics(),
         children: [
           ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
