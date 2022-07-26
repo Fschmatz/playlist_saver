@@ -18,9 +18,8 @@ class ShareSavePlaylist extends StatefulWidget {
   _ShareSavePlaylistState createState() => _ShareSavePlaylistState();
 
   String? sharedText = "";
-  bool outsideMemory;
 
-  ShareSavePlaylist({Key? key, this.sharedText, required this.outsideMemory})
+  ShareSavePlaylist({Key? key, this.sharedText})
       : super(key: key);
 }
 
@@ -164,19 +163,11 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                     _fetchMetadata();
                   },
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
                 IconButton(
                   icon: const Icon(Icons.save_outlined),
                   tooltip: 'Save',
                   onPressed: () {
                     if (validateTextFields()) {
-                      if (widget.outsideMemory) {
-                        //save the last link who came from outside
-                        InitData initData = InitData('', '');
-                        initData.saveToPrefs(widget.sharedText!);
-                      }
                       _savePlaylist().then((v) => {
                             Navigator.pushAndRemoveUntil(
                                 context,

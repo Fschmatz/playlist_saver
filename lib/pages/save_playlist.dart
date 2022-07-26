@@ -138,9 +138,6 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 _fetchMetadata();
               },
             ),
-            const SizedBox(
-              width: 10,
-            ),
             IconButton(
               icon: const Icon(Icons.save_outlined),
               tooltip: 'Save',

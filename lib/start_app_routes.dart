@@ -1,5 +1,6 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:playlist_saver/share/share_save_playlist.dart';
 import 'package:playlist_saver/util/theme.dart';
 import 'package:share_handler/share_handler.dart';
@@ -33,13 +34,15 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
     media = await handler.getInitialSharedMedia();
 
     handler.sharedMediaStream.listen((SharedMedia media) {
-      //if (!mounted) return;
+      if (!mounted) return;
       _navKey.currentState!.pushNamed(
         showDataRoute,
         arguments: ShowDataArgument(media.content.toString()),
       );
-      handler.resetInitialSharedMedia();
+      //add to clipboard
+      Clipboard.setData(ClipboardData(text: media.content.toString()));
     });
+    if (!mounted) return;
   }
 
   @override
@@ -60,15 +63,16 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
                 final args = settings.arguments as ShowDataArgument;
                 return MaterialPageRoute(
                     builder: (_) => ShareSavePlaylist(
-                          sharedText: args.sharedText,
-                          outsideMemory: false,
-                        ));
+                      key: UniqueKey(),
+                      sharedText: args.sharedText,
+                    ));
               } else {
+                //Outside memory route
                 return MaterialPageRoute(
                     builder: (_) => ShareSavePlaylist(
-                          sharedText: widget.initData.sharedText,
-                          outsideMemory: true,
-                        ));
+                      key: UniqueKey(),
+                      sharedText: widget.initData.sharedText,
+                    ));
               }
             }
         }
@@ -78,3 +82,4 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
     );
   }
 }
+

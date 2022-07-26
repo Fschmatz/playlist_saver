@@ -17,27 +17,22 @@ Future<InitData> init() async {
   SharedMedia? sharedValue = await handler.getInitialSharedMedia();
 
   if (sharedValue != null) {
-    InitData loadInitData = InitData('', '');
-    String lastSave = await loadInitData.loadFromPrefs();
-
-    if(sharedValue.content.toString() != lastSave){
-      sharedText = sharedValue.content!;
-      routeName = showDataRoute;
-    }
+    sharedText = sharedValue.content!;
+    routeName = showDataRoute;
+    handler.resetInitialSharedMedia();
   }
 
-  //handler.resetInitialSharedMedia();
   return InitData(sharedText, routeName);
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //app not in memory
-  InitData initData = await init();
-
   final dbCreator = DbCreator.instance;
   dbCreator.initDatabase();
+
+  //app not in memory
+  InitData initData = await init();
 
   runApp(
     EasyDynamicThemeWidget(
