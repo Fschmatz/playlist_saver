@@ -52,42 +52,46 @@ class _HomeState extends State<Home> {
                 floating: true,
                 snap: true,
                 actions: [
-                  PopupMenuButton<int>(
-                      icon: const Icon(Icons.more_vert_outlined),
-                      itemBuilder: (BuildContext context) =>
-                      <PopupMenuItem<int>>[
-                        const PopupMenuItem<int>(
-                            value: 0, child: Text('Add playlist')),
-                        const PopupMenuItem<int>(
-                            value: 1, child: Text('Manage tags')),
-                        const PopupMenuItem<int>(
-                            value: 2, child: Text('Settings')),
-                      ],
-                      onSelected: (int value) {
-                        if (value == 0) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => SavePlaylist(
-                                  refreshHome: refresh,
-                                ),
-                              ));
-                        } else if (value == 1) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                const TagsManager(),
-                              )).then((value) => refresh());
-                        } else if (value == 2) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                const SettingsPage(),
-                              ));
-                        }
-                      })
+                  //Bug -> popup is not respecting M3
+                  Theme(
+                    data: Theme.of(context).copyWith(useMaterial3: false),
+                    child: PopupMenuButton<int>(
+                        icon: const Icon(Icons.more_vert_outlined),
+                        itemBuilder: (BuildContext context) =>
+                        <PopupMenuItem<int>>[
+                          const PopupMenuItem<int>(
+                              value: 0, child: Text('Add playlist')),
+                          const PopupMenuItem<int>(
+                              value: 1, child: Text('Manage tags')),
+                          const PopupMenuItem<int>(
+                              value: 2, child: Text('Settings')),
+                        ],
+                        onSelected: (int value) {
+                          if (value == 0) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => SavePlaylist(
+                                    refreshHome: refresh,
+                                  ),
+                                ));
+                          } else if (value == 1) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                  const TagsManager(),
+                                )).then((value) => refresh());
+                          } else if (value == 2) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                  const SettingsPage(),
+                                ));
+                          }
+                        }),
+                  )
                 ],
               ),
             ];

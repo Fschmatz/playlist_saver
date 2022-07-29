@@ -11,6 +11,7 @@ import 'package:web_scraper/web_scraper.dart';
 import '../app.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
+import '../start_app_routes.dart';
 import '../util/utils_functions.dart';
 
 class ShareSavePlaylist extends StatefulWidget {
@@ -173,7 +174,9 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        const App()),
+                                         StartAppRoutes(
+                                          initData: InitData("", "home"),
+                                        )),
                                 (route) => false)
                           });
                     } else {

@@ -47,7 +47,6 @@ ThemeData light = ThemeData(
           ),
           borderRadius: BorderRadius.circular(8.0))),
   popupMenuTheme: const PopupMenuThemeData(
-    elevation: 1,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
@@ -100,39 +99,38 @@ ThemeData dark = ThemeData(
   scaffoldBackgroundColor: const Color(0xFF1B1B1D),
   colorScheme: const ColorScheme.dark(
     background: Color(0xFF1B1B1D),
-    primary: Color(0xFF8BA7DE),
+    primary: Color(0xFF8DACE7),
     onPrimary: Color(0xFF002F65),
-    secondary: Color(0xFF8BA7DE),
+    secondary: Color(0xFF8DACE7),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: Color(0xFF8BA7DE),
+    backgroundColor: Color(0xFF8DACE7),
   ),
   appBarTheme: const AppBarTheme(
     surfaceTintColor: Color(0xFF1B1B1D),
     color: Color(0xFF1B1B1D),
   ),
   cardTheme: const CardTheme(
-    color: Color(0xFF26262D),
+    color: Color(0xFF27262F),
   ),
   dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFF26262D),
+    backgroundColor: Color(0xFF27262F),
   ),
   snackBarTheme: const SnackBarThemeData(
       backgroundColor: Color(0xFF36363F),
       contentTextStyle: TextStyle(
-        color: Color(0xFFE2E2E8),
+        color: Color(0xFFE2E2E9),
       ),
-      actionTextColor: Color(0xFF8BA7DE),
+      actionTextColor: Color(0xFF8DACE7),
       behavior: SnackBarBehavior.floating),
   bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: Color(0xFF26262D),
+    backgroundColor: Color(0xFF27262F),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
     ),
   ),
   popupMenuTheme: const PopupMenuThemeData(
-      elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ),
@@ -147,11 +145,11 @@ ThemeData dark = ThemeData(
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
-      fillColor: const Color(0xFF8BA7DE),
-      focusColor: const Color(0xFF8BA7DE),
+      fillColor: const Color(0xFF8DACE7),
+      focusColor: const Color(0xFF8DACE7),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: Color(0xFF8BA7DE),
+          color: Color(0xFF8DACE7),
         ),
         borderRadius: BorderRadius.circular(8.0),
       ),
@@ -166,15 +164,15 @@ ThemeData dark = ThemeData(
           ),
           borderRadius: BorderRadius.circular(8.0))),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFF26262D),
+    backgroundColor: Color(0xFF27262F),
   ),
-  bottomAppBarColor: const Color(0xFF26262D),
+  bottomAppBarColor: const Color(0xFF27262F),
   navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFF26262D),
+      backgroundColor: const Color(0xFF27262F),
       indicatorColor: const Color(0xFF445A8C),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
-        color: Color(0xFFE2E2E8),
+        color: Color(0xFFE2E2E9),
       )),
       labelTextStyle: MaterialStateProperty.all(const TextStyle(
-          color: Color(0xFFE2E2E8), fontWeight: FontWeight.w500))),
+          color: Color(0xFFE2E2E9), fontWeight: FontWeight.w500))),
 );

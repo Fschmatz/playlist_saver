@@ -74,9 +74,7 @@ class _TagsManagerState extends State<TagsManager> {
             icon: const Icon(
               Icons.add_outlined,
             ),
-            onPressed: () {
-
-            },
+            onPressed: () {},
           ),
         ],*/
       ),
