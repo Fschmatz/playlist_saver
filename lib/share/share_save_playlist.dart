@@ -11,6 +11,7 @@ import 'package:web_scraper/web_scraper.dart';
 import '../app.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
+import '../main.dart';
 import '../start_app_routes.dart';
 import '../util/utils_functions.dart';
 
@@ -175,7 +176,7 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                          StartAppRoutes(
-                                          initData: InitData("", "home"),
+                                          initData: InitData("", homeRoute),
                                         )),
                                 (route) => false)
                           });

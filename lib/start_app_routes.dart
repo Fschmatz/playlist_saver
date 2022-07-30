@@ -1,5 +1,6 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:playlist_saver/share/share_save_playlist.dart';
 import 'package:playlist_saver/util/theme.dart';
 import 'package:share_handler/share_handler.dart';
@@ -33,13 +34,11 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
     media = await handler.getInitialSharedMedia();
 
     handler.sharedMediaStream.listen((SharedMedia media) {
-      if (!mounted) return;
       _navKey.currentState!.pushNamed(
         showDataRoute,
         arguments: ShowDataArgument(media.content!),
       );
     });
-    if (!mounted) return;
   }
 
   @override
@@ -50,35 +49,28 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
       theme: light,
       darkTheme: dark,
       themeMode: EasyDynamicTheme.of(context).themeMode,
-      onGenerateRoute: (RouteSettings settings) {
-        switch (settings.name) {
+      onGenerateRoute: (RouteSettings routeSettings) {
+        switch (routeSettings.name) {
           case homeRoute:
             return MaterialPageRoute(builder: (_) => const App());
+
           case showDataRoute:
-            {
-              if (settings.arguments != null) {
-                final args = settings.arguments as ShowDataArgument;
-                return MaterialPageRoute(
-                    builder: (_) => ShareSavePlaylist(
-                      key: UniqueKey(),
-                      sharedText: args.sharedText,
-                    ));
-              } else {
-
-                //Outside memory route
-                return MaterialPageRoute(
-                    builder: (_) => ShareSavePlaylist(
-                      key: UniqueKey(),
-                      sharedText: widget.initData.sharedText,
-
-                    ));
-              }
+            if (routeSettings.arguments != null) {
+              final args = routeSettings.arguments as ShowDataArgument;
+              return MaterialPageRoute(
+                  builder: (_) => ShareSavePlaylist(
+                        sharedText: args.sharedText,
+                      ));
+            } else {
+              //Outside memory route
+              return MaterialPageRoute(
+                  builder: (_) => ShareSavePlaylist(
+                        sharedText: widget.initData.sharedText,
+                      ));
             }
         }
-        return MaterialPageRoute(builder: (_) => const App());
       },
       initialRoute: widget.initData.routeName,
     );
   }
 }
-
