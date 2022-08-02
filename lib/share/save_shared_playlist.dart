@@ -8,24 +8,22 @@ import 'package:playlist_saver/class/init_data.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
-import '../app.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
 import '../main.dart';
 import '../start_app_routes.dart';
 import '../util/utils_functions.dart';
 
-class ShareSavePlaylist extends StatefulWidget {
+class SaveSharedPlaylist extends StatefulWidget {
   @override
-  _ShareSavePlaylistState createState() => _ShareSavePlaylistState();
+  _SaveSharedPlaylistState createState() => _SaveSharedPlaylistState();
 
   String? sharedText = "";
 
-  ShareSavePlaylist({Key? key, this.sharedText})
-      : super(key: key);
+  SaveSharedPlaylist({Key? key, this.sharedText}) : super(key: key);
 }
 
-class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
+class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
   TextEditingController controllerPlaylistTitle = TextEditingController();
   TextEditingController controllerArtist = TextEditingController();
   TextEditingController controllerTags = TextEditingController();
@@ -171,14 +169,10 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                   onPressed: () {
                     if (validateTextFields()) {
                       _savePlaylist().then((v) => {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                         StartAppRoutes(
-                                          initData: InitData("", homeRoute),
-                                        )),
-                                (route) => false)
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/',
+                              (route) => false,
+                            )
                           });
                     } else {
                       setState(() {
@@ -348,7 +342,11 @@ class _ShareSavePlaylistState extends State<ShareSavePlaylist> {
                                 color: selectedTags
                                         .contains(tagsList[index]['id_tag'])
                                     ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context).textTheme.headline6!.color!.withOpacity(0.9)),
+                                    : Theme.of(context)
+                                        .textTheme
+                                        .headline6!
+                                        .color!
+                                        .withOpacity(0.9)),
                           );
                         }).toList(),
                       ),

@@ -6,8 +6,8 @@ import 'package:share_handler/share_handler.dart';
 import 'class/init_data.dart';
 import 'db/db_creator.dart';
 
-const String homeRoute = "home";
-const String showDataRoute = "showData";
+const String homeRoute = "/";
+const String saveShareRoute = "/saveShare";
 
 Future<InitData> init() async {
   String sharedText = "";
@@ -18,7 +18,7 @@ Future<InitData> init() async {
 
   if (sharedValue != null) {
     sharedText = sharedValue.content!;
-    routeName = showDataRoute;
+    routeName = saveShareRoute;
     handler.resetInitialSharedMedia();
   }
 

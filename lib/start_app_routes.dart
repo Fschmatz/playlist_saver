@@ -1,7 +1,7 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:playlist_saver/share/share_save_playlist.dart';
+import 'package:playlist_saver/share/save_shared_playlist.dart';
 import 'package:playlist_saver/util/theme.dart';
 import 'package:share_handler/share_handler.dart';
 import 'app.dart';
@@ -35,7 +35,7 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
 
     handler.sharedMediaStream.listen((SharedMedia media) {
       _navKey.currentState!.pushNamed(
-        showDataRoute,
+        saveShareRoute,
         arguments: ShowDataArgument(media.content!),
       );
     });
@@ -51,20 +51,21 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
       themeMode: EasyDynamicTheme.of(context).themeMode,
       onGenerateRoute: (RouteSettings routeSettings) {
         switch (routeSettings.name) {
-          case homeRoute:
-            return MaterialPageRoute(builder: (_) => const App());
 
-          case showDataRoute:
+          case "/":
+            return MaterialPageRoute(builder: (context) => const App());
+
+          case "/saveShare":
             if (routeSettings.arguments != null) {
               final args = routeSettings.arguments as ShowDataArgument;
               return MaterialPageRoute(
-                  builder: (_) => ShareSavePlaylist(
+                  builder: (context) => SaveSharedPlaylist(
                         sharedText: args.sharedText,
                       ));
             } else {
               //Outside memory route
               return MaterialPageRoute(
-                  builder: (_) => ShareSavePlaylist(
+                  builder: (_) => SaveSharedPlaylist(
                         sharedText: widget.initData.sharedText,
                       ));
             }
