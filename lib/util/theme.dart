@@ -99,12 +99,12 @@ ThemeData dark = ThemeData(
   scaffoldBackgroundColor: const Color(0xFF1B1B1D),
   colorScheme: const ColorScheme.dark(
     background: Color(0xFF1B1B1D),
-    primary: Color(0xFF97B8F6),
+    primary: Color(0xFF9AB9F5),
     onPrimary: Color(0xFF002F65),
-    secondary: Color(0xFF97B8F6),
+    secondary: Color(0xFF9AB9F5),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: Color(0xFF97B8F6),
+    backgroundColor: Color(0xFF9AB9F5),
   ),
   appBarTheme: const AppBarTheme(
     surfaceTintColor: Color(0xFF1B1B1D),
@@ -121,7 +121,7 @@ ThemeData dark = ThemeData(
       contentTextStyle: TextStyle(
         color: Color(0xFFE2E2E9),
       ),
-      actionTextColor: Color(0xFF97B8F6),
+      actionTextColor: Color(0xFF9AB9F5),
       behavior: SnackBarBehavior.floating),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFF272630),
@@ -145,11 +145,11 @@ ThemeData dark = ThemeData(
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
-      fillColor: const Color(0xFF97B8F6),
-      focusColor: const Color(0xFF97B8F6),
+      fillColor: const Color(0xFF9AB9F5),
+      focusColor: const Color(0xFF9AB9F5),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: Color(0xFF97B8F6),
+          color: Color(0xFF9AB9F5),
         ),
         borderRadius: BorderRadius.circular(8.0),
       ),

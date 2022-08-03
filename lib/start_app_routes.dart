@@ -31,7 +31,6 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
   //app in memory
   Future<void> initPlatformState() async {
     final handler = ShareHandlerPlatform.instance;
-    media = await handler.getInitialSharedMedia();
 
     handler.sharedMediaStream.listen((SharedMedia media) {
       _navKey.currentState!.pushNamed(
