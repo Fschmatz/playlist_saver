@@ -13,7 +13,6 @@ Future<InitData> init() async {
   String sharedText = "";
   String routeName = homeRoute;
   final handler = ShareHandlerPlatform.instance;
-
   SharedMedia? sharedValue = await handler.getInitialSharedMedia();
 
   if (sharedValue != null) {

@@ -6,12 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/class/init_data.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
+import 'package:playlist_saver/start_app_routes.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
-import '../main.dart';
-import '../start_app_routes.dart';
 import '../util/utils_functions.dart';
 
 class SaveSharedPlaylist extends StatefulWidget {
@@ -168,12 +167,7 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
                   tooltip: 'Save',
                   onPressed: () {
                     if (validateTextFields()) {
-                      _savePlaylist().then((v) => {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/',
-                              (route) => false,
-                            )
-                          });
+                      _savePlaylist().then((_) => {SystemNavigator.pop()});
                     } else {
                       setState(() {
                         _validLink;

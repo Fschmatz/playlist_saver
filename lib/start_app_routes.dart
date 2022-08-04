@@ -50,7 +50,6 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
       themeMode: EasyDynamicTheme.of(context).themeMode,
       onGenerateRoute: (RouteSettings routeSettings) {
         switch (routeSettings.name) {
-
           case "/":
             return MaterialPageRoute(builder: (context) => const App());
 
