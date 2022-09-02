@@ -1,10 +1,6 @@
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
-import 'package:spotify_metadata/spotify_metadata.dart';
 import '../class/playlist.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';

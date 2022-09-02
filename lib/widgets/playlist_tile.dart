@@ -34,8 +34,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
 
   @override
   void initState() {
-    getTags();
     super.initState();
+    getTags();
   }
 
   void getTags() async {
@@ -242,7 +242,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                               textAlign: TextAlign.left,
                             ),
                             const SizedBox(
-                              height: 7,
+                              height: 3,
                             ),
                             Visibility(
                               visible: widget.playlist.artist!.isNotEmpty,
@@ -256,7 +256,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                             Visibility(
                               visible: widget.playlist.artist!.isNotEmpty,
                               child: const SizedBox(
-                                height: 7,
+                                height: 3,
                               ),
                             ),
                             (tagsList.isEmpty)

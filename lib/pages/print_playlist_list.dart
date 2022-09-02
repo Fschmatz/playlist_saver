@@ -16,8 +16,8 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
 
   @override
   void initState() {
-    getPlaylists();
     super.initState();
+    getPlaylists();
   }
 
   void getPlaylists() async {

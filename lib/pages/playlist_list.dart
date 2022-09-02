@@ -21,8 +21,8 @@ class _PlaylistListState extends State<PlaylistList> {
 
   @override
   void initState() {
-    getPlaylists();
     super.initState();
+    getPlaylists();
   }
 
   void getPlaylists() async {

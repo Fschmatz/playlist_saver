@@ -4,9 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:playlist_saver/class/init_data.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
-import 'package:playlist_saver/start_app_routes.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
 import '../db/playlists_tags_dao.dart';
@@ -39,10 +37,10 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
 
   @override
   void initState() {
+    super.initState();
     controllerLink.text = widget.sharedText!;
     getAllTags();
     _fetchMetadata();
-    super.initState();
   }
 
   Future<void> getAllTags() async {
@@ -54,7 +52,16 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
   }
 
   void _fetchMetadata() async {
-    String artistName = await parseArtistName();
+
+    String artistName = "";
+    try {
+      artistName = await parseArtistName();
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Error parsing artist name",
+      );
+    }
+
     try {
       metaData = await SpotifyApi.getData(controllerLink.text);
     } catch (e) {
@@ -76,9 +83,10 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
       List<Map<String, dynamic>> elements =
-          webScraper.getElement('head > meta:nth-child(6)', ['content']);
+      webScraper.getElement('head > meta:nth-child(18)', ['content']);
       List<String> artistDataElement =
-          elements[0]['attributes']['content'].toString().split('·');
+      elements[0]['attributes']['content'].toString().split('·');
+
       return artistDataElement[0].trim();
     } else {
       return '';

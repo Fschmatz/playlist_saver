@@ -13,6 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
   int _currentTabIndex = 0;
   List<Widget> _tabs = [
     PlaylistList(

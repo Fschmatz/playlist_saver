@@ -50,7 +50,15 @@ class _SavePlaylistState extends State<SavePlaylist> {
   }
 
   void _fetchMetadata() async {
-    String artistName = await parseArtistName();
+    String artistName = "";
+    try {
+      artistName = await parseArtistName();
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Error parsing artist name",
+      );
+    }
+
     try {
       metaData = await SpotifyApi.getData(controllerLink.text);
     } catch (e) {
@@ -70,14 +78,16 @@ class _SavePlaylistState extends State<SavePlaylist> {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
       List<Map<String, dynamic>> elements =
-          webScraper.getElement('head > meta:nth-child(6)', ['content']);
+      webScraper.getElement('head > meta:nth-child(18)', ['content']);
       List<String> artistDataElement =
-          elements[0]['attributes']['content'].toString().split('·');
+      elements[0]['attributes']['content'].toString().split('·');
+
       return artistDataElement[0].trim();
     } else {
       return '';
     }
   }
+
 
   Future<void> _savePlaylist() async {
     final dbPlaylist = PlaylistDao.instance;
