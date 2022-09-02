@@ -69,14 +69,6 @@ class _TagsManagerState extends State<TagsManager> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Manage Tags"),
-        /*actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.add_outlined,
-            ),
-            onPressed: () {},
-          ),
-        ],*/
       ),
       body: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -96,6 +88,7 @@ class _TagsManagerState extends State<TagsManager> {
                     IconButton(
                         icon: const Icon(
                           Icons.delete_outlined,
+                          size: 20,
                         ),
                         onPressed: () {
                           showAlertDialogOkDelete(
@@ -107,6 +100,7 @@ class _TagsManagerState extends State<TagsManager> {
                     IconButton(
                         icon: const Icon(
                           Icons.edit_outlined,
+                          size: 20,
                         ),
                         onPressed: () {
                           Navigator.push(

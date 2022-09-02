@@ -224,9 +224,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                           ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+
                 (loadingTags)
                     ? const SizedBox.shrink()
                     : Expanded(
@@ -241,22 +239,20 @@ class _PlaylistTileState extends State<PlaylistTile> {
                               ),
                               textAlign: TextAlign.left,
                             ),
-                            const SizedBox(
-                              height: 3,
-                            ),
                             Visibility(
                               visible: widget.playlist.artist!.isNotEmpty,
                               child: Text(
                                 widget.playlist.artist!,
                                 style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
                                     color: Theme.of(context).hintColor),
                               ),
                             ),
                             Visibility(
                               visible: widget.playlist.artist!.isNotEmpty,
                               child: const SizedBox(
-                                height: 3,
+                                height: 0,
                               ),
                             ),
                             (tagsList.isEmpty)

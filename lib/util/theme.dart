@@ -25,8 +25,8 @@ ThemeData light = ThemeData(
     color: Color(0xFFFDFBFF),
   ),
   cardTheme: const CardTheme(
-    surfaceTintColor: Color(0xFFFCFCFC),
-    color: Color(0xFFFFFFFF),
+    surfaceTintColor: Color(0xFFFAFCFC),
+    color: Color(0xFFFAFCFC),
   ),
   inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFFFDFBFF),
