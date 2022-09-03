@@ -52,7 +52,6 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
   }
 
   void _fetchMetadata() async {
-
     String artistName = "";
     try {
       artistName = await parseArtistName();
@@ -83,9 +82,9 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
       List<Map<String, dynamic>> elements =
-      webScraper.getElement('head > meta:nth-child(18)', ['content']);
+          webScraper.getElement('head > meta:nth-child(18)', ['content']);
       List<String> artistDataElement =
-      elements[0]['attributes']['content'].toString().split('·');
+          elements[0]['attributes']['content'].toString().split('·');
 
       return artistDataElement[0].trim();
     } else {
@@ -295,7 +294,6 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
                             List<Widget>.generate(tagsList.length, (int index) {
                           return FilterChip(
                             key: UniqueKey(),
-                            selected: false,
                             onSelected: (bool selected) {
                               if (selectedTags
                                   .contains(tagsList[index]['id_tag'])) {
@@ -305,28 +303,26 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
                               }
                               setState(() {});
                             },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                side: BorderSide(
-                                    color: selectedTags
-                                            .contains(tagsList[index]['id_tag'])
-                                        ? tagTextBrightness == Brightness.dark
-                                            ? darkenColor(
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                65)
-                                            : lightenColor(
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                70)
-                                        : Theme.of(context)
-                                            .inputDecorationTheme
-                                            .border!
-                                            .borderSide
-                                            .color
-                                            .withOpacity(0.3))),
+                            side: BorderSide(
+                                color: selectedTags
+                                        .contains(tagsList[index]['id_tag'])
+                                    ? tagTextBrightness == Brightness.dark
+                                        ? darkenColor(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            65)
+                                        : lightenColor(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            70)
+                                    : Theme.of(context)
+                                        .inputDecorationTheme
+                                        .border!
+                                        .borderSide
+                                        .color
+                                        .withOpacity(0.3)),
                             label: Text(
                               tagsList[index]['name'],
                             ),

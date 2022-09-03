@@ -13,6 +13,7 @@ ThemeData light = ThemeData(
     primary: Color(0xFF3A77D9),
     onPrimary: Color(0xFFFFFFFF),
     secondary: Color(0xFF3A77D9),
+    outline: Color(0xFF74777F),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Color(0xFF3A77D9),
@@ -82,6 +83,7 @@ ThemeData light = ThemeData(
   bottomAppBarColor: const Color(0xFFE1E2EC),
   navigationBarTheme: NavigationBarThemeData(
       backgroundColor: const Color(0xFFE1E2EC),
+      surfaceTintColor: const Color(0xFFE1E2EC),
       indicatorColor: const Color(0xFFB5C0DC),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFF050505),
@@ -103,6 +105,7 @@ ThemeData dark = ThemeData(
     primary: Color(0xFFA4C2FD),
     onPrimary: Color(0xFF002F65),
     secondary: Color(0xFFA4C2FD),
+    outline: Color(0xFF8D9099),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Color(0xFFA4C2FD),
@@ -171,6 +174,7 @@ ThemeData dark = ThemeData(
   bottomAppBarColor: const Color(0xFF28282F),
   navigationBarTheme: NavigationBarThemeData(
       backgroundColor: const Color(0xFF28282F),
+      surfaceTintColor: const Color(0xFF28282F),
       indicatorColor: const Color(0xFF424A67),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFFE2E2EF),

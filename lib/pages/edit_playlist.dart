@@ -195,7 +195,6 @@ class _EditPlaylistState extends State<EditPlaylist> {
                         List<Widget>.generate(tagsList.length, (int index) {
                       return FilterChip(
                         key: UniqueKey(),
-                        selected: false,
                         onSelected: (bool selected) {
                           if (selectedTags
                               .contains(tagsList[index]['id_tag'])) {
@@ -205,28 +204,22 @@ class _EditPlaylistState extends State<EditPlaylist> {
                           }
                           setState(() {});
                         },
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            side: BorderSide(
-                                color: selectedTags
-                                        .contains(tagsList[index]['id_tag'])
-                                    ? tagTextBrightness == Brightness.dark
-                                        ? darkenColor(
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            65)
-                                        : lightenColor(
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            70)
-                                    : Theme.of(context)
-                                        .inputDecorationTheme
-                                        .border!
-                                        .borderSide
-                                        .color
-                                        .withOpacity(0.3))),
+                        side: BorderSide(
+                            color: selectedTags
+                                    .contains(tagsList[index]['id_tag'])
+                                ? tagTextBrightness == Brightness.dark
+                                    ? darkenColor(
+                                        Theme.of(context).colorScheme.primary,
+                                        65)
+                                    : lightenColor(
+                                        Theme.of(context).colorScheme.primary,
+                                        70)
+                                : Theme.of(context)
+                                    .inputDecorationTheme
+                                    .border!
+                                    .borderSide
+                                    .color
+                                    .withOpacity(0.3)),
                         label: Text(
                           tagsList[index]['name'],
                         ),
@@ -242,7 +235,11 @@ class _EditPlaylistState extends State<EditPlaylist> {
                             color:
                                 selectedTags.contains(tagsList[index]['id_tag'])
                                     ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context).textTheme.headline6!.color!.withOpacity(0.9)),
+                                    : Theme.of(context)
+                                        .textTheme
+                                        .headline6!
+                                        .color!
+                                        .withOpacity(0.9)),
                       );
                     }).toList(),
                   ),
