@@ -71,6 +71,9 @@ ThemeData light = ThemeData(
     ),
   ),
   snackBarTheme: const SnackBarThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+      ),
       backgroundColor: Color(0xFFB5C0DC),
       contentTextStyle: TextStyle(
         color: Color(0xFF050505),
@@ -122,6 +125,9 @@ ThemeData dark = ThemeData(
     backgroundColor: Color(0xFF28282F),
   ),
   snackBarTheme: const SnackBarThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+      ),
       backgroundColor: Color(0xFF414046),
       contentTextStyle: TextStyle(
         color: Color(0xFFE2E2E9),

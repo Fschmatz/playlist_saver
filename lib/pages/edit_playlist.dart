@@ -34,11 +34,11 @@ class _EditPlaylistState extends State<EditPlaylist> {
 
   @override
   void initState() {
+    super.initState();
     controllerLink.text = widget.playlist.link;
     controllerPlaylistTitle.text = widget.playlist.title;
     controllerArtist.text = widget.playlist.artist!;
     getAllTags().then((value) => getTagsFromTask());
-    super.initState();
   }
 
   Future<void> getAllTags() async {

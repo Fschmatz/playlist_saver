@@ -81,8 +81,10 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
   Future<String> parseArtistName() async {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
+      //options -> meta:nth-child(17) - 18 - 5
+
       List<Map<String, dynamic>> elements =
-          webScraper.getElement('head > meta:nth-child(18)', ['content']);
+          webScraper.getElement('head > meta:nth-child(17)', ['content']);
       List<String> artistDataElement =
           elements[0]['attributes']['content'].toString().split('·');
 
