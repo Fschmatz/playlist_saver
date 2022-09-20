@@ -11,16 +11,16 @@ import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
 import '../util/utils_functions.dart';
 
-class SaveSharedPlaylist extends StatefulWidget {
+class ReceiveSharedPlaylist extends StatefulWidget {
   @override
-  _SaveSharedPlaylistState createState() => _SaveSharedPlaylistState();
+  _ReceiveSharedPlaylistState createState() => _ReceiveSharedPlaylistState();
 
   String? sharedText = "";
 
-  SaveSharedPlaylist({Key? key, this.sharedText}) : super(key: key);
+  ReceiveSharedPlaylist({Key? key, this.sharedText}) : super(key: key);
 }
 
-class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
+class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   TextEditingController controllerPlaylistTitle = TextEditingController();
   TextEditingController controllerArtist = TextEditingController();
   TextEditingController controllerTags = TextEditingController();
@@ -35,22 +35,15 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
   bool _validTitle = true;
   bool _validLink = true;
 
+  //Playlists made by Spotify contains a phrase
+  var reg = RegExp(r'.*(?=https://)');
+
   @override
   void initState() {
     super.initState();
-    controllerLink.text = formatLink();
+    controllerLink.text = widget.sharedText!.replaceAll(reg,'');
     getAllTags();
     _fetchMetadata();
-  }
-
-  //Playlists made by Spotify contains a phrase
-  String formatLink(){
-    if(widget.sharedText!.contains('Give this playlist')){
-      var reg = RegExp(r'.*(?=https://)');
-      return widget.sharedText!.replaceAll(reg,'');
-    } else {
-      return widget.sharedText!;
-    }
   }
 
   Future<void> getAllTags() async {

@@ -1,7 +1,7 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:playlist_saver/share/save_shared_playlist.dart';
+import 'package:playlist_saver/share/receive_shared_playlist.dart';
 import 'package:playlist_saver/util/theme.dart';
 import 'package:share_handler/share_handler.dart';
 import 'app.dart';
@@ -57,13 +57,13 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
             if (routeSettings.arguments != null) {
               final args = routeSettings.arguments as ShowDataArgument;
               return MaterialPageRoute(
-                  builder: (context) => SaveSharedPlaylist(
+                  builder: (context) => ReceiveSharedPlaylist(
                         sharedText: args.sharedText,
                       ));
             } else {
               //Outside memory route
               return MaterialPageRoute(
-                  builder: (_) => SaveSharedPlaylist(
+                  builder: (_) => ReceiveSharedPlaylist(
                         sharedText: widget.initData.sharedText,
                       ));
             }
