@@ -1,17 +1,18 @@
 class AppDetails{
 
-  static String appVersion = "1.4.12";
+  static String appVersion = "1.4.13";
   static String appName = "Playlist Saver Fschmatz";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-1.4.12
+1.4.13
 - Print playlists
 - Clear intent
 - Show SnackBar on delete
 - Fixed parsing data
 - Bug fix
 - Show playlist and artist name when sharing 
+- Remove Spotify share phrase
 - UI changes
 - Flutter 3.3 update
 ''';

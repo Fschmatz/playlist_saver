@@ -38,9 +38,19 @@ class _SaveSharedPlaylistState extends State<SaveSharedPlaylist> {
   @override
   void initState() {
     super.initState();
-    controllerLink.text = widget.sharedText!;
+    controllerLink.text = formatLink();
     getAllTags();
     _fetchMetadata();
+  }
+
+  //Playlists made by Spotify contains a phrase
+  String formatLink(){
+    if(widget.sharedText!.contains('Give this playlist')){
+      var reg = RegExp(r'.*(?=https://)');
+      return widget.sharedText!.replaceAll(reg,'');
+    } else {
+      return widget.sharedText!;
+    }
   }
 
   Future<void> getAllTags() async {

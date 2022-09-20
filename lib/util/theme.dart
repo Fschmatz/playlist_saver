@@ -128,7 +128,7 @@ ThemeData dark = ThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(25.0)),
       ),
-      backgroundColor: Color(0xFF414046),
+      backgroundColor: Color(0xFF353539),
       contentTextStyle: TextStyle(
         color: Color(0xFFE2E2E9),
       ),
