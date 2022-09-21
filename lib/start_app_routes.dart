@@ -22,6 +22,9 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
   final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
   SharedMedia? media;
 
+  //Playlists made by Spotify contains a phrase
+  var reg = RegExp(r'.*(?=https://)');
+
   @override
   void initState() {
     super.initState();
@@ -58,13 +61,13 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
               final args = routeSettings.arguments as ShowDataArgument;
               return MaterialPageRoute(
                   builder: (context) => ReceiveSharedPlaylist(
-                        sharedText: args.sharedText,
+                        sharedText: args.sharedText.replaceAll(reg,''),
                       ));
             } else {
               //Outside memory route
               return MaterialPageRoute(
                   builder: (_) => ReceiveSharedPlaylist(
-                        sharedText: widget.initData.sharedText,
+                        sharedText: widget.initData.sharedText.replaceAll(reg,''),
                       ));
             }
         }

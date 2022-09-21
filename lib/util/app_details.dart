@@ -10,9 +10,9 @@ class AppDetails{
 - Clear intent
 - Show SnackBar on delete
 - Fixed parsing data
-- Bug fix
 - Show playlist and artist name when sharing 
 - Remove Spotify share phrase
+- Bug fixes
 - UI changes
 - Flutter 3.3 update
 ''';

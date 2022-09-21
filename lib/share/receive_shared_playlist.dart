@@ -35,13 +35,10 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   bool _validTitle = true;
   bool _validLink = true;
 
-  //Playlists made by Spotify contains a phrase
-  var reg = RegExp(r'.*(?=https://)');
-
   @override
   void initState() {
     super.initState();
-    controllerLink.text = widget.sharedText!.replaceAll(reg,'');
+    controllerLink.text = widget.sharedText!;
     getAllTags();
     _fetchMetadata();
   }
