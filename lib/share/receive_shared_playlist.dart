@@ -34,11 +34,18 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   List<int> selectedTags = [];
   bool _validTitle = true;
   bool _validLink = true;
+  
 
   @override
   void initState() {
     super.initState();
-    controllerLink.text = widget.sharedText!;
+    startFunctions();
+  }
+
+  void startFunctions(){
+    List<String> formattedString = widget.sharedText!.split('https');
+
+    controllerLink.text = "https${formattedString[1]}";
     getAllTags();
     _fetchMetadata();
   }
@@ -88,7 +95,11 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       List<String> artistDataElement =
           elements[0]['attributes']['content'].toString().split('·');
 
-      return artistDataElement[0].trim();
+      String formattedArtistName = artistDataElement[0].trim() == "Spotify"
+          ? ""
+          : artistDataElement[0].trim();
+
+      return formattedArtistName;
     } else {
       return '';
     }
