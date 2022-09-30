@@ -22,7 +22,6 @@ class _EditPlaylistState extends State<EditPlaylist> {
   TextEditingController controllerArtist = TextEditingController();
   TextEditingController controllerTags = TextEditingController();
   TextEditingController controllerLink = TextEditingController();
-  String base64Image = '';
   final tags = TagDao.instance;
   final playlistsTags = PlaylistsTagsDao.instance;
   bool loadingTags = true;

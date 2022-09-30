@@ -26,7 +26,6 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   TextEditingController controllerTags = TextEditingController();
   TextEditingController controllerLink = TextEditingController();
   SpotifyMetadata? metaData;
-  String base64Image = '';
   final tags = TagDao.instance;
   final playlistsTags = PlaylistsTagsDao.instance;
   bool loadingTags = true;
@@ -60,13 +59,6 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
 
   void _fetchMetadata() async {
     String artistName = "";
-    try {
-      artistName = await parseArtistName();
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Error parsing artist name",
-      );
-    }
 
     try {
       metaData = await SpotifyApi.getData(controllerLink.text);
@@ -76,6 +68,16 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
         msg: "Error parsing data",
       );
     }
+
+    try {
+      artistName = await parseArtistName();
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Error parsing artist name",
+      );
+    }
+
+
     if (mounted) {
       setState(() {
         metaData;
@@ -107,13 +109,12 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
 
   Future<void> _savePlaylist() async {
     final dbPlaylist = PlaylistDao.instance;
-    Uint8List? bytes;
+    Uint8List? base64ImageBytes;
 
     if (metaData != null) {
       http.Response response =
           await http.get(Uri.parse(metaData!.thumbnailUrl));
-      base64Image = base64Encode(response.bodyBytes);
-      bytes = base64Decode(base64Image);
+      base64ImageBytes = response.bodyBytes;
     }
 
     Map<String, dynamic> row = {
@@ -121,7 +122,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
       PlaylistDao.columnArchived: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
-      PlaylistDao.columnCover: base64Image.isEmpty ? null : bytes,
+      PlaylistDao.columnCover: base64ImageBytes!.isEmpty ? null : base64ImageBytes,
     };
     final idPlaylist = await dbPlaylist.insert(row);
 

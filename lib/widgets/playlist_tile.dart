@@ -217,7 +217,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                                 child: Image.memory(
                                   widget.playlist.cover!,
                                   fit: BoxFit.cover,
-                                  gaplessPlayback: true,
+                                  filterQuality: FilterQuality.none,
                                 ),
                               ),
                             ),
