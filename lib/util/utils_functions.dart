@@ -1,5 +1,8 @@
+import 'dart:typed_data';
 import 'dart:ui';
 import 'dart:math' as math;
+
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 String capitalizeFirstLetterString(String word){
   return word.replaceFirst(word[0], word[0].toUpperCase());
@@ -33,4 +36,14 @@ Color lightenColor(Color c, [int percent = 10]) {
       c.green + ((255 - c.green) * p).round(),
       c.blue + ((255 - c.blue) * p).round()
   );
+}
+
+Future<Uint8List> compressCoverImage(Uint8List list) async {
+  var result = await FlutterImageCompress.compressWithList(
+    list,
+    minHeight: 300,
+    minWidth: 300,
+    quality: 85,
+  );
+  return result;
 }

@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -91,11 +89,13 @@ class _SavePlaylistState extends State<SavePlaylist> {
   Future<void> _savePlaylist() async {
     final dbPlaylist = PlaylistDao.instance;
     Uint8List? base64ImageBytes;
+    Uint8List? compressedCover;
 
     if (metaData != null) {
       http.Response response =
           await http.get(Uri.parse(metaData!.thumbnailUrl));
       base64ImageBytes = response.bodyBytes;
+      compressedCover = await compressCoverImage(base64ImageBytes);
     }
 
     Map<String, dynamic> row = {
@@ -103,7 +103,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
       PlaylistDao.columnArchived: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
-      PlaylistDao.columnCover: base64ImageBytes!.isEmpty ? null : base64ImageBytes,
+      PlaylistDao.columnCover: compressedCover!.isEmpty ? null : compressedCover,
     };
     final idPlaylist = await dbPlaylist.insert(row);
 

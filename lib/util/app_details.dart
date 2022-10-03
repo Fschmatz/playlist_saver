@@ -1,10 +1,17 @@
 class AppDetails{
 
-  static String appVersion = "1.4.14";
+  static String appVersion = "1.5.0";
   static String appName = "Playlist Saver Fschmatz";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
+1.5.0
+- Compress cover images
+- Bug fixes
+- UI changes
+''';
+
+  static String changelogsOld = '''  
 1.4.14
 - Print playlists
 - Clear intent
@@ -15,9 +22,7 @@ class AppDetails{
 - Bug fixes
 - UI changes
 - Flutter 3.3 update
-''';
 
-  static String changelogsOld = '''
 1.3.8
 - Parse artist name
 - Tags
