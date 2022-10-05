@@ -49,7 +49,7 @@ class _PlaylistListState extends State<PlaylistList> {
                 ListView.separated(
                   separatorBuilder: (BuildContext context, int index) =>
                       const SizedBox(
-                    height: 4,
+                    height: 2,
                   ),
                   physics: const ScrollPhysics(),
                   shrinkWrap: true,

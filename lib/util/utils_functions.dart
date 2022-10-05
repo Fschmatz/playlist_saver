@@ -41,9 +41,9 @@ Color lightenColor(Color c, [int percent = 10]) {
 Future<Uint8List> compressCoverImage(Uint8List list) async {
   var result = await FlutterImageCompress.compressWithList(
     list,
-    minHeight: 300,
-    minWidth: 300,
-    quality: 85,
+    minHeight: 250,
+    minWidth: 250,
+    quality: 80,
   );
   return result;
 }

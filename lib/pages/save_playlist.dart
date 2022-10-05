@@ -80,7 +80,11 @@ class _SavePlaylistState extends State<SavePlaylist> {
       List<String> artistDataElement =
           elements[0]['attributes']['content'].toString().split('·');
 
-      return artistDataElement[0].trim();
+      String formattedArtistName = artistDataElement[0].trim() == "Spotify"
+          ? ""
+          : artistDataElement[0].trim();
+
+      return formattedArtistName;
     } else {
       return '';
     }
