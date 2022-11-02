@@ -105,7 +105,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
     Map<String, dynamic> row = {
       PlaylistDao.columnLink: controllerLink.text,
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
-      PlaylistDao.columnArchived: 0,
+      PlaylistDao.columnState: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
       PlaylistDao.columnCover: compressedCover!.isEmpty ? null : compressedCover,
     };

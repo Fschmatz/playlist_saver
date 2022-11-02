@@ -18,11 +18,15 @@ class _HomeState extends State<Home> {
   List<Widget> _tabs = [
     PlaylistList(
       key: UniqueKey(),
-      archivedValue: 0,
+      stateValue: 0,
     ),
     PlaylistList(
       key: UniqueKey(),
-      archivedValue: 1,
+      stateValue: 1,
+    ),
+    PlaylistList(
+      key: UniqueKey(),
+      stateValue: 2,
     ),
   ];
 
@@ -31,11 +35,15 @@ class _HomeState extends State<Home> {
       _tabs = [
         PlaylistList(
           key: UniqueKey(),
-          archivedValue: 0,
+          stateValue: 0,
         ),
         PlaylistList(
           key: UniqueKey(),
-          archivedValue: 1,
+          stateValue: 1,
+        ),
+        PlaylistList(
+          key: UniqueKey(),
+          stateValue: 2,
         ),
       ];
     });
@@ -127,6 +135,13 @@ class _HomeState extends State<Home> {
               Icons.archive,
             ),
             label: 'Archive',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.favorite_border_outlined),
+            selectedIcon: Icon(
+              Icons.favorite_outlined,
+            ),
+            label: 'Favorites',
           ),
         ],
       ),

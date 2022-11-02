@@ -43,7 +43,7 @@ Future<Uint8List> compressCoverImage(Uint8List list) async {
     list,
     minHeight: 250,
     minWidth: 250,
-    quality: 80,
+    quality: 75,
   );
   return result;
 }

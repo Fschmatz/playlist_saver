@@ -67,6 +67,8 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
                         sharedText: widget.initData.sharedText,
                       ));
             }
+          default:
+            return MaterialPageRoute(builder: (context) => const App());
         }
       },
       initialRoute: widget.initData.routeName,

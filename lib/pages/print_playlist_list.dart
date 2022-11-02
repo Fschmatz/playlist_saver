@@ -21,24 +21,30 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
   }
 
   void getPlaylists() async {
-    List<Map<String, dynamic>> _listPlaylistsListen =
-        await dbPlaylists.queryAllRowsDescArchive(0);
-    List<Map<String, dynamic>> _listPlaylistArchive =
-        await dbPlaylists.queryAllRowsDescArchive(1);
+    List<Map<String, dynamic>> listPlaylistsListen =
+    await dbPlaylists.queryAllRowsDescState(0);
+    List<Map<String, dynamic>> listPlaylistArchive =
+    await dbPlaylists.queryAllRowsDescState(1);
+    List<Map<String, dynamic>> listPlaylistFavorites =
+    await dbPlaylists.queryAllRowsDescState(1);
 
     formattedList +=
-        'LISTEN - ' + _listPlaylistsListen.length.toString() + ' Playlists\n';
-    for (int i = 0; i < _listPlaylistsListen.length; i++) {
-      formattedList += "\n• " + _listPlaylistsListen[i]['title'] + "\n";
-      formattedList += _listPlaylistsListen[i]['link'] + "\n";
+    'LISTEN - ${listPlaylistsListen.length} Playlists\n';
+    for (int i = 0; i < listPlaylistsListen.length; i++) {
+      formattedList += "\n• ${listPlaylistsListen[i]['title']}\n";
+      formattedList += listPlaylistsListen[i]['link'] + "\n";
     }
     formattedList += '\n********************\n\n';
-    formattedList += 'ARCHIVE - ' +
-        _listPlaylistArchive.length.toString() +
-        ' Playlists\n';
-    for (int i = 0; i < _listPlaylistArchive.length; i++) {
-      formattedList += "\n• " + _listPlaylistArchive[i]['title'] + "\n";
-      formattedList += _listPlaylistArchive[i]['link'] + "\n";
+    formattedList += 'ARCHIVE - ${listPlaylistArchive.length} Playlists\n';
+    for (int i = 0; i < listPlaylistArchive.length; i++) {
+      formattedList += "\n• ${listPlaylistArchive[i]['title']}\n";
+      formattedList += listPlaylistArchive[i]['link'] + "\n";
+    }
+    formattedList += '\n********************\n\n';
+    formattedList += 'FAVORITES - ${listPlaylistFavorites.length} Playlists\n';
+    for (int i = 0; i < listPlaylistFavorites.length; i++) {
+      formattedList += "\n• ${listPlaylistFavorites[i]['title']}\n";
+      formattedList += listPlaylistFavorites[i]['link'] + "\n";
     }
 
     setState(() {
@@ -69,12 +75,13 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
           (loading)
               ? const SizedBox.shrink()
               : SelectableText(
-                  formattedList,
-                  style: const TextStyle(fontSize: 16),
-                ),
+            formattedList,
+            style: const TextStyle(fontSize: 16),
+          ),
           const SizedBox(height: 30,)
         ],
       ),
     );
   }
 }
+

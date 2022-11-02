@@ -6,9 +6,9 @@ import 'package:playlist_saver/pages/save_playlist.dart';
 import 'package:playlist_saver/widgets/playlist_tile.dart';
 
 class PlaylistList extends StatefulWidget {
-  int archivedValue;
+  int stateValue;
 
-  PlaylistList({Key? key, required this.archivedValue}) : super(key: key);
+  PlaylistList({Key? key, required this.stateValue}) : super(key: key);
 
   @override
   _PlaylistListState createState() => _PlaylistListState();
@@ -26,7 +26,7 @@ class _PlaylistListState extends State<PlaylistList> {
   }
 
   void getPlaylists() async {
-    var resp = await dbPlaylist.queryAllRowsDescArchive(widget.archivedValue);
+    var resp = await dbPlaylist.queryAllRowsDescState(widget.stateValue);
     setState(() {
       loading = false;
       playlists = resp;
@@ -64,7 +64,7 @@ class _PlaylistListState extends State<PlaylistList> {
                         idPlaylist: playlists[index]['id_playlist'],
                         link: playlists[index]['link'],
                         title: playlists[index]['title'],
-                        archived: playlists[index]['archived'],
+                        state: playlists[index]['state'],
                         artist: playlists[index]['artist'],
                         cover: playlists[index]['cover'],
                       ),

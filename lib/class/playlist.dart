@@ -5,7 +5,7 @@ class Playlist{
   int idPlaylist;
   String link;
   String title;
-  int archived; //0 no, 1 yes
+  int state; //0 listen, 1 archive, 2 favorite
   String? artist;
   Uint8List? cover;
 
@@ -13,7 +13,7 @@ class Playlist{
     required this.idPlaylist,
     required this.link,
     required this.title,
-    required this.archived,
+    required this.state,
     this.artist,
     this.cover});
 

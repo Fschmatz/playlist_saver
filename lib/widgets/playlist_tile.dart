@@ -63,11 +63,11 @@ class _PlaylistTileState extends State<PlaylistTile> {
         await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
   }
 
-  Future<void> _archivePlaylist() async {
+  Future<void> _changePlaylistState(int state) async {
     final dbPlaylist = PlaylistDao.instance;
     Map<String, dynamic> row = {
       PlaylistDao.columnIdPlaylist: widget.playlist.idPlaylist,
-      PlaylistDao.columnArchived: widget.playlist.archived == 0 ? 1 : 0,
+      PlaylistDao.columnState: state,
     };
     final update = await dbPlaylist.update(row);
   }
@@ -99,22 +99,47 @@ class _PlaylistTileState extends State<PlaylistTile> {
                           "${widget.playlist.title} - ${widget.playlist.artist!}\n\n${widget.playlist.link}");
                     },
                   ),
-                  ListTile(
-                    leading: (widget.playlist.archived == 0)
-                        ? const Icon(Icons.archive_outlined)
-                        : const Icon(Icons.unarchive_outlined),
-                    title: (widget.playlist.archived == 0)
-                        ? const Text(
-                            "Archive",
-                          )
-                        : const Text(
-                            "Unarchive",
-                          ),
-                    onTap: () {
-                      _archivePlaylist();
-                      widget.refreshHome();
-                      Navigator.of(context).pop();
-                    },
+                  Visibility(
+                    visible: (widget.playlist.state != 0),
+                    child: ListTile(
+                      leading: const Icon(Icons.queue_music_outlined),
+                      title: const Text(
+                        "Listen",
+                      ),
+                      onTap: () {
+                        _changePlaylistState(0);
+                        widget.refreshHome();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: (widget.playlist.state != 1),
+                    child: ListTile(
+                      leading: const Icon(Icons.archive_outlined),
+                      title: const Text(
+                        "Archive",
+                      ),
+                      onTap: () {
+                        _changePlaylistState(1);
+                        widget.refreshHome();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: (widget.playlist.state != 2),
+                    child: ListTile(
+                      leading: const Icon(Icons.favorite_border_outlined),
+                      title: const Text(
+                        "Favorite",
+                      ),
+                      onTap: () {
+                        _changePlaylistState(2);
+                        widget.refreshHome();
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ),
                   ListTile(
                     leading: const Icon(Icons.edit_outlined),
@@ -137,7 +162,6 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     leading: const Icon(Icons.delete_outline_outlined),
                     title: const Text(
                       "Delete",
-                      style: TextStyle(fontSize: 16),
                     ),
                     onTap: () {
                       widget.removeFromList(widget.index);
@@ -223,7 +247,6 @@ class _PlaylistTileState extends State<PlaylistTile> {
                           ),
                   ),
                 ),
-
                 (loadingTags)
                     ? const SizedBox.shrink()
                     : Expanded(

@@ -29,7 +29,7 @@ class DbCreator {
              id_playlist INTEGER PRIMARY KEY,
              link TEXT NOT NULL,
              title TEXT NOT NULL,
-             archived INTEGER NOT NULL,            
+             state INTEGER NOT NULL,            
              artist TEXT,              
              cover BLOB
           )          

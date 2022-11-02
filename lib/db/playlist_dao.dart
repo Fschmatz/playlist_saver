@@ -13,7 +13,7 @@ class PlaylistDao {
   static const columnIdPlaylist = 'id_playlist';
   static const columnLink = 'link';
   static const columnTitle = 'title';
-  static const columnArchived = 'archived';
+  static const columnState = 'state';
   static const columnArtist = 'artist';
   static const columnCover = 'cover';
 
@@ -41,9 +41,9 @@ class PlaylistDao {
     return await db.rawQuery('SELECT * FROM $table ORDER BY id_playlist DESC');
   }
 
-  Future<List<Map<String, dynamic>>> queryAllRowsDescArchive(int archivedValue) async {
+  Future<List<Map<String, dynamic>>> queryAllRowsDescState(int state) async {
     Database db = await instance.database;
-    return await db.rawQuery('SELECT * FROM $table WHERE $columnArchived = $archivedValue ORDER BY id_playlist DESC');
+    return await db.rawQuery('SELECT * FROM $table WHERE $columnState = $state ORDER BY id_playlist DESC');
   }
 
   Future<int> insert(Map<String, dynamic> row) async {
