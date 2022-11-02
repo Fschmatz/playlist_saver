@@ -26,7 +26,7 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
     List<Map<String, dynamic>> listPlaylistArchive =
     await dbPlaylists.queryAllRowsDescState(1);
     List<Map<String, dynamic>> listPlaylistFavorites =
-    await dbPlaylists.queryAllRowsDescState(1);
+    await dbPlaylists.queryAllRowsDescState(2);
 
     formattedList +=
     'LISTEN - ${listPlaylistsListen.length} Playlists\n';
