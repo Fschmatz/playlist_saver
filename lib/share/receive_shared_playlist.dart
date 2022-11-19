@@ -174,7 +174,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       child: SafeArea(
         child: Scaffold(
             appBar: AppBar(
-              title: const Text('Save Shared Playlist'),
+              title: const Text('New playlist'),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.refresh_outlined),
@@ -183,7 +183,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                     _fetchMetadata();
                   },
                 ),
-                IconButton(
+               /* IconButton(
                   icon: const Icon(Icons.save_outlined),
                   tooltip: 'Save',
                   onPressed: () {
@@ -196,7 +196,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                       });
                     }
                   },
-                ),
+                ),*/
               ],
             ),
             body: ListView(children: [
@@ -288,7 +288,6 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                   ),
                 ),
               ),
-              const Divider(),
               Padding(
                 padding: const EdgeInsets.fromLTRB(18, 5, 25, 0),
                 child: Text(
@@ -363,6 +362,31 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                         }).toList(),
                       ),
                     ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Theme.of(context).colorScheme.primary),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0)))),
+                    onPressed: () {
+                      if (validateTextFields()) {
+                        _savePlaylist().then((_) => {SystemNavigator.pop()});
+                      } else {
+                        setState(() {
+                          _validLink;
+                          _validTitle;
+                        });
+                      }
+                    },
+                    child: Text(
+                      'Save playlist',
+                      style:
+                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                    )),
+              ),
               const SizedBox(
                 height: 50,
               ),

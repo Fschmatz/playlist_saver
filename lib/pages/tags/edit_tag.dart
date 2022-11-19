@@ -62,7 +62,7 @@ class _EditTagState extends State<EditTag> {
             },
           )
         ],
-        title: const Text('New Tag'),
+        title: const Text('New tag'),
       ),
       body: ListView(
         children: [

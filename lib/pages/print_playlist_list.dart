@@ -56,7 +56,7 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Print Playlists'),
+        title: const Text('Print playlists'),
         actions: [
           TextButton(
             child: const Text(

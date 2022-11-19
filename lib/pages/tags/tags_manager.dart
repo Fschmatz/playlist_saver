@@ -68,7 +68,7 @@ class _TagsManagerState extends State<TagsManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Manage Tags"),
+        title: const Text("Manage tags"),
       ),
       body: ListView(
         physics: const AlwaysScrollableScrollPhysics(),

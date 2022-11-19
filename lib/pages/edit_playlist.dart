@@ -104,8 +104,8 @@ class _EditPlaylistState extends State<EditPlaylist> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Edit Playlist'),
-          actions: [
+          title: const Text('Edit playlist'),
+          /*actions: [
             IconButton(
               icon: const Icon(Icons.save_outlined),
               tooltip: 'Save',
@@ -121,7 +121,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
                 }
               },
             ),
-          ],
+          ],*/
         ),
         body: ListView(children: [
           Padding(
@@ -174,7 +174,6 @@ class _EditPlaylistState extends State<EditPlaylist> {
               ),
             ),
           ),
-          const Divider(),
           Padding(
             padding: const EdgeInsets.fromLTRB(18, 5, 25, 0),
             child: Text(
@@ -243,6 +242,32 @@ class _EditPlaylistState extends State<EditPlaylist> {
                     }).toList(),
                   ),
                 ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+            child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).colorScheme.primary),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0)))),
+                onPressed: () {
+                  if (validateTextFields()) {
+                    _updatePlaylist().then((v) =>
+                    {widget.refreshHome(), Navigator.of(context).pop()});
+                  } else {
+                    setState(() {
+                      _validLink;
+                      _validTitle;
+                    });
+                  }
+                },
+                child: Text(
+                  'Save playlist',
+                  style:
+                  TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                )),
+          ),
           const SizedBox(
             height: 50,
           ),

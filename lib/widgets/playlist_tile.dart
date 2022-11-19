@@ -202,7 +202,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
       onTap: _launchLink,
       onLongPress: openBottomMenu,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(14, 10, 14, 8),
+        padding: const EdgeInsets.fromLTRB(14, 5, 14, 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

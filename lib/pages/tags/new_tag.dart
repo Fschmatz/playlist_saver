@@ -52,7 +52,7 @@ class _NewTagState extends State<NewTag> {
             },
           )
         ],
-        title: const Text('New Tag'),
+        title: const Text('New tag'),
       ),
       body: ListView(
         children: [

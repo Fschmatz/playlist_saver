@@ -107,7 +107,8 @@ class _SavePlaylistState extends State<SavePlaylist> {
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
       PlaylistDao.columnState: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
-      PlaylistDao.columnCover: compressedCover!.isEmpty ? null : compressedCover,
+      PlaylistDao.columnCover:
+          compressedCover!.isEmpty ? null : compressedCover,
     };
     final idPlaylist = await dbPlaylist.insert(row);
 
@@ -141,7 +142,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Save Playlist'),
+          title: const Text('New playlist'),
           actions: [
             IconButton(
               icon: const Icon(Icons.refresh_outlined),
@@ -150,7 +151,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 _fetchMetadata();
               },
             ),
-            IconButton(
+            /*  IconButton(
               icon: const Icon(Icons.save_outlined),
               tooltip: 'Save',
               onPressed: () {
@@ -166,7 +167,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                   });
                 }
               },
-            ),
+            ),*/
           ],
         ),
         body: ListView(children: [
@@ -255,7 +256,6 @@ class _SavePlaylistState extends State<SavePlaylist> {
               ),
             ),
           ),
-          const Divider(),
           Padding(
             padding: const EdgeInsets.fromLTRB(18, 5, 25, 0),
             child: Text(
@@ -324,6 +324,34 @@ class _SavePlaylistState extends State<SavePlaylist> {
                     }).toList(),
                   ),
                 ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+            child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).colorScheme.primary),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0)))),
+                onPressed: () {
+                  if (validateTextFields()) {
+                    _savePlaylist().then((v) => {
+                          widget.refreshHome!(),
+                          Navigator.of(context).pop(),
+                        });
+                  } else {
+                    setState(() {
+                      _validLink;
+                      _validTitle;
+                    });
+                  }
+                },
+                child: Text(
+                  'Save playlist',
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                )),
+          ),
           const SizedBox(
             height: 50,
           ),
