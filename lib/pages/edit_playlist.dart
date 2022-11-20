@@ -219,7 +219,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
                                     .color
                                     .withOpacity(0.3)),
                         label: Text(
-                          tagsList[index]['name'],
+                          tagsList[index]['name']
                         ),
                         backgroundColor: selectedTags
                                 .contains(tagsList[index]['id_tag'])
@@ -262,10 +262,21 @@ class _EditPlaylistState extends State<EditPlaylist> {
                     });
                   }
                 },
-                child: Text(
-                  'Save playlist',
-                  style:
-                  TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                      child: Icon(Icons.save_outlined,
+                          size: 18,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                    Text(
+                      'Save',
+                      style:
+                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                  ],
                 )),
           ),
           const SizedBox(
