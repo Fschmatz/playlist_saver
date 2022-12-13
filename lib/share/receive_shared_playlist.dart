@@ -175,7 +175,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
         child: Scaffold(
             appBar: AppBar(
               title: const Text('New playlist'),
-              actions: [
+              /* actions: [
                 IconButton(
                   icon: const Icon(Icons.refresh_outlined),
                   tooltip: 'Load data',
@@ -183,7 +183,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                     _fetchMetadata();
                   },
                 ),
-               /* IconButton(
+                IconButton(
                   icon: const Icon(Icons.save_outlined),
                   tooltip: 'Save',
                   onPressed: () {
@@ -196,8 +196,8 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                       });
                     }
                   },
-                ),*/
-              ],
+                ),
+              ],*/
             ),
             body: ListView(children: [
               ListTile(
@@ -364,39 +364,42 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                     ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Theme.of(context).colorScheme.primary),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25.0)))),
-                    onPressed: () {
-                      if (validateTextFields()) {
-                        _savePlaylist().then((_) => {SystemNavigator.pop()});
-                      } else {
-                        setState(() {
-                          _validLink;
-                          _validTitle;
-                        });
-                      }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                          child: Icon(Icons.save_outlined,
-                              size: 18,
-                              color: Theme.of(context).colorScheme.onPrimary),
-                        ),
-                        Text(
-                          'Save',
-                          style:
-                          TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                        ),
-                      ],
-                    )),
+                child: SizedBox(
+                  height: 40,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).colorScheme.primary),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.0)))),
+                      onPressed: () {
+                        if (validateTextFields()) {
+                          _savePlaylist().then((_) => {SystemNavigator.pop()});
+                        } else {
+                          setState(() {
+                            _validLink;
+                            _validTitle;
+                          });
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                            child: Icon(Icons.save_outlined,
+                                size: 18,
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                          Text(
+                            'Save',
+                            style:
+                            TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                        ],
+                      )),
+                ),
               ),
               const SizedBox(
                 height: 50,

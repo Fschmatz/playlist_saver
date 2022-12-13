@@ -280,7 +280,6 @@ class _PlaylistTileState extends State<PlaylistTile> {
                             (tagsList.isEmpty)
                                 ? const SizedBox.shrink()
                                 : Wrap(
-                                    runSpacing: 5,
                                     children: List<Widget>.generate(
                                         tagsList.length, (int index) {
                                       return index == 0
@@ -294,7 +293,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                                                       .primary),
                                             )
                                           : Text(
-                                              " • " + tagsList[index]['name'],
+                                              " • ${ tagsList[index]['name']}",
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w500,
