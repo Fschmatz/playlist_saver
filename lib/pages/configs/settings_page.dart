@@ -44,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               child: ListTile(
                 title: Text(
-                  AppDetails.appName + " " + AppDetails.appVersion,
+                  "${AppDetails.appName} ${AppDetails.appVersion}",
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 17.5, color: Colors.black),
                 ),

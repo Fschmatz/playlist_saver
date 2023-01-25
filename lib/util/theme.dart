@@ -29,25 +29,24 @@ ThemeData light = ThemeData(
     surfaceTintColor: Color(0xFFFAFCFC),
     color: Color(0xFFFAFCFC),
   ),
-  inputDecorationTheme: InputDecorationTheme(
-      fillColor: const Color(0xFFFDFBFF),
-      focusColor: const Color(0xFF3A77D9),
+  inputDecorationTheme: const InputDecorationTheme(
+      fillColor: Color(0xFFFDFBFF),
+      focusColor: Color(0xFF3A77D9),
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
+        borderSide: BorderSide(
           color: Color(0xFF3A77D9),
         ),
-        borderRadius: BorderRadius.circular(8.0),
       ),
       enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Color(0xFF74777F),
-          ),
-          borderRadius: BorderRadius.circular(8.0)),
+        borderSide: BorderSide(
+          color: Color(0xFF74777F),
+        ),
+      ),
       border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Color(0xFF74777F),
-          ),
-          borderRadius: BorderRadius.circular(8.0))),
+        borderSide: BorderSide(
+          color: Color(0xFF74777F),
+        ),
+      )),
   popupMenuTheme: const PopupMenuThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -70,6 +69,10 @@ ThemeData light = ThemeData(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
     ),
   ),
+  listTileTheme: const ListTileThemeData(
+      iconColor: Color(0xFF454546)
+  ),
+  dividerTheme: const DividerThemeData(color:  Color(0xFFB2B2B9)),
   snackBarTheme: const SnackBarThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(25.0)),
@@ -83,7 +86,6 @@ ThemeData light = ThemeData(
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Color(0xFFE1E2EC),
   ),
-  bottomAppBarColor: const Color(0xFFE1E2EC),
   navigationBarTheme: NavigationBarThemeData(
       backgroundColor: const Color(0xFFE1E2EC),
       surfaceTintColor: const Color(0xFFE1E2EC),
@@ -113,6 +115,9 @@ ThemeData dark = ThemeData(
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Color(0xFFA4C2FD),
   ),
+  listTileTheme: const ListTileThemeData(
+    iconColor: Color(0xFFE2E2E9)
+  ),
   appBarTheme: const AppBarTheme(
     surfaceTintColor: Color(0xFF1B1B1D),
     color: Color(0xFF1B1B1D),
@@ -121,6 +126,7 @@ ThemeData dark = ThemeData(
     surfaceTintColor: Color(0xFF28282A),
     color: Color(0xFF28282A),
   ),
+  dividerTheme: const DividerThemeData(color:  Color(0xFF424248)),
   dialogTheme: const DialogTheme(
     backgroundColor: Color(0xFF28282F),
   ),
@@ -142,10 +148,11 @@ ThemeData dark = ThemeData(
     ),
   ),
   popupMenuTheme: const PopupMenuThemeData(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-      ),
-      color: Color(0xFF303036)),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+    ),
+    color: Color(0xFF303036),
+  ),
   chipTheme: const ChipThemeData(
     elevation: 0,
     backgroundColor: Color(0xFF1B1B1D),
@@ -155,29 +162,27 @@ ThemeData dark = ThemeData(
       fontWeight: FontWeight.w500,
     ),
   ),
-  inputDecorationTheme: InputDecorationTheme(
-      fillColor: const Color(0xFFA4C2FD),
-      focusColor: const Color(0xFFA4C2FD),
+  inputDecorationTheme: const InputDecorationTheme(
+      fillColor: Color(0xFFA4C2FD),
+      focusColor: Color(0xFFA4C2FD),
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
+        borderSide: BorderSide(
           color: Color(0xFFA4C2FD),
         ),
-        borderRadius: BorderRadius.circular(8.0),
       ),
       enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Color(0xFF8D9099),
-          ),
-          borderRadius: BorderRadius.circular(8.0)),
+        borderSide: BorderSide(
+          color: Color(0xFF8D9099),
+        ),
+      ),
       border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Color(0xFF8D9099),
-          ),
-          borderRadius: BorderRadius.circular(8.0))),
+        borderSide: BorderSide(
+          color: Color(0xFF8D9099),
+        ),
+      )),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Color(0xFF28282F),
   ),
-  bottomAppBarColor: const Color(0xFF28282F),
   navigationBarTheme: NavigationBarThemeData(
       backgroundColor: const Color(0xFF28282F),
       surfaceTintColor: const Color(0xFF28282F),
