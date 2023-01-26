@@ -63,7 +63,8 @@ ThemeData light = ThemeData(
     ),
   ),
   bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: Color(0xFFFDFBFF),
+    backgroundColor: Color(0xFFE1E2EC),
+    surfaceTintColor: Color(0xFFE1E2EC),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
@@ -74,14 +75,7 @@ ThemeData light = ThemeData(
   ),
   dividerTheme: const DividerThemeData(color:  Color(0xFFB2B2B9)),
   snackBarTheme: const SnackBarThemeData(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(25.0)),
-      ),
-      backgroundColor: Color(0xFFB5C0DC),
-      contentTextStyle: TextStyle(
-        color: Color(0xFF050505),
-      ),
-      actionTextColor: Color(0xFF3A77D9),
+      backgroundColor: Color(0xFF1a1c29),
       behavior: SnackBarBehavior.floating),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Color(0xFFE1E2EC),
@@ -131,17 +125,11 @@ ThemeData dark = ThemeData(
     backgroundColor: Color(0xFF28282F),
   ),
   snackBarTheme: const SnackBarThemeData(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(25.0)),
-      ),
-      backgroundColor: Color(0xFF353539),
-      contentTextStyle: TextStyle(
-        color: Color(0xFFE2E2E9),
-      ),
-      actionTextColor: Color(0xFFA4C2FD),
+      backgroundColor: Color(0xFFcfe5ff),
       behavior: SnackBarBehavior.floating),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFF28282F),
+    surfaceTintColor: Color(0xFF28282F),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
