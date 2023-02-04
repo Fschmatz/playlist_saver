@@ -65,6 +65,9 @@ class _SavePlaylistState extends State<SavePlaylist> {
         msg: "Error parsing artist name",
       );
     }
+
+    print('Artista ' + artistName);
+
     setState(() {
       metaData;
       controllerPlaylistTitle.text = metaData!.title;
@@ -80,9 +83,12 @@ class _SavePlaylistState extends State<SavePlaylist> {
       List<String> artistDataElement =
           elements[0]['attributes']['content'].toString().split('·');
 
-      String formattedArtistName = artistDataElement[0].trim() == "Spotify"
+      String formattedArtistName = (artistDataElement[0].trim() == "Spotify" ||
+              artistDataElement[0].trim().contains('This Is '))
           ? ""
           : artistDataElement[0].trim();
+
+      print('Artista ' + formattedArtistName);
 
       return formattedArtistName;
     } else {
@@ -326,46 +332,23 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-            child: SizedBox(
-              height: 40,
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).colorScheme.primary),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0)))),
-                  onPressed: () {
-                    if (validateTextFields()) {
-                      _savePlaylist().then((v) => {
-                            widget.refreshHome!(),
-                            Navigator.of(context).pop(),
-                          });
-                    } else {
-                      setState(() {
-                        _validLink;
-                        _validTitle;
-                      });
-                    }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                        child: Icon(Icons.save_outlined,
-                            size: 18,
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      ),
-                      Text(
-                        'Save',
-                        style:
-                        TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      ),
-                    ],
-                  )),
-            ),
+            child: FilledButton.tonalIcon(
+                onPressed: () {
+                  if (validateTextFields()) {
+                    _savePlaylist().then((v) => {
+                          widget.refreshHome!(),
+                          Navigator.of(context).pop(),
+                        });
+                  } else {
+                    setState(() {
+                      _validLink;
+                      _validTitle;
+                    });
+                  }
+                },
+                icon: Icon(Icons.save_outlined,
+                    color: Theme.of(context).colorScheme.onPrimary),
+                label: const Text('Save')),
           ),
           const SizedBox(
             height: 50,
