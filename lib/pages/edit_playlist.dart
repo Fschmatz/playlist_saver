@@ -187,27 +187,47 @@ class _EditPlaylistState extends State<EditPlaylist> {
           loadingTags
               ? const SizedBox.shrink()
               : (tagsList.isEmpty)
-              ? const SizedBox.shrink()
-              : Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: Wrap(
-                    spacing: 8.0,
-                    children:
-                        List<Widget>.generate(tagsList.length, (int index) {
-                      return FilterChip(
-                        key: UniqueKey(),
-                        onSelected: (bool selected) {
-                          if (selectedTags
-                              .contains(tagsList[index]['id_tag'])) {
-                            selectedTags.remove(tagsList[index]['id_tag']);
-                          } else {
-                            selectedTags.add(tagsList[index]['id_tag']);
-                          }
-                          setState(() {});
-                        },
-                        side: BorderSide(
-                            color: selectedTags
+                  ? const SizedBox.shrink()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 10),
+                      child: Wrap(
+                        spacing: 8.0,
+                        children:
+                            List<Widget>.generate(tagsList.length, (int index) {
+                          return FilterChip(
+                            key: UniqueKey(),
+                            onSelected: (bool selected) {
+                              if (selectedTags
+                                  .contains(tagsList[index]['id_tag'])) {
+                                selectedTags.remove(tagsList[index]['id_tag']);
+                              } else {
+                                selectedTags.add(tagsList[index]['id_tag']);
+                              }
+                              setState(() {});
+                            },
+                            side: BorderSide(
+                                color: selectedTags
+                                        .contains(tagsList[index]['id_tag'])
+                                    ? tagTextBrightness == Brightness.dark
+                                        ? darkenColor(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            65)
+                                        : lightenColor(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            70)
+                                    : Theme.of(context)
+                                        .inputDecorationTheme
+                                        .border!
+                                        .borderSide
+                                        .color
+                                        .withOpacity(0.3)),
+                            label: Text(tagsList[index]['name']),
+                            backgroundColor: selectedTags
                                     .contains(tagsList[index]['id_tag'])
                                 ? tagTextBrightness == Brightness.dark
                                     ? darkenColor(
@@ -216,54 +236,46 @@ class _EditPlaylistState extends State<EditPlaylist> {
                                     : lightenColor(
                                         Theme.of(context).colorScheme.primary,
                                         70)
-                                : Theme.of(context)
-                                    .inputDecorationTheme
-                                    .border!
-                                    .borderSide
-                                    .color
-                                    .withOpacity(0.3)),
-                        label: Text(tagsList[index]['name']),
-                        backgroundColor: selectedTags
-                                .contains(tagsList[index]['id_tag'])
-                            ? tagTextBrightness == Brightness.dark
-                                ? darkenColor(
-                                    Theme.of(context).colorScheme.primary, 65)
-                                : lightenColor(
-                                    Theme.of(context).colorScheme.primary, 70)
-                            : Theme.of(context).scaffoldBackgroundColor,
-                        labelStyle: TextStyle(
-                            color:
-                                selectedTags.contains(tagsList[index]['id_tag'])
+                                : Theme.of(context).scaffoldBackgroundColor,
+                            labelStyle: TextStyle(
+                                color: selectedTags
+                                        .contains(tagsList[index]['id_tag'])
                                     ? Theme.of(context).colorScheme.primary
                                     : Theme.of(context)
                                         .textTheme
                                         .headline6!
                                         .color!
                                         .withOpacity(0.9)),
-                      );
-                    }).toList(),
-                  ),
-                ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
           loadingTags
               ? const SizedBox.shrink()
               : Padding(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-            child: FilledButton.tonalIcon(
-                onPressed: () {
-                  if (validateTextFields()) {
-                    _updatePlaylist().then((v) =>
-                        {widget.refreshHome(), Navigator.of(context).pop()});
-                  } else {
-                    setState(() {
-                      _validLink;
-                      _validTitle;
-                    });
-                  }
-                },
-                icon: Icon(Icons.save_outlined,
-                    color: Theme.of(context).colorScheme.onPrimary),
-                label: const Text('Save')),
-          ),
+                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                  child: FilledButton.tonalIcon(
+                      onPressed: () {
+                        if (validateTextFields()) {
+                          _updatePlaylist().then((v) => {
+                                widget.refreshHome(),
+                                Navigator.of(context).pop()
+                              });
+                        } else {
+                          setState(() {
+                            _validLink;
+                            _validTitle;
+                          });
+                        }
+                      },
+                      icon: Icon(Icons.save_outlined,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                      label: Text(
+                        'Save',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      )),
+                ),
           const SizedBox(
             height: 50,
           ),

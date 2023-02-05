@@ -395,7 +395,11 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                           },
                           icon: Icon(Icons.save_outlined,
                               color: Theme.of(context).colorScheme.onPrimary),
-                          label: const Text('Save')),
+                          label: Text(
+                            'Save',
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          )),
                     ),
               const SizedBox(
                 height: 50,

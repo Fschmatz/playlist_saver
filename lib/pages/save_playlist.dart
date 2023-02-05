@@ -77,7 +77,6 @@ class _SavePlaylistState extends State<SavePlaylist> {
   Future<String> parseArtistName() async {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
-
       List<Map<String, dynamic>> elements =
           webScraper.getElement('head > meta:nth-child(26)', ['content']);
       List<String> artistDataElement =
@@ -362,7 +361,11 @@ class _SavePlaylistState extends State<SavePlaylist> {
                       },
                       icon: Icon(Icons.save_outlined,
                           color: Theme.of(context).colorScheme.onPrimary),
-                      label: const Text('Save')),
+                      label: Text(
+                        'Save',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      )),
                 ),
           const SizedBox(
             height: 50,
