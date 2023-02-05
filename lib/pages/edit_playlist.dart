@@ -42,8 +42,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
 
   Future<void> getAllTags() async {
     var resp = await tags.queryAllRowsByName();
+    tagsList = resp;
+
     setState(() {
-      tagsList = resp;
       loadingTags = false;
     });
   }
@@ -55,8 +56,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
       tagsFromDbTask.add(resp[i]['id_tag']);
     }
 
+    selectedTags = tagsFromDbTask;
+
     setState(() {
-      selectedTags = tagsFromDbTask;
       loadingTags = false;
     });
   }
@@ -182,7 +184,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
                   TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
             ),
           ),
-          (tagsList.isEmpty)
+          loadingTags
+              ? const SizedBox.shrink()
+              : (tagsList.isEmpty)
               ? const SizedBox.shrink()
               : Padding(
                   padding:
@@ -240,7 +244,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
                     }).toList(),
                   ),
                 ),
-          Padding(
+          loadingTags
+              ? const SizedBox.shrink()
+              : Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
             child: FilledButton.tonalIcon(
                 onPressed: () {

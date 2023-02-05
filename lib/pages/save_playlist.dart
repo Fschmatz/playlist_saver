@@ -40,8 +40,9 @@ class _SavePlaylistState extends State<SavePlaylist> {
 
   Future<void> getAllTags() async {
     var resp = await tags.queryAllRowsByName();
+    tagsList = resp;
+
     setState(() {
-      tagsList = resp;
       loadingTags = false;
     });
   }
@@ -66,8 +67,6 @@ class _SavePlaylistState extends State<SavePlaylist> {
       );
     }
 
-    print('Artista ' + artistName);
-
     setState(() {
       metaData;
       controllerPlaylistTitle.text = metaData!.title;
@@ -78,18 +77,23 @@ class _SavePlaylistState extends State<SavePlaylist> {
   Future<String> parseArtistName() async {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
+
       List<Map<String, dynamic>> elements =
-          webScraper.getElement('head > meta:nth-child(17)', ['content']);
+          webScraper.getElement('head > meta:nth-child(26)', ['content']);
       List<String> artistDataElement =
           elements[0]['attributes']['content'].toString().split('·');
 
-      String formattedArtistName = (artistDataElement[0].trim() == "Spotify" ||
-              artistDataElement[0].trim().contains('This Is '))
-          ? ""
-          : artistDataElement[0].trim();
+      String formattedArtistName;
 
-      print('Artista ' + formattedArtistName);
-
+      if (artistDataElement[0].trim() == "Spotify") {
+        formattedArtistName = "";
+      }
+      if (artistDataElement[0].trim().contains('This Is ')) {
+        formattedArtistName =
+            artistDataElement[0].trim().replaceAll('This Is ', '');
+      } else {
+        formattedArtistName = artistDataElement[0].trim();
+      }
       return formattedArtistName;
     } else {
       return '';
@@ -270,28 +274,52 @@ class _SavePlaylistState extends State<SavePlaylist> {
                   TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
             ),
           ),
-          (tagsList.isEmpty)
+          loadingTags
               ? const SizedBox.shrink()
-              : Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: Wrap(
-                    spacing: 8.0,
-                    children:
-                        List<Widget>.generate(tagsList.length, (int index) {
-                      return FilterChip(
-                        key: UniqueKey(),
-                        onSelected: (bool selected) {
-                          if (selectedTags
-                              .contains(tagsList[index]['id_tag'])) {
-                            selectedTags.remove(tagsList[index]['id_tag']);
-                          } else {
-                            selectedTags.add(tagsList[index]['id_tag']);
-                          }
-                          setState(() {});
-                        },
-                        side: BorderSide(
-                            color: selectedTags
+              : (tagsList.isEmpty)
+                  ? const SizedBox.shrink()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 10),
+                      child: Wrap(
+                        spacing: 8.0,
+                        children:
+                            List<Widget>.generate(tagsList.length, (int index) {
+                          return FilterChip(
+                            key: UniqueKey(),
+                            onSelected: (bool selected) {
+                              if (selectedTags
+                                  .contains(tagsList[index]['id_tag'])) {
+                                selectedTags.remove(tagsList[index]['id_tag']);
+                              } else {
+                                selectedTags.add(tagsList[index]['id_tag']);
+                              }
+                              setState(() {});
+                            },
+                            side: BorderSide(
+                                color: selectedTags
+                                        .contains(tagsList[index]['id_tag'])
+                                    ? tagTextBrightness == Brightness.dark
+                                        ? darkenColor(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            65)
+                                        : lightenColor(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            70)
+                                    : Theme.of(context)
+                                        .inputDecorationTheme
+                                        .border!
+                                        .borderSide
+                                        .color
+                                        .withOpacity(0.3)),
+                            label: Text(
+                              tagsList[index]['name'],
+                            ),
+                            backgroundColor: selectedTags
                                     .contains(tagsList[index]['id_tag'])
                                 ? tagTextBrightness == Brightness.dark
                                     ? darkenColor(
@@ -300,56 +328,42 @@ class _SavePlaylistState extends State<SavePlaylist> {
                                     : lightenColor(
                                         Theme.of(context).colorScheme.primary,
                                         70)
-                                : Theme.of(context)
-                                    .inputDecorationTheme
-                                    .border!
-                                    .borderSide
-                                    .color
-                                    .withOpacity(0.3)),
-                        label: Text(
-                          tagsList[index]['name'],
-                        ),
-                        backgroundColor: selectedTags
-                                .contains(tagsList[index]['id_tag'])
-                            ? tagTextBrightness == Brightness.dark
-                                ? darkenColor(
-                                    Theme.of(context).colorScheme.primary, 65)
-                                : lightenColor(
-                                    Theme.of(context).colorScheme.primary, 70)
-                            : Theme.of(context).scaffoldBackgroundColor,
-                        labelStyle: TextStyle(
-                            color:
-                                selectedTags.contains(tagsList[index]['id_tag'])
+                                : Theme.of(context).scaffoldBackgroundColor,
+                            labelStyle: TextStyle(
+                                color: selectedTags
+                                        .contains(tagsList[index]['id_tag'])
                                     ? Theme.of(context).colorScheme.primary
                                     : Theme.of(context)
                                         .textTheme
                                         .headline6!
                                         .color!
                                         .withOpacity(0.9)),
-                      );
-                    }).toList(),
-                  ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+          loadingTags
+              ? const SizedBox.shrink()
+              : Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                  child: FilledButton.tonalIcon(
+                      onPressed: () {
+                        if (validateTextFields()) {
+                          _savePlaylist().then((v) => {
+                                widget.refreshHome!(),
+                                Navigator.of(context).pop(),
+                              });
+                        } else {
+                          setState(() {
+                            _validLink;
+                            _validTitle;
+                          });
+                        }
+                      },
+                      icon: Icon(Icons.save_outlined,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                      label: const Text('Save')),
                 ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-            child: FilledButton.tonalIcon(
-                onPressed: () {
-                  if (validateTextFields()) {
-                    _savePlaylist().then((v) => {
-                          widget.refreshHome!(),
-                          Navigator.of(context).pop(),
-                        });
-                  } else {
-                    setState(() {
-                      _validLink;
-                      _validTitle;
-                    });
-                  }
-                },
-                icon: Icon(Icons.save_outlined,
-                    color: Theme.of(context).colorScheme.onPrimary),
-                label: const Text('Save')),
-          ),
           const SizedBox(
             height: 50,
           ),

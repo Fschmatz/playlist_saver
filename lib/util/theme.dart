@@ -65,18 +65,11 @@ ThemeData light = ThemeData(
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFFE1E2EC),
     surfaceTintColor: Color(0xFFE1E2EC),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
-    ),
   ),
-  listTileTheme: const ListTileThemeData(
-      iconColor: Color(0xFF454546)
-  ),
-  dividerTheme: const DividerThemeData(color:  Color(0xFFB2B2B9)),
+  listTileTheme: const ListTileThemeData(iconColor: Color(0xFF454546)),
+  dividerTheme: const DividerThemeData(color: Color(0xFFB2B2B9)),
   snackBarTheme: const SnackBarThemeData(
-      backgroundColor: Color(0xFF1a1c29),
-      behavior: SnackBarBehavior.floating),
+      backgroundColor: Color(0xFF1a1c29), behavior: SnackBarBehavior.floating),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Color(0xFFE1E2EC),
   ),
@@ -100,18 +93,15 @@ ThemeData dark = ThemeData(
   primaryColor: const Color(0xFF1B1B1D),
   scaffoldBackgroundColor: const Color(0xFF1B1B1D),
   colorScheme: const ColorScheme.dark(
-    background: Color(0xFF1B1B1D),
-    primary: Color(0xFFA4C2FD),
-    onPrimary: Color(0xFF002F65),
-    secondary: Color(0xFFA4C2FD),
-    outline: Color(0xFF8D9099),
-  ),
+      background: Color(0xFF1B1B1D),
+      primary: Color(0xFFA4C2FD),
+      onPrimary: Color(0xFF002F65),
+      secondary: Color(0xFFA4C2FD),
+      outline: Color(0xFF8D9099)),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Color(0xFFA4C2FD),
   ),
-  listTileTheme: const ListTileThemeData(
-    iconColor: Color(0xFFE2E2E9)
-  ),
+  listTileTheme: const ListTileThemeData(iconColor: Color(0xFFE2E2E9)),
   appBarTheme: const AppBarTheme(
     surfaceTintColor: Color(0xFF1B1B1D),
     color: Color(0xFF1B1B1D),
@@ -120,20 +110,15 @@ ThemeData dark = ThemeData(
     surfaceTintColor: Color(0xFF28282A),
     color: Color(0xFF28282A),
   ),
-  dividerTheme: const DividerThemeData(color:  Color(0xFF424248)),
+  dividerTheme: const DividerThemeData(color: Color(0xFF424248)),
   dialogTheme: const DialogTheme(
     backgroundColor: Color(0xFF28282F),
   ),
   snackBarTheme: const SnackBarThemeData(
-      backgroundColor: Color(0xFFcfe5ff),
-      behavior: SnackBarBehavior.floating),
+      backgroundColor: Color(0xFFcfe5ff), behavior: SnackBarBehavior.floating),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFF28282F),
     surfaceTintColor: Color(0xFF28282F),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
-    ),
   ),
   popupMenuTheme: const PopupMenuThemeData(
     shape: RoundedRectangleBorder(
@@ -151,7 +136,6 @@ ThemeData dark = ThemeData(
     ),
   ),
   inputDecorationTheme: const InputDecorationTheme(
-      fillColor: Color(0xFFA4C2FD),
       focusColor: Color(0xFFA4C2FD),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(

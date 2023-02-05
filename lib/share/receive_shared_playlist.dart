@@ -31,7 +31,6 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   List<int> selectedTags = [];
   bool _validTitle = true;
   bool _validLink = true;
-  
 
   @override
   void initState() {
@@ -39,7 +38,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
     startFunctions();
   }
 
-  void startFunctions(){
+  void startFunctions() {
     List<String> formattedString = widget.sharedText!.split('https');
 
     controllerLink.text = "https${formattedString[1]}";
@@ -49,8 +48,9 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
 
   Future<void> getAllTags() async {
     var resp = await tags.queryAllRowsByName();
+    tagsList = resp;
+
     setState(() {
-      tagsList = resp;
       loadingTags = false;
     });
   }
@@ -75,7 +75,6 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       );
     }
 
-
     if (mounted) {
       setState(() {
         metaData;
@@ -91,14 +90,21 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       //options -> meta:nth-child(17) - 18 - 5
 
       List<Map<String, dynamic>> elements =
-          webScraper.getElement('head > meta:nth-child(17)', ['content']);
+          webScraper.getElement('head > meta:nth-child(26)', ['content']);
       List<String> artistDataElement =
           elements[0]['attributes']['content'].toString().split('·');
 
-      String formattedArtistName = (artistDataElement[0].trim() == "Spotify" ||
-          artistDataElement[0].trim().contains('This Is '))
-          ? ""
-          : artistDataElement[0].trim();
+      String formattedArtistName;
+
+      if (artistDataElement[0].trim() == "Spotify") {
+        formattedArtistName = "";
+      }
+      if (artistDataElement[0].trim().contains('This Is ')) {
+        formattedArtistName =
+            artistDataElement[0].trim().replaceAll('This Is ', '');
+      } else {
+        formattedArtistName = artistDataElement[0].trim();
+      }
 
       return formattedArtistName;
     } else {
@@ -123,7 +129,8 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
       PlaylistDao.columnState: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
-      PlaylistDao.columnCover: compressedCover!.isEmpty ? null : compressedCover,
+      PlaylistDao.columnCover:
+          compressedCover!.isEmpty ? null : compressedCover,
     };
     final idPlaylist = await dbPlaylist.insert(row);
 
@@ -297,28 +304,53 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                       fontSize: 16, color: Theme.of(context).hintColor),
                 ),
               ),
-              (tagsList.isEmpty)
+              loadingTags
                   ? const SizedBox.shrink()
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                      child: Wrap(
-                        spacing: 8.0,
-                        children:
-                            List<Widget>.generate(tagsList.length, (int index) {
-                          return FilterChip(
-                            key: UniqueKey(),
-                            onSelected: (bool selected) {
-                              if (selectedTags
-                                  .contains(tagsList[index]['id_tag'])) {
-                                selectedTags.remove(tagsList[index]['id_tag']);
-                              } else {
-                                selectedTags.add(tagsList[index]['id_tag']);
-                              }
-                              setState(() {});
-                            },
-                            side: BorderSide(
-                                color: selectedTags
+                  : (tagsList.isEmpty)
+                      ? const SizedBox.shrink()
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
+                          child: Wrap(
+                            spacing: 8.0,
+                            children: List<Widget>.generate(tagsList.length,
+                                (int index) {
+                              return FilterChip(
+                                key: UniqueKey(),
+                                onSelected: (bool selected) {
+                                  if (selectedTags
+                                      .contains(tagsList[index]['id_tag'])) {
+                                    selectedTags
+                                        .remove(tagsList[index]['id_tag']);
+                                  } else {
+                                    selectedTags.add(tagsList[index]['id_tag']);
+                                  }
+                                  setState(() {});
+                                },
+                                side: BorderSide(
+                                    color: selectedTags
+                                            .contains(tagsList[index]['id_tag'])
+                                        ? tagTextBrightness == Brightness.dark
+                                            ? darkenColor(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                65)
+                                            : lightenColor(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                70)
+                                        : Theme.of(context)
+                                            .inputDecorationTheme
+                                            .border!
+                                            .borderSide
+                                            .color
+                                            .withOpacity(0.3)),
+                                label: Text(
+                                  tagsList[index]['name'],
+                                ),
+                                backgroundColor: selectedTags
                                         .contains(tagsList[index]['id_tag'])
                                     ? tagTextBrightness == Brightness.dark
                                         ? darkenColor(
@@ -331,55 +363,40 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                                                 .colorScheme
                                                 .primary,
                                             70)
-                                    : Theme.of(context)
-                                        .inputDecorationTheme
-                                        .border!
-                                        .borderSide
-                                        .color
-                                        .withOpacity(0.3)),
-                            label: Text(
-                              tagsList[index]['name'],
-                            ),
-                            backgroundColor: selectedTags
-                                    .contains(tagsList[index]['id_tag'])
-                                ? tagTextBrightness == Brightness.dark
-                                    ? darkenColor(
-                                        Theme.of(context).colorScheme.primary,
-                                        65)
-                                    : lightenColor(
-                                        Theme.of(context).colorScheme.primary,
-                                        70)
-                                : Theme.of(context).scaffoldBackgroundColor,
-                            labelStyle: TextStyle(
-                                color: selectedTags
-                                        .contains(tagsList[index]['id_tag'])
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .color!
-                                        .withOpacity(0.9)),
-                          );
-                        }).toList(),
-                      ),
+                                    : Theme.of(context).scaffoldBackgroundColor,
+                                labelStyle: TextStyle(
+                                    color: selectedTags
+                                            .contains(tagsList[index]['id_tag'])
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .color!
+                                            .withOpacity(0.9)),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+              loadingTags
+                  ? const SizedBox.shrink()
+                  : Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                      child: FilledButton.tonalIcon(
+                          onPressed: () {
+                            if (validateTextFields()) {
+                              _savePlaylist()
+                                  .then((_) => {SystemNavigator.pop()});
+                            } else {
+                              setState(() {
+                                _validLink;
+                                _validTitle;
+                              });
+                            }
+                          },
+                          icon: Icon(Icons.save_outlined,
+                              color: Theme.of(context).colorScheme.onPrimary),
+                          label: const Text('Save')),
                     ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-                child: FilledButton.tonalIcon(
-                    onPressed: () {
-                      if (validateTextFields()) {
-                        _savePlaylist().then((_) => {SystemNavigator.pop()});
-                      } else {
-                        setState(() {
-                          _validLink;
-                          _validTitle;
-                        });
-                      }
-                    },
-                    icon: Icon(Icons.save_outlined,
-                        color: Theme.of(context).colorScheme.onPrimary),
-                    label: const Text('Save')),
-              ),
               const SizedBox(
                 height: 50,
               ),

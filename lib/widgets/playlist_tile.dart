@@ -293,7 +293,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                                                       .primary),
                                             )
                                           : Text(
-                                              " • ${ tagsList[index]['name']}",
+                                              " • ${tagsList[index]['name']}",
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w500,
