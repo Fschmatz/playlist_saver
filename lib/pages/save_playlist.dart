@@ -77,23 +77,12 @@ class _SavePlaylistState extends State<SavePlaylist> {
   Future<String> parseArtistName() async {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
-      List<Map<String, dynamic>> elements =
-          webScraper.getElement('head > meta:nth-child(26)', ['content']);
-      List<String> artistDataElement =
-          elements[0]['attributes']['content'].toString().split('·');
 
-      String formattedArtistName;
+      List<Map<String, dynamic>> elements = webScraper.getElement('head > title', ['content']);
+      String artistDataElement = elements[0]['title'];
+      //print(artistDataElement);
 
-      if (artistDataElement[0].trim() == "Spotify") {
-        formattedArtistName = "";
-      }
-      if (artistDataElement[0].trim().contains('This Is ')) {
-        formattedArtistName =
-            artistDataElement[0].trim().replaceAll('This Is ', '');
-      } else {
-        formattedArtistName = artistDataElement[0].trim();
-      }
-      return formattedArtistName;
+      return formatArtistNameToSave(artistDataElement);
     } else {
       return '';
     }

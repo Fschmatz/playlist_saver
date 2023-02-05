@@ -47,3 +47,33 @@ Future<Uint8List> compressCoverImage(Uint8List list) async {
   );
   return result;
 }
+
+String formatArtistNameToSave(String artistFromHTML){
+  String formattedArtistName = "";
+
+  if (artistFromHTML.contains('This Is ')) {
+    formattedArtistName =
+        artistFromHTML.replaceAll('This Is ', '').replaceAll(' - playlist by Spotify | Spotify', '');
+  }
+  if (artistFromHTML.contains('song and lyrics by ')) {
+    List<String> listSplit = artistFromHTML.split('by ');
+    formattedArtistName = listSplit[1]
+        .replaceAll(' | Spotify', '');
+  }
+  if (artistFromHTML.contains('Album by ')) {
+    List<String> listSplit = artistFromHTML.split('by ');
+    formattedArtistName = listSplit[1]
+        .replaceAll(' | Spotify', '');
+  }
+  if (artistFromHTML.contains('Single by ')) {
+    List<String> listSplit = artistFromHTML.split('by ');
+    formattedArtistName = listSplit[1]
+        .replaceAll(' | Spotify', '');
+  }
+  if (artistFromHTML.contains('Ep by ')) {
+    List<String> listSplit = artistFromHTML.split('by ');
+    formattedArtistName = listSplit[1]
+        .replaceAll(' | Spotify', '');
+  }
+  return formattedArtistName;
+}

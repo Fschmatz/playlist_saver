@@ -87,26 +87,11 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   Future<String> parseArtistName() async {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
-      //options -> meta:nth-child(17) - 18 - 5
 
-      List<Map<String, dynamic>> elements =
-          webScraper.getElement('head > meta:nth-child(26)', ['content']);
-      List<String> artistDataElement =
-          elements[0]['attributes']['content'].toString().split('·');
+      List<Map<String, dynamic>> elements = webScraper.getElement('head > title', ['content']);
+      String artistDataElement = elements[0]['title'];
 
-      String formattedArtistName;
-
-      if (artistDataElement[0].trim() == "Spotify") {
-        formattedArtistName = "";
-      }
-      if (artistDataElement[0].trim().contains('This Is ')) {
-        formattedArtistName =
-            artistDataElement[0].trim().replaceAll('This Is ', '');
-      } else {
-        formattedArtistName = artistDataElement[0].trim();
-      }
-
-      return formattedArtistName;
+      return formatArtistNameToSave(artistDataElement);
     } else {
       return '';
     }
