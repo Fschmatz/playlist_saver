@@ -16,12 +16,14 @@ class PlaylistTile extends StatefulWidget {
   Function() refreshHome;
   int index;
   Function(int) removeFromList;
+  bool isPageDownloads;
 
   PlaylistTile(
       {Key? key,
       required this.playlist,
       required this.refreshHome,
       required this.index,
+        required this.isPageDownloads,
       required this.removeFromList})
       : super(key: key);
 }
@@ -100,7 +102,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     },
                   ),
                   Visibility(
-                    visible: (widget.playlist.state != 0),
+                    visible: widget.playlist.state != 0 && !widget.isPageDownloads,
                     child: ListTile(
                       leading: const Icon(Icons.queue_music_outlined),
                       title: const Text(
@@ -114,7 +116,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     ),
                   ),
                   Visibility(
-                    visible: (widget.playlist.state != 1),
+                    visible: widget.playlist.state != 1 && !widget.isPageDownloads,
                     child: ListTile(
                       leading: const Icon(Icons.archive_outlined),
                       title: const Text(
@@ -128,7 +130,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     ),
                   ),
                   Visibility(
-                    visible: (widget.playlist.state != 2),
+                    visible: widget.playlist.state != 2 && !widget.isPageDownloads,
                     child: ListTile(
                       leading: const Icon(Icons.favorite_border_outlined),
                       title: const Text(

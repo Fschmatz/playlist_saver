@@ -30,7 +30,8 @@ class DbCreator {
              link TEXT NOT NULL,
              title TEXT NOT NULL,
              state INTEGER NOT NULL,            
-             artist TEXT,              
+             artist TEXT,
+             downloaded INTEGER NOT NULL,              
              cover BLOB
           )          
           ''');

@@ -26,15 +26,19 @@ class _PlaylistListState extends State<PlaylistList> {
   }
 
   void getPlaylists() async {
-    var resp = await dbPlaylist.queryAllRowsDescState(widget.stateValue);
+    if (widget.stateValue == 3) {
+      playlists = await dbPlaylist.queryAllRowsDownloadedDesc();
+    } else {
+      playlists = await dbPlaylist.queryAllRowsDescState(widget.stateValue);
+    }
     setState(() {
       loading = false;
-      playlists = resp;
+      //playlists = resp;
     });
   }
 
   void removeFromList(int index) {
-   setState(() {
+    setState(() {
       playlists = List.from(playlists)..removeAt(index);
     });
   }
@@ -60,12 +64,14 @@ class _PlaylistListState extends State<PlaylistList> {
                       removeFromList: removeFromList,
                       index: index,
                       refreshHome: getPlaylists,
+                      isPageDownloads: widget.stateValue == 3 ? true : false,
                       playlist: Playlist(
                         idPlaylist: playlists[index]['id_playlist'],
                         link: playlists[index]['link'],
                         title: playlists[index]['title'],
                         state: playlists[index]['state'],
                         artist: playlists[index]['artist'],
+                        downloaded: playlists[index]['downloaded'],
                         cover: playlists[index]['cover'],
                       ),
                     );

@@ -31,6 +31,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   List<int> selectedTags = [];
   bool _validTitle = true;
   bool _validLink = true;
+  bool _downloaded = false;
 
   @override
   void initState() {
@@ -114,6 +115,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
       PlaylistDao.columnState: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
+      PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
       PlaylistDao.columnCover:
           compressedCover!.isEmpty ? null : compressedCover,
     };
@@ -168,29 +170,6 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
         child: Scaffold(
             appBar: AppBar(
               title: const Text('New playlist'),
-              /* actions: [
-                IconButton(
-                  icon: const Icon(Icons.refresh_outlined),
-                  tooltip: 'Load data',
-                  onPressed: () {
-                    _fetchMetadata();
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.save_outlined),
-                  tooltip: 'Save',
-                  onPressed: () {
-                    if (validateTextFields()) {
-                      _savePlaylist().then((_) => {SystemNavigator.pop()});
-                    } else {
-                      setState(() {
-                        _validLink;
-                        _validTitle;
-                      });
-                    }
-                  },
-                ),
-              ],*/
             ),
             body: ListView(children: [
               ListTile(
@@ -281,12 +260,20 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18, 5, 25, 0),
-                child: Text(
-                  "Add tags",
-                  style: TextStyle(
-                      fontSize: 16, color: Theme.of(context).hintColor),
+              SwitchListTile(
+                title: const Text(
+                  "Downloaded",
+                ),
+                value: _downloaded,
+                onChanged: (value) {
+                  setState(() {
+                    _downloaded = value;
+                  });
+                },
+              ),
+              const ListTile(
+                title: Text(
+                  "Add Tags",
                 ),
               ),
               loadingTags
@@ -295,7 +282,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                       ? const SizedBox.shrink()
                       : Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 10),
+                              horizontal: 16, vertical: 0),
                           child: Wrap(
                             spacing: 8.0,
                             children: List<Widget>.generate(tagsList.length,
@@ -365,7 +352,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
               loadingTags
                   ? const SizedBox.shrink()
                   : Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
                       child: FilledButton.tonalIcon(
                           onPressed: () {
                             if (validateTextFields()) {

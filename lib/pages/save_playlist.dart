@@ -31,6 +31,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
   List<int> selectedTags = [];
   bool _validTitle = true;
   bool _validLink = true;
+  bool _downloaded = false;
 
   @override
   void initState() {
@@ -77,10 +78,9 @@ class _SavePlaylistState extends State<SavePlaylist> {
   Future<String> parseArtistName() async {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
-
-      List<Map<String, dynamic>> elements = webScraper.getElement('head > title', ['content']);
+      List<Map<String, dynamic>> elements =
+          webScraper.getElement('head > title', ['content']);
       String artistDataElement = elements[0]['title'];
-      //print(artistDataElement);
 
       return formatArtistNameToSave(artistDataElement);
     } else {
@@ -105,6 +105,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
       PlaylistDao.columnState: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
+      PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
       PlaylistDao.columnCover:
           compressedCover!.isEmpty ? null : compressedCover,
     };
@@ -141,32 +142,6 @@ class _SavePlaylistState extends State<SavePlaylist> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('New playlist'),
-          /* actions: [
-            IconButton(
-              icon: const Icon(Icons.refresh_outlined),
-              tooltip: 'Load data',
-              onPressed: () {
-                _fetchMetadata();
-              },
-            ),
-              IconButton(
-              icon: const Icon(Icons.save_outlined),
-              tooltip: 'Save',
-              onPressed: () {
-                if (validateTextFields()) {
-                  _savePlaylist().then((v) => {
-                        widget.refreshHome!(),
-                        Navigator.of(context).pop(),
-                      });
-                } else {
-                  setState(() {
-                    _validLink;
-                    _validTitle;
-                  });
-                }
-              },
-            ),
-          ],*/
         ),
         body: ListView(children: [
           ListTile(
@@ -254,12 +229,20 @@ class _SavePlaylistState extends State<SavePlaylist> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 5, 25, 0),
-            child: Text(
-              "Add tags",
-              style:
-                  TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
+          SwitchListTile(
+            title: const Text(
+              "Downloaded",
+            ),
+            value: _downloaded,
+            onChanged: (value) {
+              setState(() {
+                _downloaded = value;
+              });
+            },
+          ),
+          const ListTile(
+            title: Text(
+              "Add Tags",
             ),
           ),
           loadingTags
@@ -268,7 +251,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                   ? const SizedBox.shrink()
                   : Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
+                          horizontal: 16, vertical: 0),
                       child: Wrap(
                         spacing: 8.0,
                         children:
@@ -333,7 +316,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
           loadingTags
               ? const SizedBox.shrink()
               : Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
                   child: FilledButton.tonalIcon(
                       onPressed: () {
                         if (validateTextFields()) {

@@ -1,7 +1,7 @@
 name: playlist_saver
 description: Flutter project.
 publish_to: 'none'
-version: 1.6.1
+version: 1.6.2
 
 environment:
   sdk: ">=2.16.2 <3.7.0"

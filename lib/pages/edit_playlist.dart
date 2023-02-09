@@ -30,6 +30,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
   List<int> tagsFromDbTask = [];
   bool _validTitle = true;
   bool _validLink = true;
+  bool _downloaded = false;
 
   @override
   void initState() {
@@ -37,16 +38,13 @@ class _EditPlaylistState extends State<EditPlaylist> {
     controllerLink.text = widget.playlist.link;
     controllerPlaylistTitle.text = widget.playlist.title;
     controllerArtist.text = widget.playlist.artist!;
+    _downloaded = widget.playlist.isDownloaded();
     getAllTags().then((value) => getTagsFromTask());
   }
 
   Future<void> getAllTags() async {
     var resp = await tags.queryAllRowsByName();
     tagsList = resp;
-
-    setState(() {
-      loadingTags = false;
-    });
   }
 
   void getTagsFromTask() async {
@@ -55,7 +53,6 @@ class _EditPlaylistState extends State<EditPlaylist> {
     for (int i = 0; i < resp.length; i++) {
       tagsFromDbTask.add(resp[i]['id_tag']);
     }
-
     selectedTags = tagsFromDbTask;
 
     setState(() {
@@ -72,6 +69,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
       PlaylistDao.columnIdPlaylist: widget.playlist.idPlaylist,
       PlaylistDao.columnLink: controllerLink.text,
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
+      PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
       PlaylistDao.columnArtist: controllerArtist.text,
     };
     final update = await dbPlaylist.update(row);
@@ -107,23 +105,6 @@ class _EditPlaylistState extends State<EditPlaylist> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Edit playlist'),
-          /*actions: [
-            IconButton(
-              icon: const Icon(Icons.save_outlined),
-              tooltip: 'Save',
-              onPressed: () {
-                if (validateTextFields()) {
-                  _updatePlaylist().then((v) =>
-                      {widget.refreshHome(), Navigator.of(context).pop()});
-                } else {
-                  setState(() {
-                    _validLink;
-                    _validTitle;
-                  });
-                }
-              },
-            ),
-          ],*/
         ),
         body: ListView(children: [
           Padding(
@@ -176,12 +157,20 @@ class _EditPlaylistState extends State<EditPlaylist> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 5, 25, 0),
-            child: Text(
-              "Add tags",
-              style:
-                  TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
+          SwitchListTile(
+            title: const Text(
+              "Downloaded",
+            ),
+            value: _downloaded,
+            onChanged: (value) {
+              setState(() {
+                _downloaded = value;
+              });
+            },
+          ),
+          const ListTile(
+            title: Text(
+              "Add Tags",
             ),
           ),
           loadingTags
@@ -190,7 +179,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
                   ? const SizedBox.shrink()
                   : Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
+                          horizontal: 16, vertical: 0),
                       child: Wrap(
                         spacing: 8.0,
                         children:
@@ -253,7 +242,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
           loadingTags
               ? const SizedBox.shrink()
               : Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
                   child: FilledButton.tonalIcon(
                       onPressed: () {
                         if (validateTextFields()) {

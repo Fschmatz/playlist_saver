@@ -74,6 +74,7 @@ ThemeData light = ThemeData(
     backgroundColor: Color(0xFFE1E2EC),
   ),
   navigationBarTheme: NavigationBarThemeData(
+      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       backgroundColor: const Color(0xFFE1E2EC),
       surfaceTintColor: const Color(0xFFE1E2EC),
       indicatorColor: const Color(0xFFB5C0DC),
@@ -156,6 +157,7 @@ ThemeData dark = ThemeData(
     backgroundColor: Color(0xFF28282F),
   ),
   navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       backgroundColor: const Color(0xFF28282F),
       surfaceTintColor: const Color(0xFF28282F),
       indicatorColor: const Color(0xFF424A67),

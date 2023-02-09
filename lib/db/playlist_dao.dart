@@ -15,6 +15,7 @@ class PlaylistDao {
   static const columnTitle = 'title';
   static const columnState = 'state';
   static const columnArtist = 'artist';
+  static const columnDownloaded = 'downloaded';
   static const columnCover = 'cover';
 
   static Database? _database;
@@ -44,6 +45,11 @@ class PlaylistDao {
   Future<List<Map<String, dynamic>>> queryAllRowsDescState(int state) async {
     Database db = await instance.database;
     return await db.rawQuery('SELECT * FROM $table WHERE $columnState = $state ORDER BY id_playlist DESC');
+  }
+
+  Future<List<Map<String, dynamic>>> queryAllRowsDownloadedDesc() async {
+    Database db = await instance.database;
+    return await db.rawQuery('SELECT * FROM $table WHERE $columnDownloaded = 1 ORDER BY id_playlist DESC');
   }
 
   Future<int> insert(Map<String, dynamic> row) async {

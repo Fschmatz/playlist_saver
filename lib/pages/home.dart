@@ -28,6 +28,10 @@ class _HomeState extends State<Home> {
       key: UniqueKey(),
       stateValue: 2,
     ),
+    PlaylistList(
+      key: UniqueKey(),
+      stateValue: 3,
+    ),
   ];
 
   void refresh() {
@@ -44,6 +48,10 @@ class _HomeState extends State<Home> {
         PlaylistList(
           key: UniqueKey(),
           stateValue: 2,
+        ),
+        PlaylistList(
+          key: UniqueKey(),
+          stateValue: 3,
         ),
       ];
     });
@@ -144,6 +152,13 @@ class _HomeState extends State<Home> {
               Icons.favorite_outlined,
             ),
             label: 'Favorites',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.download_outlined),
+            selectedIcon: Icon(
+              Icons.download,
+            ),
+            label: 'Downloads',
           ),
         ],
       ),
