@@ -23,7 +23,7 @@ class PlaylistTile extends StatefulWidget {
       required this.playlist,
       required this.refreshHome,
       required this.index,
-        required this.isPageDownloads,
+      required this.isPageDownloads,
       required this.removeFromList})
       : super(key: key);
 }
@@ -102,7 +102,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     },
                   ),
                   Visibility(
-                    visible: widget.playlist.state != 0 && !widget.isPageDownloads,
+                    visible:
+                        widget.playlist.state != 0 && !widget.isPageDownloads,
                     child: ListTile(
                       leading: const Icon(Icons.queue_music_outlined),
                       title: const Text(
@@ -116,7 +117,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     ),
                   ),
                   Visibility(
-                    visible: widget.playlist.state != 1 && !widget.isPageDownloads,
+                    visible:
+                        widget.playlist.state != 1 && !widget.isPageDownloads,
                     child: ListTile(
                       leading: const Icon(Icons.archive_outlined),
                       title: const Text(
@@ -130,7 +132,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
                     ),
                   ),
                   Visibility(
-                    visible: widget.playlist.state != 2 && !widget.isPageDownloads,
+                    visible:
+                        widget.playlist.state != 2 && !widget.isPageDownloads,
                     child: ListTile(
                       leading: const Icon(Icons.favorite_border_outlined),
                       title: const Text(
@@ -279,32 +282,49 @@ class _PlaylistTileState extends State<PlaylistTile> {
                                 height: 0,
                               ),
                             ),
-                            (tagsList.isEmpty)
-                                ? const SizedBox.shrink()
-                                : Wrap(
-                                    children: List<Widget>.generate(
-                                        tagsList.length, (int index) {
-                                      return index == 0
-                                          ? Text(
-                                              tagsList[index]['name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary),
-                                            )
-                                          : Text(
-                                              " • ${tagsList[index]['name']}",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary),
-                                            );
-                                    }).toList(),
-                                  ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                (tagsList.isEmpty)
+                                    ? const SizedBox.shrink()
+                                    : Expanded(
+                                        child: Wrap(
+                                          children: List<Widget>.generate(
+                                              tagsList.length, (int index) {
+                                            return index == 0
+                                                ? Text(
+                                                    tagsList[index]['name'],
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary),
+                                                  )
+                                                : Text(
+                                                    " • ${tagsList[index]['name']}",
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary),
+                                                  );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                Visibility(
+                                    visible: widget.playlist.isDownloaded(),
+                                    child: Icon(
+                                      Icons.download_outlined,
+                                      size: 16,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    )),
+                              ],
+                            ),
                           ],
                         ),
                       ),

@@ -54,10 +54,10 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
             return MaterialPageRoute(builder: (context) => const App());
 
           case "/saveShare":
-            if (routeSettings.arguments != null) {
+            if (routeSettings.arguments != null || widget.initData.sharedText.isEmpty ) {
               final args = routeSettings.arguments as ShowDataArgument;
               return MaterialPageRoute(
-                  builder: (context) => ReceiveSharedPlaylist(
+                  builder: (_) => ReceiveSharedPlaylist(
                         sharedText: args.sharedText,
                       ));
             } else {

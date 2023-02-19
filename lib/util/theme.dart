@@ -113,13 +113,13 @@ ThemeData dark = ThemeData(
   ),
   dividerTheme: const DividerThemeData(color: Color(0xFF424248)),
   dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFF28282F),
+    backgroundColor: Color(0xFF282932),
   ),
   snackBarTheme: const SnackBarThemeData(
-      backgroundColor: Color(0xFFcfe5ff), behavior: SnackBarBehavior.floating),
+      backgroundColor: Color(0xffb8cbe1), behavior: SnackBarBehavior.floating),
   bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: Color(0xFF28282F),
-    surfaceTintColor: Color(0xFF28282F),
+    backgroundColor: Color(0xFF282932),
+    surfaceTintColor: Color(0xFF282932),
   ),
   popupMenuTheme: const PopupMenuThemeData(
     shape: RoundedRectangleBorder(
@@ -154,12 +154,12 @@ ThemeData dark = ThemeData(
         ),
       )),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFF28282F),
+    backgroundColor: Color(0xFF282932),
   ),
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-      backgroundColor: const Color(0xFF28282F),
-      surfaceTintColor: const Color(0xFF28282F),
+      backgroundColor: const Color(0xFF282932),
+      surfaceTintColor: const Color(0xFF282932),
       indicatorColor: const Color(0xFF424A67),
       iconTheme: MaterialStateProperty.all(const IconThemeData(
         color: Color(0xFFE2E2EF),

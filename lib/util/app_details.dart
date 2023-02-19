@@ -1,11 +1,11 @@
 class AppDetails{
 
-  static String appVersion = "1.6.2";
+  static String appVersion = "1.6.3";
   static String appName = "Playlist Saver Fschmatz";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-1.6.2
+1.6.3
 - Downloads page
 - UI changes
 - Flutter 3.7
