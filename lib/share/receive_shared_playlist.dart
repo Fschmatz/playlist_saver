@@ -31,7 +31,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   List<int> selectedTags = [];
   bool _validTitle = true;
   bool _validLink = true;
-  bool _downloaded = false;
+  bool _downloaded = true;
 
   @override
   void initState() {
