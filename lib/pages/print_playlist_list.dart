@@ -27,6 +27,8 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
     await dbPlaylists.queryAllRowsDescState(1);
     List<Map<String, dynamic>> listPlaylistFavorites =
     await dbPlaylists.queryAllRowsDescState(2);
+    List<Map<String, dynamic>> listDownloads =
+    await dbPlaylists.queryAllRowsDownloadedDesc();
 
     formattedList +=
     'LISTEN - ${listPlaylistsListen.length} Playlists\n';
@@ -34,17 +36,23 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
       formattedList += "\n• ${listPlaylistsListen[i]['title']}\n";
       formattedList += listPlaylistsListen[i]['link'] + "\n";
     }
-    formattedList += '\n********************\n\n';
+    formattedList += '\n###\n\n';
     formattedList += 'ARCHIVE - ${listPlaylistArchive.length} Playlists\n';
     for (int i = 0; i < listPlaylistArchive.length; i++) {
       formattedList += "\n• ${listPlaylistArchive[i]['title']}\n";
       formattedList += listPlaylistArchive[i]['link'] + "\n";
     }
-    formattedList += '\n********************\n\n';
+    formattedList += '\n###\n\n';
     formattedList += 'FAVORITES - ${listPlaylistFavorites.length} Playlists\n';
     for (int i = 0; i < listPlaylistFavorites.length; i++) {
       formattedList += "\n• ${listPlaylistFavorites[i]['title']}\n";
       formattedList += listPlaylistFavorites[i]['link'] + "\n";
+    }
+
+    formattedList += '\n###\n\n';
+    formattedList += 'DOWNLOADS - ${listDownloads.length} Playlists\n';
+    for (int i = 0; i < listDownloads.length; i++) {
+      formattedList += "\n• ${listDownloads[i]['artist']} - ${listDownloads[i]['title']}\n";
     }
 
     setState(() {
