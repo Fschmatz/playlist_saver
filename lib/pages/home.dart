@@ -13,7 +13,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int _currentTabIndex = 0;
   List<Widget> _tabs = [
     PlaylistList(
@@ -62,54 +61,55 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: SafeArea(
         child: NestedScrollView(
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
-                  title: const Text('Playlist Saver'),                
+                  title: const Text('Playlist Saver'),
                   pinned: false,
                   floating: true,
                   snap: true,
                   actions: [
-                    //Bug -> popup is not respecting M3
-                    Theme(
-                      data: Theme.of(context).copyWith(useMaterial3: false),
-                      child: PopupMenuButton<int>(
-                          icon: const Icon(Icons.more_vert_outlined),
-                          itemBuilder: (BuildContext context) =>
-                          <PopupMenuItem<int>>[
-                            const PopupMenuItem<int>(
-                                value: 0, child: Text('New playlist')),
-                            const PopupMenuItem<int>(
-                                value: 1, child: Text('Manage tags')),
-                            const PopupMenuItem<int>(
-                                value: 2, child: Text('Settings')),
-                          ],
-                          onSelected: (int value) {
-                            if (value == 0) {
+                    PopupMenuButton<int>(
+                        icon: const Icon(Icons.more_vert_outlined),
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuItem<int>>[
+                              const PopupMenuItem<int>(
+                                  value: 0, child: Text('New playlist')),
+                              const PopupMenuItem<int>(
+                                  value: 1, child: Text('Manage tags')),
+                              const PopupMenuItem<int>(
+                                  value: 2, child: Text('Settings')),
+                            ],
+                        onSelected: (int value) {
+                          switch (value) {
+                            case 0:
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (BuildContext context) => SavePlaylist(
+                                    builder: (BuildContext context) =>
+                                        SavePlaylist(
                                       refreshHome: refresh,
                                     ),
                                   ));
-                            } else if (value == 1) {
+                              break;
+                            case 1:
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                    const TagsManager(),
+                                        const TagsManager(),
                                   )).then((value) => refresh());
-                            } else if (value == 2) {
+                              break;
+                            case 2:
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                    const SettingsPage(),
+                                        const SettingsPage(),
                                   ));
-                            }
-                          }),
-                    )
+                          }
+                        })
                   ],
                 ),
               ];
@@ -165,4 +165,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
