@@ -117,7 +117,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       PlaylistDao.columnArtist: controllerArtist.text,
       PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
       PlaylistDao.columnCover:
-          compressedCover!.isEmpty ? null : compressedCover,
+          compressedCover ?? compressedCover,
     };
     final idPlaylist = await dbPlaylist.insert(row);
 
@@ -127,7 +127,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
           PlaylistsTagsDao.columnIdPlaylist: idPlaylist,
           PlaylistsTagsDao.columnIdTag: selectedTags[i],
         };
-        final idsPlaylistsTags = await playlistsTags.insert(rowsTaskTags);
+        await playlistsTags.insert(rowsTaskTags);
       }
     }
   }
