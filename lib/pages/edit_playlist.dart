@@ -121,6 +121,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
                   labelText: "Link",
                   helperText: "* Required",
                   counterText: "",
+                  border: const OutlineInputBorder(),
                   errorText: (_validLink) ? null : "Link is empty"),
             ),
           ),
@@ -138,6 +139,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
                   labelText: "Title",
                   helperText: "* Required",
                   counterText: "",
+                  border: const OutlineInputBorder(),
                   errorText: (_validTitle) ? null : "Title is empty"),
             ),
           ),
@@ -154,6 +156,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
               decoration: const InputDecoration(
                 labelText: "Artist",
                 counterText: "",
+                border: OutlineInputBorder(),
               ),
             ),
           ),
@@ -195,46 +198,18 @@ class _EditPlaylistState extends State<EditPlaylist> {
                               }
                               setState(() {});
                             },
-                            side: BorderSide(
-                                color: selectedTags
-                                        .contains(tagsList[index]['id_tag'])
-                                    ? tagTextBrightness == Brightness.dark
-                                        ? darkenColor(
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            65)
-                                        : lightenColor(
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            70)
-                                    : Theme.of(context)
-                                        .inputDecorationTheme
-                                        .border!
-                                        .borderSide
-                                        .color
-                                        .withOpacity(0.3)),
                             label: Text(tagsList[index]['name']),
                             backgroundColor: selectedTags
                                     .contains(tagsList[index]['id_tag'])
-                                ? tagTextBrightness == Brightness.dark
-                                    ? darkenColor(
-                                        Theme.of(context).colorScheme.primary,
-                                        65)
-                                    : lightenColor(
-                                        Theme.of(context).colorScheme.primary,
-                                        70)
-                                : Theme.of(context).scaffoldBackgroundColor,
+                                ? Theme.of(context).colorScheme.primaryContainer
+                                : null,
                             labelStyle: TextStyle(
                                 color: selectedTags
                                         .contains(tagsList[index]['id_tag'])
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .color!
-                                        .withOpacity(0.9)),
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .onPrimaryContainer
+                                    : null),
                           );
                         }).toList(),
                       ),
@@ -257,13 +232,8 @@ class _EditPlaylistState extends State<EditPlaylist> {
                           });
                         }
                       },
-                      icon: Icon(Icons.save_outlined,
-                          color: Theme.of(context).colorScheme.onPrimary),
-                      label: Text(
-                        'Save',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      )),
+                      icon: const Icon(Icons.save_outlined),
+                      label: const Text('Save')),
                 ),
           const SizedBox(
             height: 50,

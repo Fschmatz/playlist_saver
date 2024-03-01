@@ -88,8 +88,8 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   Future<String> parseArtistName() async {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
-
-      List<Map<String, dynamic>> elements = webScraper.getElement('head > title', ['content']);
+      List<Map<String, dynamic>> elements =
+          webScraper.getElement('head > title', ['content']);
       String artistDataElement = elements[0]['title'];
 
       return formatArtistNameToSave(artistDataElement);
@@ -116,8 +116,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       PlaylistDao.columnState: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
       PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
-      PlaylistDao.columnCover:
-          compressedCover ?? compressedCover,
+      PlaylistDao.columnCover: compressedCover ?? compressedCover,
     };
     final idPlaylist = await dbPlaylist.insert(row);
 
@@ -147,8 +146,6 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    final Color? bottomOverlayColor =
-        Theme.of(context).bottomNavigationBarTheme.backgroundColor;
     final Color? topOverlayColor =
         Theme.of(context).appBarTheme.backgroundColor;
     final Brightness iconBrightness =
@@ -160,8 +157,8 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
         statusBarIconBrightness: iconBrightness,
-        systemNavigationBarColor: bottomOverlayColor,
         statusBarColor: topOverlayColor,
         systemStatusBarContrastEnforced: false,
         systemNavigationBarIconBrightness: iconBrightness,
@@ -222,6 +219,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                       labelText: "Link",
                       helperText: "* Required",
                       counterText: "",
+                      border: OutlineInputBorder(),
                       errorText: _validLink ? null : "Link is empty"),
                 ),
               ),
@@ -240,6 +238,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                       labelText: "Title",
                       helperText: "* Required",
                       counterText: "",
+                      border: OutlineInputBorder(),
                       errorText: _validTitle ? null : "Title is empty"),
                 ),
               ),
@@ -257,6 +256,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                   decoration: const InputDecoration(
                     labelText: "Artist",
                     counterText: "",
+                    border: OutlineInputBorder(),
                   ),
                 ),
               ),
@@ -299,52 +299,22 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                                   }
                                   setState(() {});
                                 },
-                                side: BorderSide(
-                                    color: selectedTags
-                                            .contains(tagsList[index]['id_tag'])
-                                        ? tagTextBrightness == Brightness.dark
-                                            ? darkenColor(
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                65)
-                                            : lightenColor(
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                70)
-                                        : Theme.of(context)
-                                            .inputDecorationTheme
-                                            .border!
-                                            .borderSide
-                                            .color
-                                            .withOpacity(0.3)),
                                 label: Text(
                                   tagsList[index]['name'],
                                 ),
                                 backgroundColor: selectedTags
                                         .contains(tagsList[index]['id_tag'])
-                                    ? tagTextBrightness == Brightness.dark
-                                        ? darkenColor(
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            65)
-                                        : lightenColor(
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            70)
-                                    : Theme.of(context).scaffoldBackgroundColor,
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer
+                                    : null,
                                 labelStyle: TextStyle(
                                     color: selectedTags
                                             .contains(tagsList[index]['id_tag'])
-                                        ? Theme.of(context).colorScheme.primary
-                                        : Theme.of(context)
-                                            .textTheme
-                                            .headline6!
-                                            .color!
-                                            .withOpacity(0.9)),
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .onPrimaryContainer
+                                        : null),
                               );
                             }).toList(),
                           ),
@@ -365,13 +335,8 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                               });
                             }
                           },
-                          icon: Icon(Icons.save_outlined,
-                              color: Theme.of(context).colorScheme.onPrimary),
-                          label: Text(
-                            'Save',
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary),
-                          )),
+                          icon: const Icon(Icons.save_outlined),
+                          label: const Text('Save')),
                     ),
               const SizedBox(
                 height: 50,

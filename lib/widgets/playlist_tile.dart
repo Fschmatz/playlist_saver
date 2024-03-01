@@ -88,6 +88,10 @@ class _PlaylistTileState extends State<PlaylistTile> {
                       widget.playlist.title,
                       textAlign: TextAlign.center,
                     ),
+                    subtitle: Text(
+                      widget.playlist.artist!,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   const Divider(),
                   ListTile(

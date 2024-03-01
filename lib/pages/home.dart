@@ -126,6 +126,7 @@ class _HomeState extends State<Home> {
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentTabIndex,
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (index) {
           setState(() {
             _currentTabIndex = index;

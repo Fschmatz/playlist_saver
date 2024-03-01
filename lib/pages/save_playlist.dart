@@ -106,8 +106,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
       PlaylistDao.columnState: 0,
       PlaylistDao.columnArtist: controllerArtist.text,
       PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
-      PlaylistDao.columnCover:
-          compressedCover ?? compressedCover,
+      PlaylistDao.columnCover: compressedCover ?? compressedCover,
     };
     final idPlaylist = await dbPlaylist.insert(row);
 
@@ -193,6 +192,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                   labelText: "Link",
                   helperText: "* Required",
                   counterText: "",
+                  border: const OutlineInputBorder(),
                   errorText: (_validLink) ? null : "Link is empty"),
             ),
           ),
@@ -210,6 +210,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                   labelText: "Title",
                   helperText: "* Required",
                   counterText: "",
+                  border: const OutlineInputBorder(),
                   errorText: (_validTitle) ? null : "Title is empty"),
             ),
           ),
@@ -226,6 +227,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
               decoration: const InputDecoration(
                 labelText: "Artist",
                 counterText: "",
+                border: const OutlineInputBorder(),
               ),
             ),
           ),
@@ -267,48 +269,20 @@ class _SavePlaylistState extends State<SavePlaylist> {
                               }
                               setState(() {});
                             },
-                            side: BorderSide(
-                                color: selectedTags
-                                        .contains(tagsList[index]['id_tag'])
-                                    ? tagTextBrightness == Brightness.dark
-                                        ? darkenColor(
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            65)
-                                        : lightenColor(
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            70)
-                                    : Theme.of(context)
-                                        .inputDecorationTheme
-                                        .border!
-                                        .borderSide
-                                        .color
-                                        .withOpacity(0.3)),
                             label: Text(
                               tagsList[index]['name'],
                             ),
                             backgroundColor: selectedTags
                                     .contains(tagsList[index]['id_tag'])
-                                ? tagTextBrightness == Brightness.dark
-                                    ? darkenColor(
-                                        Theme.of(context).colorScheme.primary,
-                                        65)
-                                    : lightenColor(
-                                        Theme.of(context).colorScheme.primary,
-                                        70)
-                                : Theme.of(context).scaffoldBackgroundColor,
+                                ? Theme.of(context).colorScheme.primaryContainer
+                                : null,
                             labelStyle: TextStyle(
                                 color: selectedTags
                                         .contains(tagsList[index]['id_tag'])
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .color!
-                                        .withOpacity(0.9)),
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .onPrimaryContainer
+                                    : null),
                           );
                         }).toList(),
                       ),
@@ -331,12 +305,9 @@ class _SavePlaylistState extends State<SavePlaylist> {
                           });
                         }
                       },
-                      icon: Icon(Icons.save_outlined,
-                          color: Theme.of(context).colorScheme.onPrimary),
-                      label: Text(
+                      icon: const Icon(Icons.save_outlined),
+                      label: const Text(
                         'Save',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary),
                       )),
                 ),
           const SizedBox(

@@ -133,9 +133,8 @@ class _TagsManagerState extends State<TagsManager> {
                 builder: (BuildContext context) => const NewTag(),
               )).then((value) => getTags());
         },
-        child: Icon(
-          Icons.add_outlined,
-          color: Theme.of(context).colorScheme.onPrimary,
+        child: const Icon(
+          Icons.add_outlined
         ),
       ),
     );
