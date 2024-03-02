@@ -1,11 +1,11 @@
 class AppDetails{
 
-  static String appVersion = "1.7.1";
+  static String appVersion = "1.7.2";
   static String appName = "Playlist Saver Fschmatz";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-1.7.1
+1.7.2
 - Monet
 - Gridview option 
 - Flutter 3.16

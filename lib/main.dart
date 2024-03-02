@@ -33,6 +33,8 @@ Future<void> main() async {
   //app not in memory
   InitData initData = await init();
 
+  PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 50;
+
   runApp(
     EasyDynamicThemeWidget(
       child: StartAppRoutes(

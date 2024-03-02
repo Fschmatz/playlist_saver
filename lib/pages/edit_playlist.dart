@@ -4,7 +4,6 @@ import 'package:playlist_saver/db/playlist_dao.dart';
 import '../class/playlist.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
-import '../util/utils_functions.dart';
 
 class EditPlaylist extends StatefulWidget {
   @override
@@ -61,7 +60,6 @@ class _EditPlaylistState extends State<EditPlaylist> {
   }
 
   Future<void> _updatePlaylist() async {
-    final deletedTaskTag =
         await playlistsTags.delete(widget.playlist.idPlaylist);
     final dbPlaylist = PlaylistDao.instance;
 
@@ -72,7 +70,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
       PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
       PlaylistDao.columnArtist: controllerArtist.text,
     };
-    final update = await dbPlaylist.update(row);
+    await dbPlaylist.update(row);
 
     if (selectedTags.isNotEmpty) {
       for (int i = 0; i < selectedTags.length; i++) {
@@ -80,7 +78,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
           PlaylistsTagsDao.columnIdPlaylist: widget.playlist.idPlaylist,
           PlaylistsTagsDao.columnIdTag: selectedTags[i],
         };
-        final idsPlaylistsTags = await playlistsTags.insert(rowsTaskTags);
+        await playlistsTags.insert(rowsTaskTags);
       }
     }
   }
@@ -100,7 +98,6 @@ class _EditPlaylistState extends State<EditPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    final Brightness tagTextBrightness = Theme.of(context).brightness;
 
     return Scaffold(
         appBar: AppBar(

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 
 class PrintPlaylistList extends StatefulWidget {
-  PrintPlaylistList({Key? key}) : super(key: key);
+  const PrintPlaylistList({Key? key}) : super(key: key);
 
   @override
   _PrintPlaylistListState createState() => _PrintPlaylistListState();

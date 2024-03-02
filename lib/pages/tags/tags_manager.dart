@@ -25,8 +25,8 @@ class _TagsManagerState extends State<TagsManager> {
   }
 
   Future<void> _delete(int idTag) async {
-    final deleted = await tags.delete(idTag);
-    final deletedPlaylistTag = await playlistsTags.deleteWithTagId(idTag);
+    await tags.delete(idTag);
+    await playlistsTags.deleteWithTagId(idTag);
   }
 
   Future<void> getTags() async {

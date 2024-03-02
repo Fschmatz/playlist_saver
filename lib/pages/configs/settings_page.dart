@@ -11,14 +11,14 @@ import 'changelog_page.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  SettingsPageState createState() => SettingsPageState();
 
   const SettingsPage({Key? key}) : super(key: key);
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class SettingsPageState extends State<SettingsPage> {
   late bool _useGridView;
-  Completer<bool> _loadingCompleter = Completer<bool>();
+  final Completer<bool> _loadingCompleter = Completer<bool>();
 
   @override
   void initState() {
@@ -120,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => PrintPlaylistList(),
+                    builder: (BuildContext context) => const PrintPlaylistList(),
                   )),
               leading: const Icon(Icons.print_outlined),
               title: const Text(

@@ -60,9 +60,9 @@ class _PlaylistTileState extends State<PlaylistTile> {
   void _delete() async {
     final playlists = PlaylistDao.instance;
     final tasksTags = PlaylistsTagsDao.instance;
-    final deleted = await playlists.delete(widget.playlist.idPlaylist);
-    final deletedTaskTag =
-        await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
+
+    await playlists.delete(widget.playlist.idPlaylist);
+    await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
   }
 
   Future<void> _changePlaylistState(int state) async {
@@ -71,7 +71,8 @@ class _PlaylistTileState extends State<PlaylistTile> {
       PlaylistDao.columnIdPlaylist: widget.playlist.idPlaylist,
       PlaylistDao.columnState: state,
     };
-    final update = await dbPlaylist.update(row);
+
+    await dbPlaylist.update(row);
   }
 
   void openBottomMenu() {
@@ -88,10 +89,12 @@ class _PlaylistTileState extends State<PlaylistTile> {
                       widget.playlist.title,
                       textAlign: TextAlign.center,
                     ),
-                    subtitle: Text(
-                      widget.playlist.artist!,
-                      textAlign: TextAlign.center,
-                    ),
+                    subtitle: widget.playlist.artist!.isNotEmpty
+                        ? Text(
+                            widget.playlist.artist!,
+                            textAlign: TextAlign.center,
+                          )
+                        : null,
                   ),
                   const Divider(),
                   ListTile(
@@ -250,6 +253,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                                 child: Image.memory(
                                   widget.playlist.cover!,
                                   fit: BoxFit.cover,
+                                  gaplessPlayback: true,
                                 ),
                               ),
                             ),
@@ -287,7 +291,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
                               ),
                             ),
                             Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 (tagsList.isEmpty)
                                     ? const SizedBox.shrink()

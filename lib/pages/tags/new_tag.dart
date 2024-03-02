@@ -19,7 +19,7 @@ class _NewTagState extends State<NewTag> {
     Map<String, dynamic> row = {
       TagDao.columnName: customControllerName.text,
     };
-    final id = await tags.insert(row);
+    await tags.insert(row);
   }
 
   bool validateTextFields() {

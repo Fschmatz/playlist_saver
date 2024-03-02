@@ -5,7 +5,6 @@ import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../class/playlist.dart';
 import '../db/playlists_tags_dao.dart';
-import '../db/tag_dao.dart';
 import '../pages/edit_playlist.dart';
 
 class PlaylistTileGrid extends StatefulWidget {
@@ -49,9 +48,9 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   void _delete() async {
     final playlists = PlaylistDao.instance;
     final tasksTags = PlaylistsTagsDao.instance;
-    final deleted = await playlists.delete(widget.playlist.idPlaylist);
-    final deletedTaskTag =
-        await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
+
+    await playlists.delete(widget.playlist.idPlaylist);
+    await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
   }
 
   Future<void> _changePlaylistState(int state) async {
@@ -60,7 +59,8 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
       PlaylistDao.columnIdPlaylist: widget.playlist.idPlaylist,
       PlaylistDao.columnState: state,
     };
-    final update = await dbPlaylist.update(row);
+
+    await dbPlaylist.update(row);
   }
 
   void openBottomMenu() {
@@ -77,10 +77,12 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       widget.playlist.title,
                       textAlign: TextAlign.center,
                     ),
-                    subtitle: Text(
-                      widget.playlist.artist!,
-                      textAlign: TextAlign.center,
-                    ),
+                    subtitle: widget.playlist.artist!.isNotEmpty
+                        ? Text(
+                            widget.playlist.artist!,
+                            textAlign: TextAlign.center,
+                          )
+                        : null,
                   ),
                   const Divider(),
                   ListTile(
@@ -196,7 +198,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
   @override
   Widget build(BuildContext context) {
-
     return Card(
       child: InkWell(
         borderRadius: cardBorderRadius,
@@ -210,36 +211,36 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
               child: Stack(
                 children: [
                   (widget.playlist.cover == null)
-                      ? Expanded(
-                        child: SizedBox(
-                            height: coverHeight,
-                            width: coverWidth,
-                            child: Icon(
-                              Icons.music_note_outlined,
-                              size: 30,
-                              color: Theme.of(context).hintColor,
-                            ),
+                      ? SizedBox(
+                          height: coverHeight,
+                          width: coverWidth,
+                          child: Icon(
+                            Icons.music_note_outlined,
+                            size: 30,
+                            color: Theme.of(context).hintColor,
                           ),
-                      )
-                      : Expanded(
-                        child: SizedBox(
-                            height: coverHeight,
-                            width: coverWidth,
-                            child: Card(
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: cardBorderRadius,
-                              ),
-                              child: ClipRRect(
-                                borderRadius: cardBorderRadius,
+                        )
+                      : SizedBox(
+                          height: coverHeight,
+                          width: coverWidth,
+                          child: Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: cardBorderRadius,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: cardBorderRadius,
+                              child: Opacity(
+                                opacity: 0.9,
                                 child: Image.memory(
                                   widget.playlist.cover!,
                                   fit: BoxFit.cover,
+                                  gaplessPlayback: true,
                                 ),
                               ),
                             ),
                           ),
-                      ),
+                        ),
                   Positioned(
                     bottom: 8,
                     right: 8,
@@ -250,7 +251,8 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                         height: 20,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.black.withOpacity(0.5), // Background color
+                          color:
+                              Colors.black.withOpacity(0.5), // Background color
                         ),
                         child: Icon(
                           Icons.download_outlined,
@@ -265,18 +267,17 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
             ),
             Flexible(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 3, 5, 0),
-                child: Visibility(
-                  visible: widget.playlist.artist!.isNotEmpty,
-                  child: Text(
-                    widget.playlist.artist!,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).hintColor),
-                  ),
+                padding: const EdgeInsets.fromLTRB(8, 0, 6, 0),
+                child: Text(
+                  widget.playlist.artist!.isNotEmpty
+                      ? widget.playlist.artist!
+                      : widget.playlist.title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).hintColor),
                 ),
               ),
             ),

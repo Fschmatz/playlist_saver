@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/class/playlist.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
-import 'package:playlist_saver/pages/save_playlist.dart';
 import 'package:playlist_saver/widgets/playlist_tile.dart';
 import 'package:playlist_saver/widgets/playlist_tile_grid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,10 +22,10 @@ class _PlaylistListState extends State<PlaylistList> {
 
   @override
   void initState() {
+    super.initState();
+
     getPlaylists();
     _loadGridViewSetting();
-
-    super.initState();
   }
 
   void getPlaylists() async {
@@ -55,7 +53,7 @@ class _PlaylistListState extends State<PlaylistList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: (loading)
+      body: (loading && mounted)
           ? const Center(child: SizedBox.shrink())
           : ListView(
               children: [

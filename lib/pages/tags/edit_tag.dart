@@ -29,7 +29,7 @@ class _EditTagState extends State<EditTag> {
       TagDao.columnId: widget.tag.idTag,
       TagDao.columnName: customControllerName.text,
     };
-    final update = await tags.update(row);
+   await tags.update(row);
   }
 
   bool validateTextFields() {

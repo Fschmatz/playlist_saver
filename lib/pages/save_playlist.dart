@@ -136,7 +136,6 @@ class _SavePlaylistState extends State<SavePlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    final Brightness tagTextBrightness = Theme.of(context).brightness;
 
     return Scaffold(
         appBar: AppBar(
@@ -227,7 +226,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
               decoration: const InputDecoration(
                 labelText: "Artist",
                 counterText: "",
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(),
               ),
             ),
           ),

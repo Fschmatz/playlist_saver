@@ -153,8 +153,6 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
             ? Brightness.dark
             : Brightness.light;
 
-    final Brightness tagTextBrightness = Theme.of(context).brightness;
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.transparent,
@@ -219,7 +217,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                       labelText: "Link",
                       helperText: "* Required",
                       counterText: "",
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       errorText: _validLink ? null : "Link is empty"),
                 ),
               ),
@@ -238,7 +236,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                       labelText: "Title",
                       helperText: "* Required",
                       counterText: "",
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       errorText: _validTitle ? null : "Title is empty"),
                 ),
               ),
