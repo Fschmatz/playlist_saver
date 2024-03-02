@@ -106,8 +106,8 @@ class _HomeState extends State<Home> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        const SettingsPage(),
-                                  )).then((value) => refresh());
+                                         SettingsPage( refreshHome: refresh),
+                                  ));
                           }
                         })
                   ],
@@ -115,7 +115,7 @@ class _HomeState extends State<Home> {
               ];
             },
             body: PageTransitionSwitcher(
-                duration: const Duration(milliseconds: 800),
+                duration: const Duration(milliseconds: 750),
                 transitionBuilder: (child, animation, secondaryAnimation) =>
                     FadeThroughTransition(
                       animation: animation,

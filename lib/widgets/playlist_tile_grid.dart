@@ -223,20 +223,14 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       : SizedBox(
                           height: coverHeight,
                           width: coverWidth,
-                          child: Card(
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: cardBorderRadius,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: cardBorderRadius,
-                              child: Opacity(
-                                opacity: 0.9,
-                                child: Image.memory(
-                                  widget.playlist.cover!,
-                                  fit: BoxFit.cover,
-                                  gaplessPlayback: true,
-                                ),
+                          child: ClipRRect(
+                            borderRadius: cardBorderRadius,
+                            child: Opacity(
+                              opacity: 0.9,
+                              child: Image.memory(
+                                widget.playlist.cover!,
+                                fit: BoxFit.cover,
+                                gaplessPlayback: true,
                               ),
                             ),
                           ),
@@ -265,19 +259,29 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                 ],
               ),
             ),
+            SizedBox(height: 3,),
             Flexible(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 6, 0),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Text(
-                  widget.playlist.artist!.isNotEmpty
-                      ? widget.playlist.artist!
-                      : widget.playlist.title,
+                  widget.playlist.title,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
+                  maxLines: 1,
                   style: TextStyle(
-                      fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Theme.of(context).hintColor),
+                      fontSize: 12, color: Theme.of(context).hintColor),
+                ),
+              ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  widget.playlist.artist!,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(
+                      fontSize: 10, color: Theme.of(context).hintColor),
                 ),
               ),
             ),

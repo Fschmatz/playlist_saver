@@ -13,7 +13,9 @@ class SettingsPage extends StatefulWidget {
   @override
   SettingsPageState createState() => SettingsPageState();
 
-  const SettingsPage({Key? key}) : super(key: key);
+  Function() refreshHome;
+
+   SettingsPage({Key? key, required this.refreshHome}) : super(key: key);
 }
 
 class SettingsPageState extends State<SettingsPage> {
@@ -109,6 +111,7 @@ class SettingsPageState extends State<SettingsPage> {
                         _useGridView = value;
                       });
                       _saveGridViewSetting(value);
+                      widget.refreshHome();
                     },
                   );
                 } else {
