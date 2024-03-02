@@ -107,7 +107,7 @@ class _HomeState extends State<Home> {
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         const SettingsPage(),
-                                  ));
+                                  )).then((value) => refresh());
                           }
                         })
                   ],

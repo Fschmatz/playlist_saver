@@ -1,0 +1,288 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:playlist_saver/db/playlist_dao.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../class/playlist.dart';
+import '../db/playlists_tags_dao.dart';
+import '../db/tag_dao.dart';
+import '../pages/edit_playlist.dart';
+
+class PlaylistTileGrid extends StatefulWidget {
+  @override
+  _PlaylistTileGridState createState() => _PlaylistTileGridState();
+
+  Playlist playlist;
+  Function() refreshHome;
+  int index;
+  Function(int) removeFromList;
+  bool isPageDownloads;
+
+  PlaylistTileGrid(
+      {Key? key,
+      required this.playlist,
+      required this.refreshHome,
+      required this.index,
+      required this.isPageDownloads,
+      required this.removeFromList})
+      : super(key: key);
+}
+
+class _PlaylistTileGridState extends State<PlaylistTileGrid> {
+  bool deleteAfterTimer = true;
+  double coverHeight = 120;
+  double coverWidth = 200;
+  BorderRadius cardBorderRadius = BorderRadius.circular(8);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  _launchLink() {
+    launchUrl(
+      Uri.parse(widget.playlist.link),
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  void _delete() async {
+    final playlists = PlaylistDao.instance;
+    final tasksTags = PlaylistsTagsDao.instance;
+    final deleted = await playlists.delete(widget.playlist.idPlaylist);
+    final deletedTaskTag =
+        await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
+  }
+
+  Future<void> _changePlaylistState(int state) async {
+    final dbPlaylist = PlaylistDao.instance;
+    Map<String, dynamic> row = {
+      PlaylistDao.columnIdPlaylist: widget.playlist.idPlaylist,
+      PlaylistDao.columnState: state,
+    };
+    final update = await dbPlaylist.update(row);
+  }
+
+  void openBottomMenu() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Wrap(
+                children: <Widget>[
+                  ListTile(
+                    title: Text(
+                      widget.playlist.title,
+                      textAlign: TextAlign.center,
+                    ),
+                    subtitle: Text(
+                      widget.playlist.artist!,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.share_outlined),
+                    title: const Text(
+                      "Share",
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Share.share(
+                          "${widget.playlist.title} - ${widget.playlist.artist!}\n\n${widget.playlist.link}");
+                    },
+                  ),
+                  Visibility(
+                    visible:
+                        widget.playlist.state != 0 && !widget.isPageDownloads,
+                    child: ListTile(
+                      leading: const Icon(Icons.queue_music_outlined),
+                      title: const Text(
+                        "Listen",
+                      ),
+                      onTap: () {
+                        _changePlaylistState(0);
+                        widget.refreshHome();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible:
+                        widget.playlist.state != 1 && !widget.isPageDownloads,
+                    child: ListTile(
+                      leading: const Icon(Icons.archive_outlined),
+                      title: const Text(
+                        "Archive",
+                      ),
+                      onTap: () {
+                        _changePlaylistState(1);
+                        widget.refreshHome();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible:
+                        widget.playlist.state != 2 && !widget.isPageDownloads,
+                    child: ListTile(
+                      leading: const Icon(Icons.favorite_border_outlined),
+                      title: const Text(
+                        "Favorite",
+                      ),
+                      onTap: () {
+                        _changePlaylistState(2);
+                        widget.refreshHome();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.edit_outlined),
+                    title: const Text(
+                      "Edit",
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => EditPlaylist(
+                              playlist: widget.playlist,
+                              refreshHome: widget.refreshHome,
+                            ),
+                          ));
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.delete_outline_outlined),
+                    title: const Text(
+                      "Delete",
+                    ),
+                    onTap: () {
+                      widget.removeFromList(widget.index);
+                      Navigator.of(context).pop();
+                      _showSnackBar();
+                      Timer(const Duration(seconds: 5), () {
+                        if (deleteAfterTimer) {
+                          _delete();
+                        }
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void _showSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text("Playlist deleted"),
+        action: SnackBarAction(
+          label: "Undo",
+          onPressed: () {
+            deleteAfterTimer = false;
+            widget.refreshHome();
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Card(
+      child: InkWell(
+        borderRadius: cardBorderRadius,
+        onTap: _launchLink,
+        onLongPress: openBottomMenu,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: coverHeight,
+              child: Stack(
+                children: [
+                  (widget.playlist.cover == null)
+                      ? Expanded(
+                        child: SizedBox(
+                            height: coverHeight,
+                            width: coverWidth,
+                            child: Icon(
+                              Icons.music_note_outlined,
+                              size: 30,
+                              color: Theme.of(context).hintColor,
+                            ),
+                          ),
+                      )
+                      : Expanded(
+                        child: SizedBox(
+                            height: coverHeight,
+                            width: coverWidth,
+                            child: Card(
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: cardBorderRadius,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: cardBorderRadius,
+                                child: Image.memory(
+                                  widget.playlist.cover!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ),
+                  Positioned(
+                    bottom: 8,
+                    right: 8,
+                    child: Visibility(
+                      visible: widget.playlist.isDownloaded(),
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black.withOpacity(0.5), // Background color
+                        ),
+                        child: Icon(
+                          Icons.download_outlined,
+                          size: 16,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 3, 5, 0),
+                child: Visibility(
+                  visible: widget.playlist.artist!.isNotEmpty,
+                  child: Text(
+                    widget.playlist.artist!,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).hintColor),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

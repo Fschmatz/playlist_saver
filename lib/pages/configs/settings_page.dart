@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../util/app_details.dart';
 import '../../util/dialog_select_theme.dart';
 import '../print_playlist_list.dart';
@@ -14,6 +17,15 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  late bool _useGridView;
+  Completer<bool> _loadingCompleter = Completer<bool>();
+
+  @override
+  void initState() {
+    _loadGridViewSetting();
+    super.initState();
+  }
+
   String getThemeStringFormatted() {
     String theme = EasyDynamicTheme.of(context)
         .themeMode
@@ -23,6 +35,19 @@ class _SettingsPageState extends State<SettingsPage> {
       theme = 'system default';
     }
     return theme.replaceFirst(theme[0], theme[0].toUpperCase());
+  }
+
+  Future<void> _loadGridViewSetting() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _useGridView = prefs.getBool('useGridView') ?? false;
+    });
+    _loadingCompleter.complete(true);
+  }
+
+  void _saveGridViewSetting(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('useGridView', value);
   }
 
   @override
@@ -70,6 +95,26 @@ class _SettingsPageState extends State<SettingsPage> {
               subtitle: Text(
                 getThemeStringFormatted(),
               ),
+            ),
+            FutureBuilder(
+              future: _loadingCompleter.future,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return SwitchListTile(
+                    title: const Text('Use gridview'),
+                    secondary: const Icon(Icons.grid_3x3_outlined),
+                    value: _useGridView,
+                    onChanged: (value) {
+                      setState(() {
+                        _useGridView = value;
+                      });
+                      _saveGridViewSetting(value);
+                    },
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
             ),
             ListTile(
               onTap: () => Navigator.push(
