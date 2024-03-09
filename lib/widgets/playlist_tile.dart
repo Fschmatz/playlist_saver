@@ -37,10 +37,11 @@ class _PlaylistTileState extends State<PlaylistTile> {
   @override
   void initState() {
     super.initState();
-    getTags();
+
+    loadTags();
   }
 
-  void getTags() async {
+  void loadTags() async {
     var resp = await tags.getTagsByIdTaskOrderName(widget.playlist.idPlaylist);
     if (mounted) {
       setState(() {

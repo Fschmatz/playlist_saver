@@ -63,7 +63,7 @@ class _PlaylistListState extends State<PlaylistList> {
                         child: GridView.builder(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3, childAspectRatio: 0.73),
+                                  crossAxisCount: 3,  mainAxisExtent: 170),
                           physics: const ScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: playlists.length,
