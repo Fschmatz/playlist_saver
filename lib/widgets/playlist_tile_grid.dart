@@ -105,33 +105,31 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       dense: true,
                       minVerticalPadding: 0,
                       title: Center(
-                        child: Expanded(
-                          child: Wrap(
-                            children: List<Widget>.generate(
-                                tagsList.length, (int index) {
-                              return index == 0
-                                  ? Text(
-                                tagsList[index]['name'],
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight:
-                                    FontWeight.w500,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .primary),
-                              )
-                                  : Text(
-                                " • ${tagsList[index]['name']}",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight:
-                                    FontWeight.w500,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .primary),
-                              );
-                            }).toList(),
-                          ),
+                        child: Wrap(
+                          children: List<Widget>.generate(
+                              tagsList.length, (int index) {
+                            return index == 0
+                                ? Text(
+                              tagsList[index]['name'],
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight:
+                                  FontWeight.w500,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary),
+                            )
+                                : Text(
+                              " • ${tagsList[index]['name']}",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight:
+                                  FontWeight.w500,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary),
+                            );
+                          }).toList(),
                         ),
                       ),
                     ),
