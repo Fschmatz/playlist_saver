@@ -68,20 +68,24 @@ class _TagsManagerState extends State<TagsManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Manage tags"),
+        title: const Text("Tags"),
       ),
       body: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (BuildContext context, int index) => const Divider(height: 5,),
+            separatorBuilder: (BuildContext context, int index) => const Divider(
+              height: 5,
+            ),
             shrinkWrap: true,
             itemCount: _tagsList.length,
             itemBuilder: (BuildContext context, int index) {
+              Tag tag = Tag.fromMap(_tagsList[index]);
+
               return ListTile(
                 contentPadding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                title: Text(_tagsList[index]['name']),
+                title: Text(tag.name),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -91,8 +95,7 @@ class _TagsManagerState extends State<TagsManager> {
                           size: 20,
                         ),
                         onPressed: () {
-                          showAlertDialogOkDelete(
-                              context, _tagsList[index]['id_tag']);
+                          showAlertDialogOkDelete(context, tag.idTag);
                         }),
                     const SizedBox(
                       width: 15,
@@ -107,10 +110,7 @@ class _TagsManagerState extends State<TagsManager> {
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) => EditTag(
-                                  tag: Tag(
-                                    _tagsList[index]['id_tag'],
-                                    _tagsList[index]['name'],
-                                  ),
+                                  tag: tag,
                                 ),
                               )).then((value) => getTags());
                         }),
@@ -133,9 +133,7 @@ class _TagsManagerState extends State<TagsManager> {
                 builder: (BuildContext context) => const NewTag(),
               )).then((value) => getTags());
         },
-        child: const Icon(
-          Icons.add_outlined
-        ),
+        child: const Icon(Icons.add_outlined),
       ),
     );
   }

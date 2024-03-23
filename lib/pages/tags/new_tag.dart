@@ -10,7 +10,6 @@ class NewTag extends StatefulWidget {
 }
 
 class _NewTagState extends State<NewTag> {
-
   final tags = TagDao.instance;
   TextEditingController customControllerName = TextEditingController();
   bool _validName = true;
@@ -56,23 +55,23 @@ class _NewTagState extends State<NewTag> {
       ),
       body: ListView(
         children: [
-        Padding(
-              padding: const EdgeInsets.all(16),
-              child: TextField(
-                autofocus: true,
-                minLines: 1,
-                maxLength: 30,
-                maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                controller: customControllerName,
-                textCapitalization: TextCapitalization.sentences,
-                decoration:  InputDecoration(
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: TextField(
+              autofocus: true,
+              minLines: 1,
+              maxLength: 30,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              controller: customControllerName,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
                   counterText: "",
                   helperText: "* Required",
                   labelText: "Name",
-                  errorText: _validName ? null : "Name is empty"
-                ),
-              ),
+                  errorText: _validName ? null : "Name is empty"),
             ),
+          ),
         ],
       ),
     );

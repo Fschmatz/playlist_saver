@@ -68,4 +68,9 @@ class PlaylistDao {
     return await db.delete(table, where: '$columnIdPlaylist = ?', whereArgs: [id]);
   }
 
+  Future<int> deleteAll() async {
+    Database db = await instance.database;
+    return await db.delete(table);
+  }
+
 }

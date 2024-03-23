@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../util/app_details.dart';
 
-class ChangelogPage extends StatelessWidget {
-  const ChangelogPage({Key? key}) : super(key: key);
+class Changelog extends StatelessWidget {
+  const Changelog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

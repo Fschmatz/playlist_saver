@@ -1,18 +1,26 @@
 class AppDetails{
 
-  static String appVersion = "1.7.4";
+  static String appVersion = "1.8.0";
   static String appName = "Playlist Saver Fschmatz";
+  static String appNameHomePage = "Playlist Saver";
+  static String backupFileName = "backup_playlist_saver";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-1.7.4
-- Monet
-- Gridview option 
-- Flutter 3.16
+1.8.0
+- Create and restore backup 
+- Flutter 3.19
+- UI changes
 - Bug fixes
 ''';
 
   static String changelogsOld = '''
+  1.7.4
+- Monet
+- Gridview option 
+- Flutter 3.16
+- Bug fixes
+
 1.6.5
 - Downloads page
 - UI changes

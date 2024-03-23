@@ -34,7 +34,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   bool deleteAfterTimer = true;
   double coverHeight = 120;
   double coverWidth = 200;
-  BorderRadius cardBorderRadius = BorderRadius.circular(8);
+  BorderRadius cardBorderRadius = BorderRadius.circular(12);
 
   @override
   void initState() {
@@ -269,7 +269,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                   ),
                 )
                     : ClipRRect(
-                  borderRadius: cardBorderRadius,
+                  borderRadius:  const BorderRadius.only(topRight: Radius.circular(12), topLeft: Radius.circular(12)),
                   child: Opacity(
                     opacity: 0.9,
                     child: Image.memory(

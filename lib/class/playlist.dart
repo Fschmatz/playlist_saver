@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 class Playlist{
@@ -21,6 +22,30 @@ class Playlist{
 
   bool isDownloaded(){
     return downloaded == 1 ? true : false;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'idPlaylist': idPlaylist,
+      'link': link,
+      'title': title,
+      'state': state,
+      'artist': artist,
+      'downloaded': downloaded,
+      'cover': cover != null ? base64Encode(cover!) : null,
+    };
+  }
+
+  factory Playlist.fromMap(Map<String, dynamic> map) {
+    return Playlist(
+      idPlaylist: map['id_playlist'],
+      link: map['link'],
+      title: map['title'],
+      state: map['state'],
+      artist: map['artist'],
+      downloaded: map['downloaded'],
+      cover: map['cover'],
+    );
   }
 
 }

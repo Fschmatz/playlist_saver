@@ -14,7 +14,10 @@ class PlaylistList extends StatefulWidget {
   _PlaylistListState createState() => _PlaylistListState();
 }
 
-class _PlaylistListState extends State<PlaylistList> {
+class _PlaylistListState extends State<PlaylistList> with AutomaticKeepAliveClientMixin<PlaylistList> {
+  @override
+  bool get wantKeepAlive => true;
+
   List<Map<String, dynamic>> playlists = [];
   final dbPlaylist = PlaylistDao.instance;
   bool loading = true;
@@ -52,6 +55,8 @@ class _PlaylistListState extends State<PlaylistList> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       body: (loading && mounted)
           ? const Center(child: SizedBox.shrink())
@@ -61,58 +66,42 @@ class _PlaylistListState extends State<PlaylistList> {
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 14),
                         child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,  mainAxisExtent: 170),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, mainAxisExtent: 170),
                           physics: const ScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: playlists.length,
                           itemBuilder: (context, index) {
+
+                            final playlist = playlists[index];
+
                             return PlaylistTileGrid(
-                              key: UniqueKey(),
-                              removeFromList: removeFromList,
-                              index: index,
-                              refreshHome: getPlaylists,
-                              isPageDownloads:
-                                  widget.stateValue == 3 ? true : false,
-                              playlist: Playlist(
-                                idPlaylist: playlists[index]['id_playlist'],
-                                link: playlists[index]['link'],
-                                title: playlists[index]['title'],
-                                state: playlists[index]['state'],
-                                artist: playlists[index]['artist'],
-                                downloaded: playlists[index]['downloaded'],
-                                cover: playlists[index]['cover'],
-                              ),
-                            );
+                                key: UniqueKey(),
+                                removeFromList: removeFromList,
+                                index: index,
+                                refreshHome: getPlaylists,
+                                isPageDownloads: widget.stateValue == 3 ? true : false,
+                                playlist: Playlist.fromMap(playlist));
                           },
                         ),
                       )
                     : ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const SizedBox(
+                        separatorBuilder: (BuildContext context, int index) => const SizedBox(
                           height: 2,
                         ),
                         physics: const ScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: playlists.length,
                         itemBuilder: (context, int index) {
+
+                          final playlist = playlists[index];
+
                           return PlaylistTile(
                             key: UniqueKey(),
                             removeFromList: removeFromList,
                             index: index,
                             refreshHome: getPlaylists,
-                            isPageDownloads:
-                                widget.stateValue == 3 ? true : false,
-                            playlist: Playlist(
-                              idPlaylist: playlists[index]['id_playlist'],
-                              link: playlists[index]['link'],
-                              title: playlists[index]['title'],
-                              state: playlists[index]['state'],
-                              artist: playlists[index]['artist'],
-                              downloaded: playlists[index]['downloaded'],
-                              cover: playlists[index]['cover'],
-                            ),
+                            isPageDownloads: widget.stateValue == 3 ? true : false,
+                            playlist: Playlist.fromMap(playlist)
                           );
                         },
                       ),

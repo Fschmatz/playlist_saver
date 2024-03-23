@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:playlist_saver/pages/playlist_list.dart';
 import 'package:playlist_saver/pages/save_playlist.dart';
 import 'package:playlist_saver/pages/tags/tags_manager.dart';
-import 'configs/settings_page.dart';
+import '../util/app_details.dart';
+import 'configs/settings.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -65,7 +66,7 @@ class _HomeState extends State<Home> {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
-                  title: const Text('Playlist Saver'),
+                  title:  Text(AppDetails.appNameHomePage),
                   pinned: false,
                   floating: true,
                   snap: true,
@@ -77,7 +78,7 @@ class _HomeState extends State<Home> {
                               const PopupMenuItem<int>(
                                   value: 0, child: Text('New playlist')),
                               const PopupMenuItem<int>(
-                                  value: 1, child: Text('Manage tags')),
+                                  value: 1, child: Text('Tags')),
                               const PopupMenuItem<int>(
                                   value: 2, child: Text('Settings')),
                             ],
@@ -106,7 +107,7 @@ class _HomeState extends State<Home> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                         SettingsPage( refreshHome: refresh),
+                                         Settings( refreshHome: refresh),
                                   ));
                           }
                         })

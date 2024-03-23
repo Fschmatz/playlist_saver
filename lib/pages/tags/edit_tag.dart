@@ -76,6 +76,7 @@ class _EditTagState extends State<EditTag> {
               controller: customControllerName,
               textCapitalization: TextCapitalization.sentences,
               decoration:  InputDecoration(
+                  border: const OutlineInputBorder(),
                   counterText: "",
                   helperText: "* Required",
                   labelText: "Name",
