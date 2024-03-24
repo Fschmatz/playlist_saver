@@ -5,6 +5,7 @@ import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../util/app_details.dart';
 import '../../util/backup_utils.dart';
+import '../../util/dialog_backup.dart';
 import '../../util/dialog_select_theme.dart';
 import '../print_playlist_list.dart';
 import 'app_info.dart';
@@ -37,15 +38,6 @@ class SettingsState extends State<Settings> {
     return theme.replaceFirst(theme[0], theme[0].toUpperCase());
   }
 
-  Future<void> _createBackup() async {
-    await BackupUtils().backupData(AppDetails.backupFileName);
-  }
-
-  Future<void> _restoreFromBackup() async {
-    await BackupUtils().restoreBackupData(AppDetails.backupFileName);
-    widget.refreshHome();
-  }
-
   Future<void> _loadGridViewSetting() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -57,38 +49,6 @@ class SettingsState extends State<Settings> {
   void _saveGridViewSetting(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('useGridView', value);
-  }
-
-  showConfirmBackupDialog(BuildContext context, bool isCreateBackup) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(
-            "Confirm",
-          ),
-          content:  Text(
-            isCreateBackup ? "Create backup ?" : "Restore backup ?",
-          ),
-          actions: [
-            TextButton(
-              child: const Text(
-                "Yes",
-              ),
-              onPressed: () {
-                if (isCreateBackup) {
-                  Navigator.of(context).pop();
-                  _createBackup();
-                } else {
-                  Navigator.of(context).pop();
-                  _restoreFromBackup();
-                }
-              },
-            )
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -169,14 +129,22 @@ class SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              onTap: () =>  showConfirmBackupDialog(context, true),
+              onTap: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DialogBackup( isCreateBackup: true,  reloadHomeFunction: widget.refreshHome,);
+                  }),
               leading: const Icon(Icons.save_outlined),
               title: const Text(
                 "Backup now",
               ),
             ),
             ListTile(
-              onTap: () => showConfirmBackupDialog(context, false),
+              onTap: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DialogBackup( isCreateBackup: false,  reloadHomeFunction: widget.refreshHome,);
+                  }),
               leading: const Icon(Icons.settings_backup_restore_outlined),
               title: const Text(
                 "Restore from backup",

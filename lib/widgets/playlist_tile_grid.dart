@@ -269,7 +269,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                   ),
                 )
                     : ClipRRect(
-                  borderRadius:  const BorderRadius.only(topRight: Radius.circular(12), topLeft: Radius.circular(12)),
+                  borderRadius:  cardBorderRadius,
                   child: Opacity(
                     opacity: 0.9,
                     child: Image.memory(
