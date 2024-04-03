@@ -52,7 +52,10 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
     formattedList += '\n###\n\n';
     formattedList += 'DOWNLOADS - ${listDownloads.length} Playlist(s)\n';
     for (int i = 0; i < listDownloads.length; i++) {
-      formattedList += "\n• ${listDownloads[i]['artist']} - ${listDownloads[i]['title']}\n";
+      String artist = listDownloads[i]['artist'];
+      String title = listDownloads[i]['title'];
+
+      formattedList += artist.isNotEmpty ? "\n• $artist - $title\n" : "\n• $title\n";
     }
 
     setState(() {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/class/playlist.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
+import 'package:playlist_saver/service/playlist_service.dart';
 import 'package:playlist_saver/widgets/playlist_tile.dart';
 import 'package:playlist_saver/widgets/playlist_tile_grid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,8 +19,7 @@ class _PlaylistListState extends State<PlaylistList> with AutomaticKeepAliveClie
   @override
   bool get wantKeepAlive => true;
 
-  List<Map<String, dynamic>> playlists = [];
-  final dbPlaylist = PlaylistDao.instance;
+  List<Playlist> _playlists = [];
   bool loading = true;
   bool _useGridView = false;
 
@@ -32,11 +32,8 @@ class _PlaylistListState extends State<PlaylistList> with AutomaticKeepAliveClie
   }
 
   void getPlaylists() async {
-    if (widget.stateValue == 3) {
-      playlists = await dbPlaylist.queryAllRowsDownloadedDesc();
-    } else {
-      playlists = await dbPlaylist.queryAllRowsDescState(widget.stateValue);
-    }
+    _playlists = await PlaylistService().queryAllByStateAndConvertToList(widget.stateValue);
+
     setState(() {
       loading = false;
     });
@@ -49,7 +46,7 @@ class _PlaylistListState extends State<PlaylistList> with AutomaticKeepAliveClie
 
   void removeFromList(int index) {
     setState(() {
-      playlists = List.from(playlists)..removeAt(index);
+      _playlists = List.from(_playlists)..removeAt(index);
     });
   }
 
@@ -69,18 +66,15 @@ class _PlaylistListState extends State<PlaylistList> with AutomaticKeepAliveClie
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, mainAxisExtent: 170),
                           physics: const ScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: playlists.length,
+                          itemCount: _playlists.length,
                           itemBuilder: (context, index) {
-
-                            final playlist = playlists[index];
-
                             return PlaylistTileGrid(
                                 key: UniqueKey(),
                                 removeFromList: removeFromList,
                                 index: index,
                                 refreshHome: getPlaylists,
                                 isPageDownloads: widget.stateValue == 3 ? true : false,
-                                playlist: Playlist.fromMap(playlist));
+                                playlist: _playlists[index]);
                           },
                         ),
                       )
@@ -90,19 +84,15 @@ class _PlaylistListState extends State<PlaylistList> with AutomaticKeepAliveClie
                         ),
                         physics: const ScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: playlists.length,
+                        itemCount: _playlists.length,
                         itemBuilder: (context, int index) {
-
-                          final playlist = playlists[index];
-
                           return PlaylistTile(
-                            key: UniqueKey(),
-                            removeFromList: removeFromList,
-                            index: index,
-                            refreshHome: getPlaylists,
-                            isPageDownloads: widget.stateValue == 3 ? true : false,
-                            playlist: Playlist.fromMap(playlist)
-                          );
+                              key: UniqueKey(),
+                              removeFromList: removeFromList,
+                              index: index,
+                              refreshHome: getPlaylists,
+                              isPageDownloads: widget.stateValue == 3 ? true : false,
+                              playlist: _playlists[index]);
                         },
                       ),
                 const SizedBox(

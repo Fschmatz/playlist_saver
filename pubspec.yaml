@@ -1,7 +1,7 @@
 name: playlist_saver
 description: Flutter project.
 publish_to: 'none'
-version: 1.8.1
+version: 1.8.2
 
 environment:
   sdk: '>=3.2.6 <4.0.0'
@@ -29,7 +29,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints:
 
 flutter:
   uses-material-design: true
