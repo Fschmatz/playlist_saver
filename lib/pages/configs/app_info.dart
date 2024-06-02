@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../util/app_details.dart';
+import '../../util/utils.dart';
 
 class AppInfo extends StatelessWidget {
   const AppInfo({Key? key}) : super(key: key);
-
-  _launchGithub() {
-    launchUrl(
-      Uri.parse(AppDetails.repositoryLink),
-      mode: LaunchMode.externalApplication,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +54,7 @@ class AppInfo extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              _launchGithub();
+              Utils().openGithubRepository();
             },
             leading: const Icon(Icons.open_in_new_outlined),
             title: const Text("View on GitHub",

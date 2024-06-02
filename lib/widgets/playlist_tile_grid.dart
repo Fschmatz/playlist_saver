@@ -7,6 +7,7 @@ import '../class/playlist.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
 import '../pages/edit_playlist.dart';
+import '../util/utils.dart';
 
 class PlaylistTileGrid extends StatefulWidget {
   @override
@@ -53,10 +54,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   }
 
   _launchLink() {
-    launchUrl(
-      Uri.parse(widget.playlist.link),
-      mode: LaunchMode.externalApplication,
-    );
+    Utils().launchBrowser(widget.playlist.link);
   }
 
   void _delete() async {

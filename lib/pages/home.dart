@@ -15,6 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentTabIndex = 0;
+  ScrollController scrollController = ScrollController();
   List<Widget> _tabs = [
     PlaylistList(
       key: UniqueKey(),
@@ -60,75 +61,70 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  title:  Text(AppDetails.appNameHomePage),
-                  pinned: false,
-                  floating: true,
-                  snap: true,
-                  actions: [
-                    PopupMenuButton<int>(
-                        icon: const Icon(Icons.more_vert_outlined),
-                        itemBuilder: (BuildContext context) =>
-                            <PopupMenuItem<int>>[
-                              const PopupMenuItem<int>(
-                                  value: 0, child: Text('New playlist')),
-                              const PopupMenuItem<int>(
-                                  value: 1, child: Text('Tags')),
-                              const PopupMenuItem<int>(
-                                  value: 2, child: Text('Settings')),
-                            ],
-                        onSelected: (int value) {
-                          switch (value) {
-                            case 0:
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        SavePlaylist(
-                                      refreshHome: refresh,
-                                    ),
-                                  ));
-                              break;
-                            case 1:
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        const TagsManager(),
-                                  )).then((value) => refresh());
-                              break;
-                            case 2:
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                         Settings( refreshHome: refresh),
-                                  ));
-                          }
-                        })
-                  ],
-                ),
-              ];
-            },
-            body: PageTransitionSwitcher(
-                duration: const Duration(milliseconds: 750),
-                transitionBuilder: (child, animation, secondaryAnimation) =>
-                    FadeThroughTransition(
+      body: NestedScrollView(
+          controller: scrollController,
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                title: Text(AppDetails.appNameHomePage),
+                pinned: false,
+                floating: true,
+                snap: true,
+                actions: [
+                  PopupMenuButton<int>(
+                      icon: const Icon(Icons.more_vert_outlined),
+                      itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
+                            const PopupMenuItem<int>(value: 0, child: Text('New playlist')),
+                            const PopupMenuItem<int>(value: 1, child: Text('Tags')),
+                            const PopupMenuItem<int>(value: 2, child: Text('Settings')),
+                          ],
+                      onSelected: (int value) {
+                        switch (value) {
+                          case 0:
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => SavePlaylist(
+                                    refreshHome: refresh,
+                                  ),
+                                ));
+                            break;
+                          case 1:
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => const TagsManager(),
+                                )).then((value) => refresh());
+                            break;
+                          case 2:
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => Settings(refreshHome: refresh),
+                                ));
+                        }
+                      })
+                ],
+              ),
+            ];
+          },
+          body: MediaQuery.removePadding(
+            removeTop: true,
+            context: context,
+            child: PageTransitionSwitcher(
+                duration: const Duration(milliseconds: 700),
+                transitionBuilder: (child, animation, secondaryAnimation) => FadeThroughTransition(
                       animation: animation,
                       secondaryAnimation: secondaryAnimation,
                       child: child,
                     ),
-                child: _tabs[_currentTabIndex])),
-      ),
+                child: _tabs[_currentTabIndex]),
+          )),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentTabIndex,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (index) {
+          scrollController.jumpTo(0);
           setState(() {
             _currentTabIndex = index;
           });

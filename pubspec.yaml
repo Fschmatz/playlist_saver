@@ -1,7 +1,7 @@
 name: playlist_saver
 description: Flutter project.
 publish_to: 'none'
-version: 1.8.2
+version: 1.8.3
 
 environment:
   sdk: '>=3.2.6 <4.0.0'
@@ -23,7 +23,7 @@ dependencies:
   share_handler:
   flutter_image_compress: ^1.1.3
   cupertino_icons: ^1.0.2
-  dynamic_color: ^1.6.9
+  dynamic_color: ^1.7.0
   permission_handler: ^11.3.0
 
 dev_dependencies:

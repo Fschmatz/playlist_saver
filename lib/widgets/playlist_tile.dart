@@ -7,6 +7,7 @@ import '../class/playlist.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
 import '../pages/edit_playlist.dart';
+import '../util/utils.dart';
 
 class PlaylistTile extends StatefulWidget {
   @override
@@ -52,10 +53,7 @@ class _PlaylistTileState extends State<PlaylistTile> {
   }
 
   _launchLink() {
-    launchUrl(
-      Uri.parse(widget.playlist.link),
-      mode: LaunchMode.externalApplication,
-    );
+    Utils().launchBrowser(widget.playlist.link);
   }
 
   void _delete() async {

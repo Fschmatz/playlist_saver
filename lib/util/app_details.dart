@@ -1,13 +1,13 @@
 class AppDetails{
 
-  static String appVersion = "1.8.2";
+  static String appVersion = "1.8.3";
   static String appName = "Playlist Saver Fschmatz";
   static String appNameHomePage = "Playlist Saver";
   static String backupFileName = "backup_playlist_saver";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-1.8.2
+1.8.3
 - Create and restore backup 
 - Flutter 3.19
 - UI changes

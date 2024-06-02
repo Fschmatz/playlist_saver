@@ -7,6 +7,7 @@ import '../../util/app_details.dart';
 import '../../util/backup_utils.dart';
 import '../../util/dialog_backup.dart';
 import '../../util/dialog_select_theme.dart';
+import '../../util/utils.dart';
 import '../print_playlist_list.dart';
 import 'app_info.dart';
 import 'changelog.dart';
@@ -26,16 +27,9 @@ class SettingsState extends State<Settings> {
 
   @override
   void initState() {
-    _loadGridViewSetting();
     super.initState();
-  }
 
-  String getThemeStringFormatted() {
-    String theme = EasyDynamicTheme.of(context).themeMode.toString().replaceAll('ThemeMode.', '');
-    if (theme == 'system') {
-      theme = 'system default';
-    }
-    return theme.replaceFirst(theme[0], theme[0].toUpperCase());
+    _loadGridViewSetting();
   }
 
   Future<void> _loadGridViewSetting() async {
@@ -89,9 +83,7 @@ class SettingsState extends State<Settings> {
               title: const Text(
                 "App theme",
               ),
-              subtitle: Text(
-                getThemeStringFormatted(),
-              ),
+              subtitle: Text(Utils().getThemeStringFormatted(EasyDynamicTheme.of(context).themeMode)),
             ),
             FutureBuilder(
               future: _loadingCompleter.future,
@@ -132,7 +124,10 @@ class SettingsState extends State<Settings> {
               onTap: () => showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return DialogBackup( isCreateBackup: true,  reloadHomeFunction: widget.refreshHome,);
+                    return DialogBackup(
+                      isCreateBackup: true,
+                      reloadHomeFunction: widget.refreshHome,
+                    );
                   }),
               leading: const Icon(Icons.save_outlined),
               title: const Text(
@@ -143,7 +138,10 @@ class SettingsState extends State<Settings> {
               onTap: () => showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return DialogBackup( isCreateBackup: false,  reloadHomeFunction: widget.refreshHome,);
+                    return DialogBackup(
+                      isCreateBackup: false,
+                      reloadHomeFunction: widget.refreshHome,
+                    );
                   }),
               leading: const Icon(Icons.settings_backup_restore_outlined),
               title: const Text(

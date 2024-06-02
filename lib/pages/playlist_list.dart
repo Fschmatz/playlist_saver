@@ -54,8 +54,7 @@ class _PlaylistListState extends State<PlaylistList> with AutomaticKeepAliveClie
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Scaffold(
-      body: (loading && mounted)
+    return (loading && mounted)
           ? const Center(child: SizedBox.shrink())
           : ListView(
               children: [
@@ -99,7 +98,6 @@ class _PlaylistListState extends State<PlaylistList> with AutomaticKeepAliveClie
                   height: 50,
                 )
               ],
-            ),
-    );
+            );
   }
 }
