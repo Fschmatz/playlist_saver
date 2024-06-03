@@ -124,10 +124,10 @@ class _HomeState extends State<Home> {
         selectedIndex: _currentTabIndex,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (index) {
-          scrollController.jumpTo(0);
           setState(() {
             _currentTabIndex = index;
           });
+          scrollController.jumpTo(0);
         },
         destinations: const [
           NavigationDestination(
