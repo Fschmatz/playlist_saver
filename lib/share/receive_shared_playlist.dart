@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
+import 'package:playlist_saver/util/utils.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
-import '../util/utils_functions.dart';
 
 class ReceiveSharedPlaylist extends StatefulWidget {
   @override
@@ -92,7 +92,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
           webScraper.getElement('head > title', ['content']);
       String artistDataElement = elements[0]['title'];
 
-      return formatArtistNameToSave(artistDataElement);
+      return Utils().formatArtistNameToSave(artistDataElement);
     } else {
       return '';
     }
@@ -107,7 +107,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       http.Response response =
           await http.get(Uri.parse(metaData!.thumbnailUrl));
       base64ImageBytes = response.bodyBytes;
-      compressedCover = await compressCoverImage(base64ImageBytes);
+      compressedCover = await Utils().compressCoverImage(base64ImageBytes);
     }
 
     Map<String, dynamic> row = {

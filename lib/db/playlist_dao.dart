@@ -47,9 +47,19 @@ class PlaylistDao {
     return await db.rawQuery('SELECT * FROM $table WHERE $columnState = $state ORDER BY id_playlist DESC');
   }
 
+  Future<List<Map<String, dynamic>>> queryAllRowsByStateOrderByTitle(int state) async {
+    Database db = await instance.database;
+    return await db.rawQuery('SELECT * FROM $table WHERE $columnState = $state ORDER BY title');
+  }
+
   Future<List<Map<String, dynamic>>> queryAllRowsDownloadedDesc() async {
     Database db = await instance.database;
     return await db.rawQuery('SELECT * FROM $table WHERE $columnDownloaded = 1 ORDER BY id_playlist DESC');
+  }
+
+  Future<List<Map<String, dynamic>>> queryAllRowsDownloadedOrderByTitle() async {
+    Database db = await instance.database;
+    return await db.rawQuery('SELECT * FROM $table WHERE $columnDownloaded = 1 ORDER BY title');
   }
 
   Future<int> insert(Map<String, dynamic> row) async {

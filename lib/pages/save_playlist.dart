@@ -7,7 +7,7 @@ import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
 import '../db/tag_dao.dart';
 import '../db/playlists_tags_dao.dart';
-import '../util/utils_functions.dart';
+import '../util/utils.dart';
 
 class SavePlaylist extends StatefulWidget {
   @override
@@ -82,7 +82,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
           webScraper.getElement('head > title', ['content']);
       String artistDataElement = elements[0]['title'];
 
-      return formatArtistNameToSave(artistDataElement);
+      return Utils().formatArtistNameToSave(artistDataElement);
     } else {
       return '';
     }
@@ -97,7 +97,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
       http.Response response =
           await http.get(Uri.parse(metaData!.thumbnailUrl));
       base64ImageBytes = response.bodyBytes;
-      compressedCover = await compressCoverImage(base64ImageBytes);
+      compressedCover = await Utils().compressCoverImage(base64ImageBytes);
     }
 
     Map<String, dynamic> row = {
