@@ -5,8 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
+import '../class/tag.dart';
 import '../db/tag_dao.dart';
 import '../db/playlists_tags_dao.dart';
+import '../service/tag_service.dart';
 import '../util/utils.dart';
 
 class SavePlaylist extends StatefulWidget {
@@ -27,7 +29,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
   final tags = TagDao.instance;
   final playlistsTags = PlaylistsTagsDao.instance;
   bool loadingTags = true;
-  List<Map<String, dynamic>> tagsList = [];
+  List<Tag> tagsList = [];
   List<int> selectedTags = [];
   bool _validTitle = true;
   bool _validLink = true;
@@ -40,8 +42,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
   }
 
   Future<void> getAllTags() async {
-    var resp = await tags.queryAllRowsByName();
-    tagsList = resp;
+    tagsList = await TagService().queryAllRowsByName();
 
     setState(() {
       loadingTags = false;
@@ -261,23 +262,23 @@ class _SavePlaylistState extends State<SavePlaylist> {
                             key: UniqueKey(),
                             onSelected: (bool selected) {
                               if (selectedTags
-                                  .contains(tagsList[index]['id_tag'])) {
-                                selectedTags.remove(tagsList[index]['id_tag']);
+                                  .contains(tagsList[index].idTag)) {
+                                selectedTags.remove(tagsList[index].idTag);
                               } else {
-                                selectedTags.add(tagsList[index]['id_tag']);
+                                selectedTags.add(tagsList[index].idTag);
                               }
                               setState(() {});
                             },
                             label: Text(
-                              tagsList[index]['name'],
+                              tagsList[index].name,
                             ),
                             backgroundColor: selectedTags
-                                    .contains(tagsList[index]['id_tag'])
+                                    .contains(tagsList[index].idTag)
                                 ? Theme.of(context).colorScheme.primaryContainer
                                 : null,
                             labelStyle: TextStyle(
                                 color: selectedTags
-                                        .contains(tagsList[index]['id_tag'])
+                                        .contains(tagsList[index].idTag)
                                     ? Theme.of(context)
                                         .colorScheme
                                         .onPrimaryContainer

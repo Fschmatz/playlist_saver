@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
+import 'package:playlist_saver/service/tag_service.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../class/playlist.dart';
+import '../class/tag.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
 import '../pages/edit_playlist.dart';
@@ -25,12 +27,12 @@ class PlaylistTileGrid extends StatefulWidget {
 }
 
 class _PlaylistTileGridState extends State<PlaylistTileGrid> {
-  List<Map<String, dynamic>> tagsList = [];
-  final tags = TagDao.instance;
+  List<Tag> tagsList = [];
   bool deleteAfterTimer = true;
   double coverHeight = 120;
   double coverWidth = 200;
   BorderRadius cardBorderRadius = BorderRadius.circular(12);
+  bool isNewAlbum = false;
 
   @override
   void initState() {
@@ -40,12 +42,11 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   }
 
   void loadTags() async {
-    var resp = await tags.getTagsByIdTaskOrderName(widget.playlist.idPlaylist);
-    if (mounted) {
-      setState(() {
-        tagsList = resp;
-      });
-    }
+    List<Tag> list = await TagService().queryAllByPlaylistAndConvertToList(widget.playlist.idPlaylist);
+
+    setState(() {
+      tagsList = list;
+    });
   }
 
   _launchLink() {
@@ -102,11 +103,11 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                           children: List<Widget>.generate(tagsList.length, (int index) {
                             return index == 0
                                 ? Text(
-                                    tagsList[index]['name'],
+                                    tagsList[index].name,
                                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
                                   )
                                 : Text(
-                                    " • ${tagsList[index]['name']}",
+                                    " • ${tagsList[index].name}",
                                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
                                   );
                           }).toList(),
@@ -224,6 +225,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
   @override
   Widget build(BuildContext context) {
+    isNewAlbum = tagsList.isNotEmpty ? tagsList.any((tag) => tag.idTag == 1) : false;
     final theme = Theme.of(context);
     Image? cover = (widget.playlist.cover != null)
         ? Image.memory(
@@ -263,23 +265,46 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                         ),
                       ),
                 Positioned(
-                  bottom: 8,
-                  right: 8,
-                  child: Visibility(
-                    visible: widget.playlist.isDownloaded(),
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black.withOpacity(0.5), // Background color
+                  bottom: 4,
+                  right: 4,
+                  child: Row(
+                    children: [
+                      Visibility(
+                        visible: isNewAlbum,
+                        child: Container(
+                          width: 22,
+                          height: 22,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black.withOpacity(0.6),
+                          ),
+                          child: Icon(
+                            Icons.disc_full_outlined,
+                            size: 18,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
                       ),
-                      child: Icon(
-                        Icons.download_outlined,
-                        size: 16,
-                        color: theme.colorScheme.primary,
+                      const SizedBox(
+                        width: 2,
                       ),
-                    ),
+                      Visibility(
+                        visible: widget.playlist.isDownloaded(),
+                        child: Container(
+                          width: 22,
+                          height: 22,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black.withOpacity(0.6),
+                          ),
+                          child: Icon(
+                            Icons.download_outlined,
+                            size: 18,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

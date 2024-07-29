@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../class/tag.dart';
 import '../../db/tag_dao.dart';
 import '../../db/playlists_tags_dao.dart';
+import '../../service/tag_service.dart';
 import 'edit_tag.dart';
 import 'new_tag.dart';
 
@@ -16,7 +17,7 @@ class _TagsManagerState extends State<TagsManager> {
   bool loadingTags = true;
   final tags = TagDao.instance;
   final playlistsTags = PlaylistsTagsDao.instance;
-  List<Map<String, dynamic>> _tagsList = [];
+  List<Tag> _tagsList = [];
 
   @override
   void initState() {
@@ -30,9 +31,9 @@ class _TagsManagerState extends State<TagsManager> {
   }
 
   Future<void> getTags() async {
-    var resp = await tags.queryAllRowsByName();
+    _tagsList = await TagService().queryAllRowsByName();
+
     setState(() {
-      _tagsList = resp;
       loadingTags = false;
     });
   }
@@ -81,40 +82,43 @@ class _TagsManagerState extends State<TagsManager> {
             shrinkWrap: true,
             itemCount: _tagsList.length,
             itemBuilder: (BuildContext context, int index) {
-              Tag tag = Tag.fromMap(_tagsList[index]);
+              Tag tag = _tagsList[index];
 
               return ListTile(
                 contentPadding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
                 title: Text(tag.name),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                        icon: const Icon(
-                          Icons.delete_outlined,
-                          size: 20,
-                        ),
-                        onPressed: () {
-                          showAlertDialogOkDelete(context, tag.idTag);
-                        }),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    IconButton(
-                        icon: const Icon(
-                          Icons.edit_outlined,
-                          size: 20,
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => EditTag(
-                                  tag: tag,
-                                ),
-                              )).then((value) => getTags());
-                        }),
-                  ],
+                trailing: Visibility(
+                  visible: tag.idTag != 1,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          icon: const Icon(
+                            Icons.delete_outlined,
+                            size: 20,
+                          ),
+                          onPressed: () {
+                            showAlertDialogOkDelete(context, tag.idTag);
+                          }),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      IconButton(
+                          icon: const Icon(
+                            Icons.edit_outlined,
+                            size: 20,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => EditTag(
+                                    tag: tag,
+                                  ),
+                                )).then((value) => getTags());
+                          }),
+                    ],
+                  ),
                 ),
               );
             },

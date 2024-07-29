@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import '../class/playlist.dart';
+import '../class/tag.dart';
 import '../db/playlists_tags_dao.dart';
 import '../db/tag_dao.dart';
+import '../service/tag_service.dart';
 
 class EditPlaylist extends StatefulWidget {
   @override
@@ -24,7 +26,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
   final tags = TagDao.instance;
   final playlistsTags = PlaylistsTagsDao.instance;
   bool loadingTags = true;
-  List<Map<String, dynamic>> tagsList = [];
+  List<Tag> tagsList = [];
   List<int> selectedTags = [];
   List<int> tagsFromDbTask = [];
   bool _validTitle = true;
@@ -42,8 +44,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
   }
 
   Future<void> getAllTags() async {
-    var resp = await tags.queryAllRowsByName();
-    tagsList = resp;
+    tagsList = await TagService().queryAllRowsByName();
   }
 
   void getTagsFromTask() async {
@@ -188,21 +189,21 @@ class _EditPlaylistState extends State<EditPlaylist> {
                             key: UniqueKey(),
                             onSelected: (bool selected) {
                               if (selectedTags
-                                  .contains(tagsList[index]['id_tag'])) {
-                                selectedTags.remove(tagsList[index]['id_tag']);
+                                  .contains(tagsList[index].idTag)) {
+                                selectedTags.remove(tagsList[index].idTag);
                               } else {
-                                selectedTags.add(tagsList[index]['id_tag']);
+                                selectedTags.add(tagsList[index].idTag);
                               }
                               setState(() {});
                             },
-                            label: Text(tagsList[index]['name']),
+                            label: Text(tagsList[index].name),
                             backgroundColor: selectedTags
-                                    .contains(tagsList[index]['id_tag'])
+                                    .contains(tagsList[index].idTag)
                                 ? Theme.of(context).colorScheme.primaryContainer
                                 : null,
                             labelStyle: TextStyle(
                                 color: selectedTags
-                                        .contains(tagsList[index]['id_tag'])
+                                        .contains(tagsList[index].idTag)
                                     ? Theme.of(context)
                                         .colorScheme
                                         .onPrimaryContainer
