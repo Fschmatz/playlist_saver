@@ -1,33 +1,26 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
-import 'package:playlist_saver/service/tag_service.dart';
-import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 import '../class/playlist.dart';
-import '../class/tag.dart';
-import '../db/playlists_tags_dao.dart';
-import '../db/tag_dao.dart';
 import '../pages/edit_playlist.dart';
 import '../util/utils.dart';
 
 class PlaylistTileGrid extends StatefulWidget {
   @override
-  _PlaylistTileGridState createState() => _PlaylistTileGridState();
+  State<PlaylistTileGrid> createState() => _PlaylistTileGridState();
 
-  Playlist playlist;
-  Function() refreshHome;
-  int index;
-  Function(int) removeFromList;
-  bool isPageDownloads;
+  final Playlist playlist;
+  final Function() refreshHome;
+  final int index;
+  final Function(int) removeFromList;
+  final bool isPageDownloads;
 
-  PlaylistTileGrid(
-      {Key? key, required this.playlist, required this.refreshHome, required this.index, required this.isPageDownloads, required this.removeFromList})
-      : super(key: key);
+  const PlaylistTileGrid(
+      {super.key, required this.playlist, required this.refreshHome, required this.index, required this.isPageDownloads, required this.removeFromList});
 }
 
 class _PlaylistTileGridState extends State<PlaylistTileGrid> {
-  List<Tag> tagsList = [];
   bool deleteAfterTimer = true;
   double coverHeight = 120;
   double coverWidth = 200;
@@ -37,16 +30,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   @override
   void initState() {
     super.initState();
-
-    loadTags();
-  }
-
-  void loadTags() async {
-    List<Tag> list = await TagService().queryAllByPlaylistAndConvertToList(widget.playlist.idPlaylist);
-
-    setState(() {
-      tagsList = list;
-    });
   }
 
   _launchLink() {
@@ -55,10 +38,8 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
   void _delete() async {
     final playlists = PlaylistDao.instance;
-    final tasksTags = PlaylistsTagsDao.instance;
 
     await playlists.delete(widget.playlist.idPlaylist);
-    await tasksTags.deleteWithIdPlaylist(widget.playlist.idPlaylist);
   }
 
   Future<void> _changePlaylistState(int state) async {
@@ -92,28 +73,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                             textAlign: TextAlign.center,
                           )
                         : null,
-                  ),
-                  Visibility(
-                    visible: tagsList.isNotEmpty,
-                    child: ListTile(
-                      dense: true,
-                      minVerticalPadding: 0,
-                      title: Center(
-                        child: Wrap(
-                          children: List<Widget>.generate(tagsList.length, (int index) {
-                            return index == 0
-                                ? Text(
-                                    tagsList[index].name,
-                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
-                                  )
-                                : Text(
-                                    " • ${tagsList[index].name}",
-                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
-                                  );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
                   ),
                   const Divider(),
                   ListTile(
@@ -225,7 +184,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
   @override
   Widget build(BuildContext context) {
-    isNewAlbum = tagsList.isNotEmpty ? tagsList.any((tag) => tag.idTag == 1) : false;
+
     final theme = Theme.of(context);
     Image? cover = (widget.playlist.cover != null)
         ? Image.memory(
@@ -270,7 +229,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                   child: Row(
                     children: [
                       Visibility(
-                        visible: isNewAlbum,
+                        visible: widget.playlist.isNewAlbum(),
                         child: Container(
                           width: 22,
                           height: 22,
@@ -279,7 +238,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                             color: Colors.black.withOpacity(0.6),
                           ),
                           child: Icon(
-                            Icons.disc_full_outlined,
+                            Icons.new_releases_outlined,
                             size: 18,
                             color: theme.colorScheme.primary,
                           ),

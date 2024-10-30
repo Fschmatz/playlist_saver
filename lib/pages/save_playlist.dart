@@ -5,48 +5,31 @@ import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
-import '../class/tag.dart';
-import '../db/tag_dao.dart';
-import '../db/playlists_tags_dao.dart';
-import '../service/tag_service.dart';
 import '../util/utils.dart';
 
 class SavePlaylist extends StatefulWidget {
   @override
-  _SavePlaylistState createState() => _SavePlaylistState();
+  State<SavePlaylist> createState() => _SavePlaylistState();
 
-  Function()? refreshHome;
+  final Function()? refreshHome;
 
-  SavePlaylist({Key? key, required this.refreshHome}) : super(key: key);
+  const SavePlaylist({super.key, required this.refreshHome});
 }
 
 class _SavePlaylistState extends State<SavePlaylist> {
+
   TextEditingController controllerPlaylistTitle = TextEditingController();
   TextEditingController controllerArtist = TextEditingController();
-  TextEditingController controllerTags = TextEditingController();
   TextEditingController controllerLink = TextEditingController();
   SpotifyMetadata? metaData;
-  final tags = TagDao.instance;
-  final playlistsTags = PlaylistsTagsDao.instance;
-  bool loadingTags = true;
-  List<Tag> tagsList = [];
-  List<int> selectedTags = [];
   bool _validTitle = true;
   bool _validLink = true;
   bool _downloaded = true;
+  bool _newAlbum = false;
 
   @override
   void initState() {
     super.initState();
-    getAllTags();
-  }
-
-  Future<void> getAllTags() async {
-    tagsList = await TagService().queryAllRowsByName();
-
-    setState(() {
-      loadingTags = false;
-    });
   }
 
   void _fetchMetadata() async {
@@ -79,8 +62,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
   Future<String> parseArtistName() async {
     final webScraper = WebScraper();
     if (await webScraper.loadFullURL(controllerLink.text)) {
-      List<Map<String, dynamic>> elements =
-          webScraper.getElement('head > title', ['content']);
+      List<Map<String, dynamic>> elements = webScraper.getElement('head > title', ['content']);
       String artistDataElement = elements[0]['title'];
 
       return Utils().formatArtistNameToSave(artistDataElement);
@@ -95,8 +77,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
     Uint8List? compressedCover;
 
     if (metaData != null) {
-      http.Response response =
-          await http.get(Uri.parse(metaData!.thumbnailUrl));
+      http.Response response = await http.get(Uri.parse(metaData!.thumbnailUrl));
       base64ImageBytes = response.bodyBytes;
       compressedCover = await Utils().compressCoverImage(base64ImageBytes);
     }
@@ -108,18 +89,10 @@ class _SavePlaylistState extends State<SavePlaylist> {
       PlaylistDao.columnArtist: controllerArtist.text,
       PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
       PlaylistDao.columnCover: compressedCover ?? compressedCover,
+      PlaylistDao.columnNewAlbum: _newAlbum ? 1 : 0,
     };
-    final idPlaylist = await dbPlaylist.insert(row);
 
-    if (selectedTags.isNotEmpty) {
-      for (int i = 0; i < selectedTags.length; i++) {
-        Map<String, dynamic> rowsTaskTags = {
-          PlaylistsTagsDao.columnIdPlaylist: idPlaylist,
-          PlaylistsTagsDao.columnIdTag: selectedTags[i],
-        };
-        await playlistsTags.insert(rowsTaskTags);
-      }
-    }
+    await dbPlaylist.insert(row);
   }
 
   bool validateTextFields() {
@@ -137,15 +110,13 @@ class _SavePlaylistState extends State<SavePlaylist> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('New playlist'),
         ),
         body: ListView(children: [
           ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Card(
                 shape: RoundedRectangleBorder(
@@ -153,8 +124,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
                 ),
                 child: metaData == null
                     ? Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6)),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
                         width: 125,
                         height: 125,
                         child: const Center(
@@ -242,74 +212,38 @@ class _SavePlaylistState extends State<SavePlaylist> {
               });
             },
           ),
-          const ListTile(
-            title: Text(
-              "Add Tags",
+          SwitchListTile(
+            title: const Text(
+              "New album",
             ),
+            value: _newAlbum,
+            onChanged: (value) {
+              setState(() {
+                _newAlbum = value;
+              });
+            },
           ),
-          loadingTags
-              ? const SizedBox.shrink()
-              : (tagsList.isEmpty)
-                  ? const SizedBox.shrink()
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 0),
-                      child: Wrap(
-                        spacing: 8.0,
-                        children:
-                            List<Widget>.generate(tagsList.length, (int index) {
-                          return FilterChip(
-                            key: UniqueKey(),
-                            onSelected: (bool selected) {
-                              if (selectedTags
-                                  .contains(tagsList[index].idTag)) {
-                                selectedTags.remove(tagsList[index].idTag);
-                              } else {
-                                selectedTags.add(tagsList[index].idTag);
-                              }
-                              setState(() {});
-                            },
-                            label: Text(
-                              tagsList[index].name,
-                            ),
-                            backgroundColor: selectedTags
-                                    .contains(tagsList[index].idTag)
-                                ? Theme.of(context).colorScheme.primaryContainer
-                                : null,
-                            labelStyle: TextStyle(
-                                color: selectedTags
-                                        .contains(tagsList[index].idTag)
-                                    ? Theme.of(context)
-                                        .colorScheme
-                                        .onPrimaryContainer
-                                    : null),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-          loadingTags
-              ? const SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-                  child: FilledButton.tonalIcon(
-                      onPressed: () {
-                        if (validateTextFields()) {
-                          _savePlaylist().then((v) => {
-                                widget.refreshHome!(),
-                                Navigator.of(context).pop(),
-                              });
-                        } else {
-                          setState(() {
-                            _validLink;
-                            _validTitle;
-                          });
-                        }
-                      },
-                      icon: const Icon(Icons.save_outlined),
-                      label: const Text(
-                        'Save',
-                      )),
-                ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+            child: FilledButton.tonalIcon(
+                onPressed: () {
+                  if (validateTextFields()) {
+                    _savePlaylist().then((v) => {
+                          widget.refreshHome!(),
+                          Navigator.of(context).pop(),
+                        });
+                  } else {
+                    setState(() {
+                      _validLink;
+                      _validTitle;
+                    });
+                  }
+                },
+                icon: const Icon(Icons.save_outlined),
+                label: const Text(
+                  'Save',
+                )),
+          ),
           const SizedBox(
             height: 50,
           ),

@@ -17,6 +17,7 @@ class PlaylistDao {
   static const columnArtist = 'artist';
   static const columnDownloaded = 'downloaded';
   static const columnCover = 'cover';
+  static const columnNewAlbum = 'new_album';
 
   static Database? _database;
   Future<Database> get database async =>

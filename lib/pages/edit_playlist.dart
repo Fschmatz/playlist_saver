@@ -2,66 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import '../class/playlist.dart';
-import '../class/tag.dart';
-import '../db/playlists_tags_dao.dart';
-import '../db/tag_dao.dart';
-import '../service/tag_service.dart';
 
 class EditPlaylist extends StatefulWidget {
   @override
-  _EditPlaylistState createState() => _EditPlaylistState();
+  State<EditPlaylist> createState() => _EditPlaylistState();
 
-  Function() refreshHome;
-  Playlist playlist;
+  final Function() refreshHome;
+  final Playlist playlist;
 
-  EditPlaylist({Key? key, required this.refreshHome, required this.playlist})
-      : super(key: key);
+  const EditPlaylist({super.key, required this.refreshHome, required this.playlist});
 }
 
 class _EditPlaylistState extends State<EditPlaylist> {
+
   TextEditingController controllerPlaylistTitle = TextEditingController();
   TextEditingController controllerArtist = TextEditingController();
-  TextEditingController controllerTags = TextEditingController();
   TextEditingController controllerLink = TextEditingController();
-  final tags = TagDao.instance;
-  final playlistsTags = PlaylistsTagsDao.instance;
-  bool loadingTags = true;
-  List<Tag> tagsList = [];
-  List<int> selectedTags = [];
-  List<int> tagsFromDbTask = [];
   bool _validTitle = true;
   bool _validLink = true;
   bool _downloaded = false;
+  bool _newAlbum = false;
 
   @override
   void initState() {
     super.initState();
+
     controllerLink.text = widget.playlist.link;
     controllerPlaylistTitle.text = widget.playlist.title;
     controllerArtist.text = widget.playlist.artist!;
     _downloaded = widget.playlist.isDownloaded();
-    getAllTags().then((value) => getTagsFromTask());
-  }
-
-  Future<void> getAllTags() async {
-    tagsList = await TagService().queryAllRowsByName();
-  }
-
-  void getTagsFromTask() async {
-    var resp =
-        await playlistsTags.queryTagsFromTaskId(widget.playlist.idPlaylist);
-    for (int i = 0; i < resp.length; i++) {
-      tagsFromDbTask.add(resp[i]['id_tag']);
-    }
-    selectedTags = tagsFromDbTask;
-
-    setState(() {
-      loadingTags = false;
-    });
+    _newAlbum = widget.playlist.isNewAlbum();
   }
 
   Future<void> _updatePlaylist() async {
-        await playlistsTags.delete(widget.playlist.idPlaylist);
     final dbPlaylist = PlaylistDao.instance;
 
     Map<String, dynamic> row = {
@@ -70,18 +43,10 @@ class _EditPlaylistState extends State<EditPlaylist> {
       PlaylistDao.columnTitle: controllerPlaylistTitle.text,
       PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
       PlaylistDao.columnArtist: controllerArtist.text,
+      PlaylistDao.columnNewAlbum: _newAlbum ? 1 : 0,
     };
-    await dbPlaylist.update(row);
 
-    if (selectedTags.isNotEmpty) {
-      for (int i = 0; i < selectedTags.length; i++) {
-        Map<String, dynamic> rowsTaskTags = {
-          PlaylistsTagsDao.columnIdPlaylist: widget.playlist.idPlaylist,
-          PlaylistsTagsDao.columnIdTag: selectedTags[i],
-        };
-        await playlistsTags.insert(rowsTaskTags);
-      }
-    }
+    await dbPlaylist.update(row);
   }
 
   bool validateTextFields() {
@@ -99,7 +64,6 @@ class _EditPlaylistState extends State<EditPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('Edit playlist'),
@@ -169,70 +133,33 @@ class _EditPlaylistState extends State<EditPlaylist> {
               });
             },
           ),
-          const ListTile(
-            title: Text(
-              "Add Tags",
+          SwitchListTile(
+            title: const Text(
+              "New album",
             ),
+            value: _newAlbum,
+            onChanged: (value) {
+              setState(() {
+                _newAlbum = value;
+              });
+            },
           ),
-          loadingTags
-              ? const SizedBox.shrink()
-              : (tagsList.isEmpty)
-                  ? const SizedBox.shrink()
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 0),
-                      child: Wrap(
-                        spacing: 8.0,
-                        children:
-                            List<Widget>.generate(tagsList.length, (int index) {
-                          return FilterChip(
-                            key: UniqueKey(),
-                            onSelected: (bool selected) {
-                              if (selectedTags
-                                  .contains(tagsList[index].idTag)) {
-                                selectedTags.remove(tagsList[index].idTag);
-                              } else {
-                                selectedTags.add(tagsList[index].idTag);
-                              }
-                              setState(() {});
-                            },
-                            label: Text(tagsList[index].name),
-                            backgroundColor: selectedTags
-                                    .contains(tagsList[index].idTag)
-                                ? Theme.of(context).colorScheme.primaryContainer
-                                : null,
-                            labelStyle: TextStyle(
-                                color: selectedTags
-                                        .contains(tagsList[index].idTag)
-                                    ? Theme.of(context)
-                                        .colorScheme
-                                        .onPrimaryContainer
-                                    : null),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-          loadingTags
-              ? const SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-                  child: FilledButton.tonalIcon(
-                      onPressed: () {
-                        if (validateTextFields()) {
-                          _updatePlaylist().then((v) => {
-                                widget.refreshHome(),
-                                Navigator.of(context).pop()
-                              });
-                        } else {
-                          setState(() {
-                            _validLink;
-                            _validTitle;
-                          });
-                        }
-                      },
-                      icon: const Icon(Icons.save_outlined),
-                      label: const Text('Save')),
-                ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+            child: FilledButton.tonalIcon(
+                onPressed: () {
+                  if (validateTextFields()) {
+                    _updatePlaylist().then((v) => {widget.refreshHome(), Navigator.of(context).pop()});
+                  } else {
+                    setState(() {
+                      _validLink;
+                      _validTitle;
+                    });
+                  }
+                },
+                icon: const Icon(Icons.save_outlined),
+                label: const Text('Save')),
+          ),
           const SizedBox(
             height: 50,
           ),

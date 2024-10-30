@@ -4,13 +4,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../class/backup.dart';
 import '../db/playlist_dao.dart';
-import '../db/playlists_tags_dao.dart';
-import '../db/tag_dao.dart';
 
 class BackupUtils {
   final playlistDao = PlaylistDao.instance;
-  final tagDao = TagDao.instance;
-  final playlistsTagsDao = PlaylistsTagsDao.instance;
 
   Future<void> _loadStoragePermission() async {
     var status = await Permission.manageExternalStorage.status;
@@ -92,10 +88,8 @@ class BackupUtils {
 
   Future<Map<String, dynamic>> _loadBackupData() async {
     List<Map<String, dynamic>> playlistsJson = await playlistDao.queryAllRows();
-    List<Map<String, dynamic>> tagsJson = await tagDao.queryAllRows();
-    List<Map<String, dynamic>> playlistTagsJson = await playlistsTagsDao.queryAllRows();
 
-    Backup backupEntity = Backup(playlists: playlistsJson, tags: tagsJson, playlistTags: playlistTagsJson);
+    Backup backupEntity = Backup(playlists: playlistsJson);
 
     Map<String, dynamic> backupJson = backupEntity.toJson();
 
@@ -104,26 +98,12 @@ class BackupUtils {
 
   Future<void> _deleteAllData() async {
     await playlistDao.deleteAll();
-    await tagDao.deleteAll();
-    await playlistsTagsDao.deleteAll();
   }
 
   Future<void> _insertBackupData(Backup backup) async {
     if (backup.playlists.isNotEmpty) {
       for (Map<String, dynamic> playlist in backup.playlists) {
         await playlistDao.insert(playlist);
-      }
-    }
-
-    if (backup.tags.isNotEmpty) {
-      for (Map<String, dynamic> tag in backup.tags) {
-        await tagDao.insert(tag);
-      }
-    }
-
-    if (backup.playlistTags.isNotEmpty) {
-      for (Map<String, dynamic> playlistTag in backup.playlistTags) {
-        await playlistsTagsDao.insert(playlistTag);
       }
     }
   }

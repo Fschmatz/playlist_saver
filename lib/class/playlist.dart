@@ -10,6 +10,7 @@ class Playlist{
   String? artist;
   int? downloaded; //0 false, 1 true
   Uint8List? cover;
+  int? newAlbum; //0 false, 1 true
 
   Playlist({
     required this.idPlaylist,
@@ -18,10 +19,15 @@ class Playlist{
     required this.state,
     this.artist,
     this.downloaded,
-    this.cover});
+    this.cover,
+    this.newAlbum});
 
   bool isDownloaded(){
     return downloaded == 1 ? true : false;
+  }
+
+  bool isNewAlbum(){
+    return newAlbum == 1 ? true : false;
   }
 
   Map<String, dynamic> toJson() {
@@ -33,6 +39,7 @@ class Playlist{
       'artist': artist,
       'downloaded': downloaded,
       'cover': cover != null ? base64Encode(cover!) : null,
+      'newAlbum': newAlbum,
     };
   }
 
@@ -45,6 +52,7 @@ class Playlist{
       artist: map['artist'],
       downloaded: map['downloaded'],
       cover: map['cover'],
+      newAlbum: map['new_album'],
     );
   }
 

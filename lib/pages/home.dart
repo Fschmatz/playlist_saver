@@ -2,15 +2,14 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/pages/playlist_list.dart';
 import 'package:playlist_saver/pages/save_playlist.dart';
-import 'package:playlist_saver/pages/tags/tags_manager.dart';
 import '../util/app_details.dart';
 import 'configs/settings.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
-  _HomeState createState() => _HomeState();
+  State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
@@ -75,8 +74,7 @@ class _HomeState extends State<Home> {
                       icon: const Icon(Icons.more_vert_outlined),
                       itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
                             const PopupMenuItem<int>(value: 0, child: Text('Add playlist')),
-                            const PopupMenuItem<int>(value: 1, child: Text('Tags')),
-                            const PopupMenuItem<int>(value: 2, child: Text('Settings')),
+                            const PopupMenuItem<int>(value: 1, child: Text('Settings')),
                           ],
                       onSelected: (int value) {
                         switch (value) {
@@ -90,13 +88,6 @@ class _HomeState extends State<Home> {
                                 ));
                             break;
                           case 1:
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) => const TagsManager(),
-                                )).then((value) => refresh());
-                            break;
-                          case 2:
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

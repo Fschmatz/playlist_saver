@@ -3,7 +3,7 @@ import '../../util/app_details.dart';
 import '../../util/utils.dart';
 
 class AppInfo extends StatelessWidget {
-  const AppInfo({Key? key}) : super(key: key);
+  const AppInfo({super.key});
 
   @override
   Widget build(BuildContext context) {

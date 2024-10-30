@@ -14,35 +14,19 @@ import 'changelog.dart';
 
 class Settings extends StatefulWidget {
   @override
-  SettingsState createState() => SettingsState();
+  State<Settings> createState() => SettingsState();
 
-  Function() refreshHome;
+  final Function() refreshHome;
 
-  Settings({Key? key, required this.refreshHome}) : super(key: key);
+  const Settings({super.key, required this.refreshHome});
 }
 
 class SettingsState extends State<Settings> {
-  late bool _useGridView;
   final Completer<bool> _loadingCompleter = Completer<bool>();
 
   @override
   void initState() {
     super.initState();
-
-    _loadGridViewSetting();
-  }
-
-  Future<void> _loadGridViewSetting() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _useGridView = prefs.getBool('useGridView') ?? false;
-    });
-    _loadingCompleter.complete(true);
-  }
-
-  void _saveGridViewSetting(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('useGridView', value);
   }
 
   @override
@@ -84,27 +68,6 @@ class SettingsState extends State<Settings> {
                 "App theme",
               ),
               subtitle: Text(Utils().getThemeStringFormatted(EasyDynamicTheme.of(context).themeMode)),
-            ),
-            FutureBuilder(
-              future: _loadingCompleter.future,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return SwitchListTile(
-                    title: const Text('Use gridview'),
-                    secondary: const Icon(Icons.grid_3x3_outlined),
-                    value: _useGridView,
-                    onChanged: (value) {
-                      setState(() {
-                        _useGridView = value;
-                      });
-                      _saveGridViewSetting(value);
-                      widget.refreshHome();
-                    },
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              },
             ),
             ListTile(
               title: Text("Backup", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorApp)),

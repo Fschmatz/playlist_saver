@@ -10,12 +10,12 @@ import 'class/show_data_argument.dart';
 import 'main.dart';
 
 class StartAppRoutes extends StatefulWidget {
-  StartAppRoutes({Key? key, required this.initData}) : super(key: key);
+  const StartAppRoutes({super.key, required this.initData});
 
-  InitData initData;
+  final InitData initData;
 
   @override
-  _StartAppRoutesState createState() => _StartAppRoutesState();
+  State<StartAppRoutes> createState() => _StartAppRoutesState();
 }
 
 class _StartAppRoutesState extends State<StartAppRoutes> {
