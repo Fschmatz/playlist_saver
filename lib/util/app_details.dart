@@ -1,13 +1,13 @@
 class AppDetails{
 
-  static String appVersion = "2.0.0";
+  static String appVersion = "2.0.1";
   static String appName = "Playlist Saver Fschmatz";
   static String appNameHomePage = "Playlist Saver";
   static String backupFileName = "backup_playlist_saver";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  
-2.0.0
+$appVersion
 - Removed tags
 - Only Gridview
 - New album on save

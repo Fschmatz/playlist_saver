@@ -126,6 +126,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
             title: const Text(
               "Downloaded",
             ),
+            subtitle: const Text(
+              "Downloaded to device",
+            ),
             value: _downloaded,
             onChanged: (value) {
               setState(() {
@@ -136,6 +139,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
           SwitchListTile(
             title: const Text(
               "New album",
+            ),
+            subtitle: const Text(
+              "Highlight as new",
             ),
             value: _newAlbum,
             onChanged: (value) {
