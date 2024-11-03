@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 import '../class/playlist.dart';
+import '../service/playlist_service.dart';
 
 class EditPlaylist extends StatefulWidget {
   @override
@@ -35,18 +36,8 @@ class _EditPlaylistState extends State<EditPlaylist> {
   }
 
   Future<void> _updatePlaylist() async {
-    final dbPlaylist = PlaylistDao.instance;
-
-    Map<String, dynamic> row = {
-      PlaylistDao.columnIdPlaylist: widget.playlist.idPlaylist,
-      PlaylistDao.columnLink: controllerLink.text,
-      PlaylistDao.columnTitle: controllerPlaylistTitle.text,
-      PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
-      PlaylistDao.columnArtist: controllerArtist.text,
-      PlaylistDao.columnNewAlbum: _newAlbum ? 1 : 0,
-    };
-
-    await dbPlaylist.update(row);
+    await PlaylistService()
+        .updatePlaylist(widget.playlist.idPlaylist, controllerLink.text, controllerPlaylistTitle.text, controllerArtist.text, _downloaded, _newAlbum);
   }
 
   bool validateTextFields() {

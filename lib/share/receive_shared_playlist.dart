@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -8,6 +6,8 @@ import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:playlist_saver/util/utils.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
+
+import '../service/playlist_service.dart';
 
 class ReceiveSharedPlaylist extends StatefulWidget {
   @override
@@ -84,27 +84,15 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   }
 
   Future<void> _savePlaylist() async {
-    final dbPlaylist = PlaylistDao.instance;
-    Uint8List? base64ImageBytes;
     Uint8List? compressedCover;
 
     if (metaData != null) {
       http.Response response = await http.get(Uri.parse(metaData!.thumbnailUrl));
-      base64ImageBytes = response.bodyBytes;
-      compressedCover = await Utils().compressCoverImage(base64ImageBytes);
+      compressedCover = await Utils().compressCoverImage(response.bodyBytes);
     }
 
-    Map<String, dynamic> row = {
-      PlaylistDao.columnLink: controllerLink.text,
-      PlaylistDao.columnTitle: controllerPlaylistTitle.text,
-      PlaylistDao.columnState: 0,
-      PlaylistDao.columnArtist: controllerArtist.text,
-      PlaylistDao.columnDownloaded: _downloaded ? 1 : 0,
-      PlaylistDao.columnCover: compressedCover ?? compressedCover,
-      PlaylistDao.columnNewAlbum: _newAlbum ? 1 : 0,
-    };
-
-    await dbPlaylist.insert(row);
+    await PlaylistService()
+        .insertPlaylist(compressedCover, controllerLink.text, controllerPlaylistTitle.text, controllerArtist.text, _downloaded, _newAlbum);
   }
 
   bool validateTextFields() {
@@ -228,6 +216,9 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
               title: const Text(
                 "Downloaded",
               ),
+              subtitle: const Text(
+                "Downloaded to device",
+              ),
               value: _downloaded,
               onChanged: (value) {
                 setState(() {
@@ -238,6 +229,9 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
             SwitchListTile(
               title: const Text(
                 "New album",
+              ),
+              subtitle: const Text(
+                "Highlight as new",
               ),
               value: _newAlbum,
               onChanged: (value) {
