@@ -1,6 +1,6 @@
 class AppDetails{
 
-  static String appVersion = "2.0.1";
+  static String appVersion = "2.0.3";
   static String appName = "Playlist Saver Fschmatz";
   static String appNameHomePage = "Playlist Saver";
   static String backupFileName = "backup_playlist_saver";
@@ -10,7 +10,7 @@ class AppDetails{
 $appVersion
 - Removed tags
 - Only Gridview
-- New album on save
+- Select as new album on save
 - UI changes
 - Bug fixes
 ''';

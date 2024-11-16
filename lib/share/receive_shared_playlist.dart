@@ -25,7 +25,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   SpotifyMetadata? metaData;
   bool _validTitle = true;
   bool _validLink = true;
-  bool _downloaded = true;
+  bool _downloaded = false;
   bool _newAlbum = false;
 
   @override
@@ -64,8 +64,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
 
     if (mounted) {
       setState(() {
-        metaData;
-        controllerPlaylistTitle.text = metaData!.title;
+        controllerPlaylistTitle.text = Utils().formatTitleToSave(metaData!.title);
         controllerArtist.text = artistName;
       });
     }

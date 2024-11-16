@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -24,7 +26,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
   SpotifyMetadata? metaData;
   bool _validTitle = true;
   bool _validLink = true;
-  bool _downloaded = true;
+  bool _downloaded = false;
   bool _newAlbum = false;
 
   @override
@@ -53,8 +55,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
     }
 
     setState(() {
-      metaData;
-      controllerPlaylistTitle.text = metaData!.title;
+      controllerPlaylistTitle.text = Utils().formatTitleToSave(metaData!.title);
       controllerArtist.text = artistName;
     });
   }
