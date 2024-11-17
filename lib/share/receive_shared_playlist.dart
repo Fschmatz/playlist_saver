@@ -2,11 +2,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:playlist_saver/util/utils.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
-
 import '../service/playlist_service.dart';
 
 class ReceiveSharedPlaylist extends StatefulWidget {
@@ -157,7 +155,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                 ),
               ]),
             ),
-            Padding(
+           /* Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: TextField(
                 minLines: 1,
@@ -175,7 +173,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                     border: const OutlineInputBorder(),
                     errorText: _validLink ? null : "Link is empty"),
               ),
-            ),
+            ),*/
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: TextField(

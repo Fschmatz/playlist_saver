@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:playlist_saver/db/playlist_dao.dart';
 import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
 import '../service/playlist_service.dart';
