@@ -388,10 +388,10 @@ packages:
     dependency: transitive
     description:
       name: permission_handler_html
-      sha256: af26edbbb1f2674af65a8f4b56e1a6f526156bc273d0e65dd8075fab51c78851
+      sha256: "38f000e83355abb3392140f6bc3030660cfaef189e1f87824facb76300b4ff24"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.3+2"
+    version: "0.1.3+5"
   permission_handler_platform_interface:
     dependency: transitive
     description:
@@ -428,10 +428,10 @@ packages:
     dependency: "direct main"
     description:
       name: share_handler
-      sha256: "6ea0692e1f9c1ab56482e1b58e9375f4bfeb18e9cd3a66f7ce9e63098d61348b"
+      sha256: "76575533be04df3fecbebd3c5b5325a8271b5973131f8b8b0ab8490c395a5d37"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.21"
+    version: "0.0.22"
   share_handler_android:
     dependency: transitive
     description:
@@ -444,10 +444,10 @@ packages:
     dependency: transitive
     description:
       name: share_handler_ios
-      sha256: b84d0a0b7c6cc03ba5063a89986a23be15b23dc1dde74a15307aafa5d0390ffa
+      sha256: cdc21f88f336a944157a8e9ceb191525cee3b082d6eb6c2082488e4f09dc3ece
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.14"
+    version: "0.0.15"
   share_handler_platform_interface:
     dependency: transitive
     description:
@@ -541,14 +541,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
-  spotify_metadata:
-    dependency: "direct main"
-    description:
-      name: spotify_metadata
-      sha256: fae71bd19d5a771c0af88fcc1a6ed8e72feced4e5d051998bf5401566f1e25d1
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   sprintf:
     dependency: transitive
     description:
@@ -657,10 +649,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_linux
-      sha256: e2b9622b4007f97f504cd64c0128309dfb978ae66adbe944125ed9e1750f06af
+      sha256: "4e9ba368772369e3e08f231d2301b4ef72b9ff87c31192ef471b380ef29a4935"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.0"
+    version: "3.2.1"
   url_launcher_macos:
     dependency: transitive
     description:

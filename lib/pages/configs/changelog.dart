@@ -21,9 +21,6 @@ class Changelog extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: themeColorApp))),
           ListTile(
-            leading: const Icon(
-              Icons.article_outlined,
-            ),
             title: Text(
               AppDetails.changelogCurrent,
             ),
@@ -36,9 +33,6 @@ class Changelog extends StatelessWidget {
                     color: themeColorApp)),
           ),
           ListTile(
-            leading: const Icon(
-              Icons.article_outlined,
-            ),
             title: Text(
               AppDetails.changelogsOld,
             ),

@@ -45,10 +45,12 @@ class _EditPlaylistState extends State<EditPlaylist> {
       ok = false;
       _validLink = false;
     }
+
     if (controllerPlaylistTitle.text.isEmpty) {
       ok = false;
       _validTitle = false;
     }
+
     return ok;
   }
 

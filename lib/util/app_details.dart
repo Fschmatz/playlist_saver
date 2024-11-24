@@ -1,6 +1,6 @@
 class AppDetails{
 
-  static String appVersion = "2.0.4";
+  static String appVersion = "2.1.0";
   static String appName = "Playlist Saver Fschmatz";
   static String appNameHomePage = "Playlist Saver";
   static String backupFileName = "backup_playlist_saver";
@@ -8,14 +8,18 @@ class AppDetails{
 
   static String changelogCurrent = '''  
 $appVersion
+- Changed method to parse metadata from Spotify
+- Bug fixes
+''';
+
+  static String changelogsOld = '''
+2.0.4  
 - Removed tags
 - Only Gridview
 - Select as new album on save
 - UI changes
 - Bug fixes
-''';
-
-  static String changelogsOld = '''
+ 
 1.8.6
 - Create and restore backup 
 - New album icon

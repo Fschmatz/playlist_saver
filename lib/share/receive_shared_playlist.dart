@@ -3,9 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/util/utils.dart';
-import 'package:spotify_metadata/spotify_metadata.dart';
 import 'package:web_scraper/web_scraper.dart';
+import '../class/spotify_metadata.dart';
 import '../service/playlist_service.dart';
+import '../service/spotify_metadata_service.dart';
 
 class ReceiveSharedPlaylist extends StatefulWidget {
   @override
@@ -41,10 +42,8 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   }
 
   void _fetchMetadata() async {
-    String artistName = "";
-
     try {
-      metaData = await SpotifyApi.getData(controllerLink.text);
+      metaData = await SpotifyMetadataService().loadMetadata(controllerLink.text);
     } catch (e) {
       metaData = null;
       Fluttertoast.showToast(
@@ -52,31 +51,12 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
       );
     }
 
-    try {
-      artistName = await parseArtistName();
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Error parsing artist name",
-      );
-    }
-
     if (mounted) {
       setState(() {
-        controllerPlaylistTitle.text = Utils().formatTitleToSave(metaData!.title);
-        controllerArtist.text = artistName;
+        metaData;
+        controllerPlaylistTitle.text = SpotifyMetadataService().formatTitleToSave(metaData!.title);
+        controllerArtist.text = metaData!.artistName!;
       });
-    }
-  }
-
-  Future<String> parseArtistName() async {
-    final webScraper = WebScraper();
-    if (await webScraper.loadFullURL(controllerLink.text)) {
-      List<Map<String, dynamic>> elements = webScraper.getElement('head > title', ['content']);
-      String artistDataElement = elements[0]['title'];
-
-      return Utils().formatArtistNameToSave(artistDataElement);
-    } else {
-      return '';
     }
   }
 
@@ -84,8 +64,8 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
     Uint8List? compressedCover;
 
     if (metaData != null) {
-      http.Response response = await http.get(Uri.parse(metaData!.thumbnailUrl));
-      compressedCover = await Utils().compressCoverImage(response.bodyBytes);
+      http.Response response = await http.get(Uri.parse(metaData!.imageUrl));
+      compressedCover = await SpotifyMetadataService().compressCoverImage(response.bodyBytes);
     }
 
     await PlaylistService()
@@ -146,7 +126,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(6),
                           child: Image.network(
-                            metaData!.thumbnailUrl,
+                            metaData!.imageUrl,
                             width: 125,
                             height: 125,
                             fit: BoxFit.cover,
