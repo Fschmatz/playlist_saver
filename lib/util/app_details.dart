@@ -1,9 +1,9 @@
 class AppDetails{
 
-  static String appVersion = "2.1.0";
+  static String appVersion = "2.1.1";
   static String appName = "Playlist Saver Fschmatz";
   static String appNameHomePage = "Playlist Saver";
-  static String backupFileName = "backup_playlist_saver";
+  static String backupFileName = "playlist_saver_backup";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''  

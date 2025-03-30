@@ -17,7 +17,12 @@ class PlaylistTileGrid extends StatefulWidget {
   final bool isPageDownloads;
 
   const PlaylistTileGrid(
-      {super.key, required this.playlist, required this.refreshHome, required this.index, required this.isPageDownloads, required this.removeFromList});
+      {super.key,
+      required this.playlist,
+      required this.refreshHome,
+      required this.index,
+      required this.isPageDownloads,
+      required this.removeFromList});
 }
 
 class _PlaylistTileGridState extends State<PlaylistTileGrid> {
@@ -184,7 +189,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
   @override
   Widget build(BuildContext context) {
-
     final theme = Theme.of(context);
     Image? cover = (widget.playlist.cover != null)
         ? Image.memory(
@@ -227,6 +231,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                   bottom: 4,
                   right: 4,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Visibility(
                         visible: widget.playlist.isNewAlbum(),
@@ -235,7 +240,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                           height: 22,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.black.withOpacity(0.6),
+                            color: theme.colorScheme.primaryContainer,
                           ),
                           child: Icon(
                             Icons.new_releases_outlined,
@@ -244,22 +249,22 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 2,
-                      ),
                       Visibility(
                         visible: widget.playlist.isDownloaded(),
-                        child: Container(
-                          width: 22,
-                          height: 22,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.black.withOpacity(0.6),
-                          ),
-                          child: Icon(
-                            Icons.download_outlined,
-                            size: 18,
-                            color: theme.colorScheme.primary,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                          child: Container(
+                            width: 22,
+                            height: 22,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: theme.colorScheme.primaryContainer,
+                            ),
+                            child: Icon(
+                              Icons.download_outlined,
+                              size: 18,
+                              color: theme.colorScheme.primary,
+                            ),
                           ),
                         ),
                       ),
