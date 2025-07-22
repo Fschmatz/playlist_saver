@@ -1,11 +1,10 @@
 import 'dart:io';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
 
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class PlaylistDao {
-
   static const _databaseName = "PlaylistSaver.db";
   static const _databaseVersion = 1;
 
@@ -20,17 +19,17 @@ class PlaylistDao {
   static const columnNewAlbum = 'new_album';
 
   static Database? _database;
-  Future<Database> get database async =>
-      _database ??= await _initDatabase();
+
+  Future<Database> get database async => _database ??= await _initDatabase();
 
   PlaylistDao._privateConstructor();
+
   static final PlaylistDao instance = PlaylistDao._privateConstructor();
 
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
-    return await openDatabase(path,
-        version: _databaseVersion);
+    return await openDatabase(path, version: _databaseVersion);
   }
 
   Future<List<Map<String, dynamic>>> queryAllRows() async {
@@ -84,4 +83,17 @@ class PlaylistDao {
     return await db.delete(table);
   }
 
+  Future<void> insertBatchForBackup(List<Map<String, dynamic>> list) async {
+    Database db = await instance.database;
+
+    await db.transaction((txn) async {
+      final batch = txn.batch();
+
+      for (final data in list) {
+        batch.insert(table, data);
+      }
+
+      await batch.commit(noResult: true);
+    });
+  }
 }

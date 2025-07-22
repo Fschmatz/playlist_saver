@@ -1,9 +1,8 @@
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:playlist_saver/util/utils.dart';
-import 'package:web_scraper/web_scraper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+
 import '../class/spotify_metadata.dart';
 import '../service/playlist_service.dart';
 import '../service/spotify_metadata_service.dart';
@@ -18,9 +17,9 @@ class ReceiveSharedPlaylist extends StatefulWidget {
 }
 
 class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
-  TextEditingController controllerPlaylistTitle = TextEditingController();
-  TextEditingController controllerArtist = TextEditingController();
-  TextEditingController controllerLink = TextEditingController();
+  final TextEditingController _controllerPlaylistTitle = TextEditingController();
+  final TextEditingController _controllerArtist = TextEditingController();
+  final TextEditingController _controllerLink = TextEditingController();
   SpotifyMetadata? metaData;
   bool _validTitle = true;
   bool _validLink = true;
@@ -37,13 +36,13 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   void startFunctions() {
     List<String> formattedString = widget.sharedText!.split('https');
 
-    controllerLink.text = "https${formattedString[1]}";
+    _controllerLink.text = "https${formattedString[1]}";
     _fetchMetadata();
   }
 
   void _fetchMetadata() async {
     try {
-      metaData = await SpotifyMetadataService().loadMetadata(controllerLink.text);
+      metaData = await SpotifyMetadataService().loadMetadata(_controllerLink.text);
     } catch (e) {
       metaData = null;
       Fluttertoast.showToast(
@@ -54,8 +53,8 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
     if (mounted) {
       setState(() {
         metaData;
-        controllerPlaylistTitle.text = SpotifyMetadataService().formatTitleToSave(metaData!.title);
-        controllerArtist.text = metaData!.artistName!;
+        _controllerPlaylistTitle.text = SpotifyMetadataService().formatTitleToSave(metaData!.title);
+        _controllerArtist.text = metaData!.artistName!;
       });
     }
   }
@@ -69,16 +68,16 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
     }
 
     await PlaylistService()
-        .insertPlaylist(compressedCover, controllerLink.text, controllerPlaylistTitle.text, controllerArtist.text, _downloaded, _newAlbum);
+        .insertPlaylist(compressedCover, _controllerLink.text, _controllerPlaylistTitle.text, _controllerArtist.text, _downloaded, _newAlbum);
   }
 
   bool validateTextFields() {
     bool ok = true;
-    if (controllerLink.text.isEmpty) {
+    if (_controllerLink.text.isEmpty) {
       ok = false;
       _validLink = false;
     }
-    if (controllerPlaylistTitle.text.isEmpty) {
+    if (_controllerPlaylistTitle.text.isEmpty) {
       ok = false;
       _validTitle = false;
     }
@@ -88,7 +87,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final Color topOverlayColor = theme.colorScheme.background;
+    final Color topOverlayColor = theme.colorScheme.surface;
     final Brightness iconBrightness = theme.brightness == Brightness.light ? Brightness.dark : Brightness.light;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -135,7 +134,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                 ),
               ]),
             ),
-           /* Padding(
+            /* Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: TextField(
                 minLines: 1,
@@ -163,7 +162,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 textCapitalization: TextCapitalization.sentences,
                 keyboardType: TextInputType.name,
-                controller: controllerPlaylistTitle,
+                controller: _controllerPlaylistTitle,
                 decoration: InputDecoration(
                     labelText: "Title",
                     helperText: "* Required",
@@ -181,7 +180,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 textCapitalization: TextCapitalization.sentences,
                 keyboardType: TextInputType.name,
-                controller: controllerArtist,
+                controller: _controllerArtist,
                 decoration: const InputDecoration(
                   labelText: "Artist",
                   counterText: "",
@@ -222,7 +221,9 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
               child: FilledButton.tonalIcon(
                   onPressed: () {
                     if (validateTextFields()) {
-                      _savePlaylist().then((_) => {SystemNavigator.pop()});
+                      _savePlaylist().then((_) {
+                        SystemNavigator.pop();
+                      });
                     } else {
                       setState(() {
                         _validLink;

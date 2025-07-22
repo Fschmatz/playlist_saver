@@ -10,20 +10,16 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   @override
   void initState() {
-     super.initState();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     final theme = Theme.of(context);
-    final Color topOverlayColor = theme.colorScheme.background;
-    final Brightness iconBrightness = theme.brightness == Brightness.light
-        ? Brightness.dark
-        : Brightness.light;
+    final Color topOverlayColor = theme.colorScheme.surface;
+    final Brightness iconBrightness = theme.brightness == Brightness.light ? Brightness.dark : Brightness.light;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(

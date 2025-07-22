@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'app_details.dart';
 import 'backup_utils.dart';
 
 class DialogBackup extends StatefulWidget {
   final bool isCreateBackup;
-  final Function()? reloadHomeFunction;
 
-  const DialogBackup({super.key, required this.isCreateBackup, required this.reloadHomeFunction});
+  const DialogBackup({super.key, required this.isCreateBackup});
 
   @override
   State<DialogBackup> createState() => _DialogBackupState();
@@ -19,7 +19,6 @@ class _DialogBackupState extends State<DialogBackup> {
 
   Future<void> _restoreFromBackup() async {
     await BackupUtils().restoreBackupData(AppDetails.backupFileName);
-    await widget.reloadHomeFunction!();
   }
 
   @override
@@ -28,7 +27,7 @@ class _DialogBackupState extends State<DialogBackup> {
       title: const Text(
         "Confirm",
       ),
-      content:  Text(
+      content: Text(
         widget.isCreateBackup ? "Create backup ?" : "Restore backup ?",
       ),
       actions: [

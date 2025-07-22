@@ -1,9 +1,10 @@
-import 'package:dynamic_color/dynamic_color.dart';
+import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/share/receive_shared_playlist.dart';
 import 'package:share_handler/share_handler.dart';
+
 import 'app.dart';
 import 'class/init_data.dart';
 import 'class/show_data_argument.dart';
@@ -43,8 +44,7 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
 
   @override
   Widget build(BuildContext context) {
-    return DynamicColorBuilder(
-        builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+    return DynamicColorBuilder(builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
       return MaterialApp(
         navigatorKey: _navKey,
         debugShowCheckedModeBanner: false,
@@ -63,8 +63,7 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
               return MaterialPageRoute(builder: (context) => const App());
 
             case "/saveShare":
-              if (routeSettings.arguments != null ||
-                  widget.initData.sharedText.isEmpty) {
+              if (routeSettings.arguments != null || widget.initData.sharedText.isEmpty) {
                 final args = routeSettings.arguments as ShowDataArgument;
                 return MaterialPageRoute(
                     builder: (_) => ReceiveSharedPlaylist(

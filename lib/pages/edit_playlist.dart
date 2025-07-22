@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../class/playlist.dart';
 import '../service/playlist_service.dart';
 
@@ -7,17 +8,15 @@ class EditPlaylist extends StatefulWidget {
   @override
   State<EditPlaylist> createState() => _EditPlaylistState();
 
-  final Function() refreshHome;
   final Playlist playlist;
 
-  const EditPlaylist({super.key, required this.refreshHome, required this.playlist});
+  const EditPlaylist({super.key, required this.playlist});
 }
 
 class _EditPlaylistState extends State<EditPlaylist> {
-
-  TextEditingController controllerPlaylistTitle = TextEditingController();
-  TextEditingController controllerArtist = TextEditingController();
-  TextEditingController controllerLink = TextEditingController();
+  final TextEditingController _controllerPlaylistTitle = TextEditingController();
+  final TextEditingController _controllerArtist = TextEditingController();
+  final TextEditingController _controllerLink = TextEditingController();
   bool _validTitle = true;
   bool _validLink = true;
   bool _downloaded = false;
@@ -27,26 +26,26 @@ class _EditPlaylistState extends State<EditPlaylist> {
   void initState() {
     super.initState();
 
-    controllerLink.text = widget.playlist.link;
-    controllerPlaylistTitle.text = widget.playlist.title;
-    controllerArtist.text = widget.playlist.artist!;
+    _controllerLink.text = widget.playlist.link;
+    _controllerPlaylistTitle.text = widget.playlist.title;
+    _controllerArtist.text = widget.playlist.artist!;
     _downloaded = widget.playlist.isDownloaded();
     _newAlbum = widget.playlist.isNewAlbum();
   }
 
   Future<void> _updatePlaylist() async {
-    await PlaylistService()
-        .updatePlaylist(widget.playlist.idPlaylist, controllerLink.text, controllerPlaylistTitle.text, controllerArtist.text, _downloaded, _newAlbum);
+    await PlaylistService().updatePlaylist(
+        widget.playlist.idPlaylist, _controllerLink.text, _controllerPlaylistTitle.text, _controllerArtist.text, _downloaded, _newAlbum);
   }
 
   bool validateTextFields() {
     bool ok = true;
-    if (controllerLink.text.isEmpty) {
+    if (_controllerLink.text.isEmpty) {
       ok = false;
       _validLink = false;
     }
 
-    if (controllerPlaylistTitle.text.isEmpty) {
+    if (_controllerPlaylistTitle.text.isEmpty) {
       ok = false;
       _validTitle = false;
     }
@@ -70,7 +69,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               textCapitalization: TextCapitalization.sentences,
               keyboardType: TextInputType.name,
-              controller: controllerLink,
+              controller: _controllerLink,
               decoration: InputDecoration(
                   labelText: "Link",
                   helperText: "* Required",
@@ -88,7 +87,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               textCapitalization: TextCapitalization.sentences,
               keyboardType: TextInputType.name,
-              controller: controllerPlaylistTitle,
+              controller: _controllerPlaylistTitle,
               decoration: InputDecoration(
                   labelText: "Title",
                   helperText: "* Required",
@@ -106,7 +105,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               textCapitalization: TextCapitalization.sentences,
               keyboardType: TextInputType.name,
-              controller: controllerArtist,
+              controller: _controllerArtist,
               decoration: const InputDecoration(
                 labelText: "Artist",
                 counterText: "",
@@ -147,7 +146,8 @@ class _EditPlaylistState extends State<EditPlaylist> {
             child: FilledButton.tonalIcon(
                 onPressed: () {
                   if (validateTextFields()) {
-                    _updatePlaylist().then((v) => {widget.refreshHome(), Navigator.of(context).pop()});
+                    _updatePlaylist();
+                    Navigator.of(context).pop();
                   } else {
                     setState(() {
                       _validLink;

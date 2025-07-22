@@ -1,9 +1,13 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:playlist_saver/db/playlist_dao.dart';
+import 'package:playlist_saver/service/playlist_service.dart';
 import 'package:share_plus/share_plus.dart';
+
 import '../class/playlist.dart';
+import '../enum/destination.dart';
 import '../pages/edit_playlist.dart';
+import '../redux/selectors.dart';
 import '../util/utils.dart';
 
 class PlaylistTileGrid extends StatefulWidget {
@@ -11,50 +15,37 @@ class PlaylistTileGrid extends StatefulWidget {
   State<PlaylistTileGrid> createState() => _PlaylistTileGridState();
 
   final Playlist playlist;
-  final Function() refreshHome;
   final int index;
-  final Function(int) removeFromList;
-  final bool isPageDownloads;
 
-  const PlaylistTileGrid(
-      {super.key,
-      required this.playlist,
-      required this.refreshHome,
-      required this.index,
-      required this.isPageDownloads,
-      required this.removeFromList});
+  const PlaylistTileGrid({super.key, required this.playlist, required this.index});
 }
 
 class _PlaylistTileGridState extends State<PlaylistTileGrid> {
-  bool deleteAfterTimer = true;
-  double coverHeight = 120;
-  double coverWidth = 200;
-  BorderRadius cardBorderRadius = BorderRadius.circular(12);
-  bool isNewAlbum = false;
+  final PlaylistService playlistService = PlaylistService();
+  final double _coverHeight = 120;
+  final double _coverWidth = 200;
+  final BorderRadius _cardBorderRadius = BorderRadius.circular(12);
+  final bool _isNewAlbum = false;
 
   @override
   void initState() {
     super.initState();
   }
 
-  _launchLink() {
+  void _launchLink() {
     Utils().launchBrowser(widget.playlist.link);
   }
 
-  void _delete() async {
-    final playlists = PlaylistDao.instance;
-
-    await playlists.delete(widget.playlist.idPlaylist);
+  Future<void> _delete() async {
+    await playlistService.delete(widget.playlist);
   }
 
   Future<void> _changePlaylistState(int state) async {
-    final dbPlaylist = PlaylistDao.instance;
-    Map<String, dynamic> row = {
-      PlaylistDao.columnIdPlaylist: widget.playlist.idPlaylist,
-      PlaylistDao.columnState: state,
-    };
+    await playlistService.changePlaylistState(widget.playlist, state);
+  }
 
-    await dbPlaylist.update(row);
+  bool isCurrentPageDownloads() {
+    return selectCurrentDestination() == Destination.downloads;
   }
 
   void openBottomMenu() {
@@ -91,7 +82,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                     },
                   ),
                   Visibility(
-                    visible: widget.playlist.state != 0 && !widget.isPageDownloads,
+                    visible: widget.playlist.state != 0 && !isCurrentPageDownloads(),
                     child: ListTile(
                       leading: const Icon(Icons.queue_music_outlined),
                       title: const Text(
@@ -99,13 +90,13 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       ),
                       onTap: () {
                         _changePlaylistState(0);
-                        widget.refreshHome();
+                        //widget.refreshHome();
                         Navigator.of(context).pop();
                       },
                     ),
                   ),
                   Visibility(
-                    visible: widget.playlist.state != 1 && !widget.isPageDownloads,
+                    visible: widget.playlist.state != 1 && !isCurrentPageDownloads(),
                     child: ListTile(
                       leading: const Icon(Icons.archive_outlined),
                       title: const Text(
@@ -113,13 +104,13 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       ),
                       onTap: () {
                         _changePlaylistState(1);
-                        widget.refreshHome();
+                        //widget.refreshHome();
                         Navigator.of(context).pop();
                       },
                     ),
                   ),
                   Visibility(
-                    visible: widget.playlist.state != 2 && !widget.isPageDownloads,
+                    visible: widget.playlist.state != 2 && !isCurrentPageDownloads(),
                     child: ListTile(
                       leading: const Icon(Icons.favorite_border_outlined),
                       title: const Text(
@@ -127,7 +118,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       ),
                       onTap: () {
                         _changePlaylistState(2);
-                        widget.refreshHome();
+                        //widget.refreshHome();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -144,7 +135,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                           MaterialPageRoute(
                             builder: (BuildContext context) => EditPlaylist(
                               playlist: widget.playlist,
-                              refreshHome: widget.refreshHome,
                             ),
                           ));
                     },
@@ -155,14 +145,8 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       "Delete",
                     ),
                     onTap: () {
-                      widget.removeFromList(widget.index);
                       Navigator.of(context).pop();
-                      _showSnackBar();
-                      Timer(const Duration(seconds: 5), () {
-                        if (deleteAfterTimer) {
-                          _delete();
-                        }
-                      });
+                      _delete();
                     },
                   ),
                 ],
@@ -172,29 +156,14 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
         });
   }
 
-  void _showSnackBar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text("Playlist deleted"),
-        action: SnackBarAction(
-          label: "Undo",
-          onPressed: () {
-            deleteAfterTimer = false;
-            widget.refreshHome();
-          },
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     Image? cover = (widget.playlist.cover != null)
         ? Image.memory(
             widget.playlist.cover!,
-            height: coverHeight,
-            width: coverWidth,
+            height: _coverHeight,
+            width: _coverWidth,
             fit: BoxFit.cover,
             gaplessPlayback: true,
           )
@@ -202,7 +171,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
     return Card(
       child: InkWell(
-        borderRadius: cardBorderRadius,
+        borderRadius: _cardBorderRadius,
         onTap: _launchLink,
         onLongPress: openBottomMenu,
         child: Column(
@@ -212,8 +181,8 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
               children: [
                 (cover == null)
                     ? SizedBox(
-                        height: coverHeight,
-                        width: coverWidth,
+                        height: _coverHeight,
+                        width: _coverWidth,
                         child: Icon(
                           Icons.music_note_outlined,
                           size: 30,
@@ -221,7 +190,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                         ),
                       )
                     : ClipRRect(
-                        borderRadius: cardBorderRadius,
+                        borderRadius: _cardBorderRadius,
                         child: Opacity(
                           opacity: 0.9,
                           child: cover,

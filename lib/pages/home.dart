@@ -2,66 +2,58 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/pages/playlist_list.dart';
 import 'package:playlist_saver/pages/save_playlist.dart';
+
+import '../enum/destination.dart';
+import '../main.dart';
+import '../redux/actions.dart';
 import '../util/app_details.dart';
 import 'configs/settings.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
-
   @override
   State<Home> createState() => _HomeState();
+
+  const Home({super.key});
 }
 
 class _HomeState extends State<Home> {
   int _currentTabIndex = 0;
-  ScrollController scrollController = ScrollController();
-  List<Widget> _tabs = [
+  final ScrollController _scrollController = ScrollController();
+  final List<Widget> _destinations = [
     PlaylistList(
       key: UniqueKey(),
-      stateValue: 0,
+      destination: Destination.listen,
     ),
     PlaylistList(
       key: UniqueKey(),
-      stateValue: 1,
+      destination: Destination.archive,
     ),
     PlaylistList(
       key: UniqueKey(),
-      stateValue: 2,
+      destination: Destination.favorites,
     ),
     PlaylistList(
       key: UniqueKey(),
-      stateValue: 3,
+      destination: Destination.downloads,
     ),
   ];
 
-  void refresh() {
+  void _executeOnDestinationSelected(int index) async {
+    await store.dispatch(LoadPlaylistsAction(Destination.fromId(index)));
+    await store.dispatch(ChangeDestinationAction(Destination.fromId(index)));
+
     setState(() {
-      _tabs = [
-        PlaylistList(
-          key: UniqueKey(),
-          stateValue: 0,
-        ),
-        PlaylistList(
-          key: UniqueKey(),
-          stateValue: 1,
-        ),
-        PlaylistList(
-          key: UniqueKey(),
-          stateValue: 2,
-        ),
-        PlaylistList(
-          key: UniqueKey(),
-          stateValue: 3,
-        ),
-      ];
+      _currentTabIndex = index;
     });
+
+    _scrollController.jumpTo(0);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
-          controller: scrollController,
+          controller: _scrollController,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
@@ -82,16 +74,14 @@ class _HomeState extends State<Home> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) => SavePlaylist(
-                                    refreshHome: refresh,
-                                  ),
+                                  builder: (BuildContext context) => SavePlaylist(),
                                 ));
                             break;
                           case 1:
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) => Settings(refreshHome: refresh),
+                                  builder: (BuildContext context) => Settings(),
                                 ));
                         }
                       })
@@ -103,51 +93,36 @@ class _HomeState extends State<Home> {
             removeTop: true,
             context: context,
             child: PageTransitionSwitcher(
-                duration: const Duration(milliseconds: 700),
+                duration: const Duration(milliseconds: 450),
                 transitionBuilder: (child, animation, secondaryAnimation) => FadeThroughTransition(
                       animation: animation,
                       secondaryAnimation: secondaryAnimation,
                       child: child,
                     ),
-                child: _tabs[_currentTabIndex]),
+                child: _destinations[_currentTabIndex]),
           )),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentTabIndex,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        onDestinationSelected: (index) {
-          setState(() {
-            _currentTabIndex = index;
-          });
-          scrollController.jumpTo(0);
+        onDestinationSelected: (index) async {
+          _executeOnDestinationSelected(index);
         },
-        destinations: const [
+        destinations: [
+          NavigationDestination(icon: Destination.listen.icon, selectedIcon: Destination.listen.selectedIcon, label: Destination.listen.name),
           NavigationDestination(
-            icon: Icon(Icons.queue_music_outlined),
-            selectedIcon: Icon(
-              Icons.queue_music,
-            ),
-            label: 'Listen',
+            icon: Destination.archive.icon,
+            selectedIcon: Destination.archive.selectedIcon,
+            label: Destination.archive.name,
           ),
           NavigationDestination(
-            icon: Icon(Icons.archive_outlined),
-            selectedIcon: Icon(
-              Icons.archive,
-            ),
-            label: 'Archive',
+            icon: Destination.favorites.icon,
+            selectedIcon: Destination.favorites.icon,
+            label: Destination.favorites.name,
           ),
           NavigationDestination(
-            icon: Icon(Icons.favorite_border_outlined),
-            selectedIcon: Icon(
-              Icons.favorite_outlined,
-            ),
-            label: 'Favorites',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.download_outlined),
-            selectedIcon: Icon(
-              Icons.download,
-            ),
-            label: 'Downloads',
+            icon: Destination.archive.icon,
+            selectedIcon: Destination.archive.selectedIcon,
+            label: Destination.archive.name,
           ),
         ],
       ),

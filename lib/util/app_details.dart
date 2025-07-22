@@ -1,18 +1,23 @@
-class AppDetails{
-
-  static String appVersion = "2.1.1";
+class AppDetails {
+  static String appVersion = "2.2.0";
   static String appName = "Playlist Saver Fschmatz";
   static String appNameHomePage = "Playlist Saver";
   static String backupFileName = "playlist_saver_backup";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
-  static String changelogCurrent = '''  
+  static String changelogCurrent = '''
 $appVersion
-- Changed method to parse metadata from Spotify
+- Async Redux
+- Update Flutter 3.32
+- Themed icon
 - Bug fixes
 ''';
 
   static String changelogsOld = '''
+2.1.1
+- Changed method to parse metadata from Spotify
+- Bug fixes
+
 2.0.4  
 - Removed tags
 - Only Gridview
@@ -95,5 +100,4 @@ $appVersion
 0.1.0
 - Project start 
 ''';
-
 }

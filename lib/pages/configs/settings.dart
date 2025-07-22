@@ -1,10 +1,7 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+
 import '../../util/app_details.dart';
-import '../../util/backup_utils.dart';
 import '../../util/dialog_backup.dart';
 import '../../util/dialog_select_theme.dart';
 import '../../util/utils.dart';
@@ -16,19 +13,10 @@ class Settings extends StatefulWidget {
   @override
   State<Settings> createState() => SettingsState();
 
-  final Function() refreshHome;
-
-  const Settings({super.key, required this.refreshHome});
+  const Settings({super.key});
 }
 
 class SettingsState extends State<Settings> {
-  final Completer<bool> _loadingCompleter = Completer<bool>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     Color themeColorApp = Theme.of(context).colorScheme.primary;
@@ -89,7 +77,6 @@ class SettingsState extends State<Settings> {
                   builder: (BuildContext context) {
                     return DialogBackup(
                       isCreateBackup: true,
-                      reloadHomeFunction: widget.refreshHome,
                     );
                   }),
               leading: const Icon(Icons.save_outlined),
@@ -103,7 +90,6 @@ class SettingsState extends State<Settings> {
                   builder: (BuildContext context) {
                     return DialogBackup(
                       isCreateBackup: false,
-                      reloadHomeFunction: widget.refreshHome,
                     );
                   }),
               leading: const Icon(Icons.settings_backup_restore_outlined),

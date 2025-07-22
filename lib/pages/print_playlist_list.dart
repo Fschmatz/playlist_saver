@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:playlist_saver/db/playlist_dao.dart';
 
 class PrintPlaylistList extends StatefulWidget {
-  const PrintPlaylistList({super.key});
-
   @override
   State<PrintPlaylistList> createState() => _PrintPlaylistListState();
+
+  const PrintPlaylistList({super.key});
 }
 
 class _PrintPlaylistListState extends State<PrintPlaylistList> {
@@ -21,17 +21,12 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
   }
 
   void getPlaylists() async {
-    List<Map<String, dynamic>> listPlaylistsListen =
-    await dbPlaylists.queryAllRowsDescState(0);
-    List<Map<String, dynamic>> listPlaylistArchive =
-    await dbPlaylists.queryAllRowsDescState(1);
-    List<Map<String, dynamic>> listPlaylistFavorites =
-    await dbPlaylists.queryAllRowsDescState(2);
-    List<Map<String, dynamic>> listDownloads =
-    await dbPlaylists.queryAllRowsDownloadedDesc();
+    List<Map<String, dynamic>> listPlaylistsListen = await dbPlaylists.queryAllRowsDescState(0);
+    List<Map<String, dynamic>> listPlaylistArchive = await dbPlaylists.queryAllRowsDescState(1);
+    List<Map<String, dynamic>> listPlaylistFavorites = await dbPlaylists.queryAllRowsDescState(2);
+    List<Map<String, dynamic>> listDownloads = await dbPlaylists.queryAllRowsDownloadedDesc();
 
-    formattedList +=
-    'LISTEN - ${listPlaylistsListen.length} Playlist(s)\n';
+    formattedList += 'LISTEN - ${listPlaylistsListen.length} Playlist(s)\n';
     for (int i = 0; i < listPlaylistsListen.length; i++) {
       formattedList += "\n• ${listPlaylistsListen[i]['title']}\n";
       formattedList += listPlaylistsListen[i]['link'] + "\n";
@@ -86,13 +81,14 @@ class _PrintPlaylistListState extends State<PrintPlaylistList> {
           (loading)
               ? const SizedBox.shrink()
               : SelectableText(
-            formattedList,
-            style: const TextStyle(fontSize: 16),
-          ),
-          const SizedBox(height: 30,)
+                  formattedList,
+                  style: const TextStyle(fontSize: 16),
+                ),
+          const SizedBox(
+            height: 30,
+          )
         ],
       ),
     );
   }
 }
-

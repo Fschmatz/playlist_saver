@@ -1,20 +1,17 @@
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:playlist_saver/service/spotify_metadata_service.dart';
-import 'package:web_scraper/web_scraper.dart';
+
 import '../class/spotify_metadata.dart';
 import '../service/playlist_service.dart';
-import '../util/utils.dart';
 
 class SavePlaylist extends StatefulWidget {
   @override
   State<SavePlaylist> createState() => _SavePlaylistState();
 
-  final Function()? refreshHome;
-
-  const SavePlaylist({super.key, required this.refreshHome});
+  const SavePlaylist({super.key});
 }
 
 class _SavePlaylistState extends State<SavePlaylist> {
@@ -26,11 +23,6 @@ class _SavePlaylistState extends State<SavePlaylist> {
   bool _validLink = true;
   bool _downloaded = false;
   bool _newAlbum = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void _fetchMetadata() async {
     try {
@@ -200,10 +192,8 @@ class _SavePlaylistState extends State<SavePlaylist> {
             child: FilledButton.tonalIcon(
                 onPressed: () {
                   if (validateTextFields()) {
-                    _savePlaylist().then((v) => {
-                          widget.refreshHome!(),
-                          Navigator.of(context).pop(),
-                        });
+                    _savePlaylist();
+                    Navigator.of(context).pop();
                   } else {
                     setState(() {
                       _validLink;

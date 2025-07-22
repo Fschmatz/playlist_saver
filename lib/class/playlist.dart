@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-class Playlist{
-
+class Playlist {
   int idPlaylist;
   String link;
   String title;
@@ -12,21 +11,21 @@ class Playlist{
   Uint8List? cover;
   int? newAlbum; //0 false, 1 true
 
-  Playlist({
-    required this.idPlaylist,
-    required this.link,
-    required this.title,
-    required this.state,
-    this.artist,
-    this.downloaded,
-    this.cover,
-    this.newAlbum});
+  Playlist(
+      {required this.idPlaylist,
+      required this.link,
+      required this.title,
+      required this.state,
+      this.artist,
+      this.downloaded,
+      this.cover,
+      this.newAlbum});
 
-  bool isDownloaded(){
+  bool isDownloaded() {
     return downloaded == 1 ? true : false;
   }
 
-  bool isNewAlbum(){
+  bool isNewAlbum() {
     return newAlbum == 1 ? true : false;
   }
 
@@ -56,4 +55,16 @@ class Playlist{
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id_playlist': idPlaylist,
+      'link': link,
+      'title': title,
+      'state': state,
+      'artist': artist,
+      'downloaded': downloaded,
+      'cover': cover,
+      'new_album': newAlbum,
+    };
+  }
 }

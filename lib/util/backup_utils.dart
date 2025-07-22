@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:playlist_saver/service/playlist_service.dart';
+
 import '../class/backup.dart';
 import '../db/playlist_dao.dart';
 
@@ -101,11 +104,6 @@ class BackupUtils {
   }
 
   Future<void> _insertBackupData(Backup backup) async {
-    if (backup.playlists.isNotEmpty) {
-      for (Map<String, dynamic> playlist in backup.playlists) {
-        await playlistDao.insert(playlist);
-      }
-    }
+    PlaylistService().insertBackupData(backup);
   }
-
 }

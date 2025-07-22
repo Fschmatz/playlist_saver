@@ -1,8 +1,14 @@
 import 'dart:typed_data';
-import 'package:playlist_saver/class/playlist.dart';
-import '../db/playlist_dao.dart';
 
-class PlaylistService {
+import 'package:playlist_saver/class/playlist.dart';
+import 'package:playlist_saver/enum/destination.dart';
+import 'package:playlist_saver/service/store_service.dart';
+
+import '../class/backup.dart';
+import '../db/playlist_dao.dart';
+import '../redux/selectors.dart';
+
+class PlaylistService extends StoreService {
   final dbPlaylist = PlaylistDao.instance;
 
   Future<List<Playlist>> queryAllByStateAndConvertToList(int stateValue) async {
@@ -36,6 +42,8 @@ class PlaylistService {
     };
 
     await dbPlaylist.insert(row);
+
+    loadPlaylists(Destination.listen);
   }
 
   Future<void> updatePlaylist(int idPlaylist, String link, String title, String artist, bool downloaded, bool newAlbum) async {
@@ -49,5 +57,33 @@ class PlaylistService {
     };
 
     await dbPlaylist.update(row);
+
+    await loadPlaylists(selectCurrentDestination());
+  }
+
+  Future<void> delete(Playlist playlist) async {
+    await dbPlaylist.delete(playlist.idPlaylist);
+
+    await loadPlaylists(selectCurrentDestination());
+  }
+
+  Future<void> changePlaylistState(Playlist playlist, int state) async {
+    Map<String, dynamic> row = {
+      PlaylistDao.columnIdPlaylist: playlist.idPlaylist,
+      PlaylistDao.columnState: state,
+    };
+
+    await dbPlaylist.update(row);
+    await loadPlaylists(selectCurrentDestination());
+  }
+
+  Future<void> insertBackupData(Backup backup) async {
+    if (backup.playlists.isNotEmpty) {
+      for (Map<String, dynamic> playlist in backup.playlists) {
+        await dbPlaylist.insert(playlist);
+      }
+    }
+
+    await loadPlaylists(selectCurrentDestination());
   }
 }
