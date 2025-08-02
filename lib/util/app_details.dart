@@ -1,5 +1,5 @@
 class AppDetails {
-  static String appVersion = "2.2.0";
+  static String appVersion = "2.2.1";
   static String appName = "Playlist Saver Fschmatz";
   static String appNameHomePage = "Playlist Saver";
   static String backupFileName = "playlist_saver_backup";

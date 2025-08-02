@@ -292,10 +292,10 @@ packages:
     dependency: transitive
     description:
       name: i18n_extension_core
-      sha256: "7923af27a4f643a21d5aea5203bed4859d42c9d38c08939e22d6d10f1fa4afb5"
+      sha256: "5d17d355b95882e803f89c97cad610ab7967a798f8e519563d274f7888bc968e"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.1"
+    version: "5.0.2"
   leak_tracker:
     dependency: transitive
     description:
@@ -516,18 +516,18 @@ packages:
     dependency: "direct main"
     description:
       name: share_handler
-      sha256: ea0c706810bb03fe60939568f00bd9458ebb745b194a0cc6ecdbef1b23f4b9cc
+      sha256: "0a6d007f0e44fbee27164adcd159ecbc88238864313f4e5c58161cae2180328d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.23"
+    version: "0.0.25"
   share_handler_android:
     dependency: transitive
     description:
       name: share_handler_android
-      sha256: "298e3307bca595301694e81b9e9940b3dd188e333151109fc1cd4213aa282890"
+      sha256: caf555b933dc72783aa37fef75688c7b86bd6f7bc17d80fbf585bc42f123cc8d
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.10"
+    version: "0.0.11"
   share_handler_ios:
     dependency: transitive
     description:
@@ -657,10 +657,10 @@ packages:
     dependency: transitive
     description:
       name: sqflite_common
-      sha256: "84731e8bfd8303a3389903e01fb2141b6e59b5973cacbb0929021df08dddbe8b"
+      sha256: "6ef422a4525ecc601db6c0a2233ff448c731307906e92cabc9ba292afaae16a6"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.5"
+    version: "2.5.6"
   sqflite_darwin:
     dependency: transitive
     description:

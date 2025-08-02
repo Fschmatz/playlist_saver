@@ -7,8 +7,9 @@ import 'app_state.dart';
 
 class LoadPlaylistsAction extends AppAction {
   final Destination destination;
+  final bool forceReload;
 
-  LoadPlaylistsAction(this.destination);
+  LoadPlaylistsAction(this.destination, {this.forceReload = false});
 
   @override
   Future<AppState> reduce() async {
@@ -16,16 +17,22 @@ class LoadPlaylistsAction extends AppAction {
 
     switch (destination) {
       case Destination.listen:
-        playlists = await PlaylistService().queryAllByStateAndConvertToList(destination.id);
+        playlists =
+            state.listListen.isEmpty || forceReload ? await PlaylistService().queryAllByStateAndConvertToList(destination.id) : state.listListen;
         return state.copyWith(listListen: playlists);
       case Destination.archive:
-        playlists = await PlaylistService().queryAllByStateAndConvertToList(destination.id);
+        playlists =
+            state.listArchive.isEmpty || forceReload ? await PlaylistService().queryAllByStateAndConvertToList(destination.id) : state.listArchive;
         return state.copyWith(listArchive: playlists);
       case Destination.favorites:
-        playlists = await PlaylistService().queryAllByStateAndConvertToList(destination.id);
+        playlists = state.listFavorites.isEmpty || forceReload
+            ? await PlaylistService().queryAllByStateAndConvertToList(destination.id)
+            : state.listFavorites;
         return state.copyWith(listFavorites: playlists);
       case Destination.downloads:
-        playlists = await PlaylistService().queryAllByStateAndConvertToList(destination.id);
+        playlists = state.listDownloads.isEmpty || forceReload
+            ? await PlaylistService().queryAllByStateAndConvertToList(destination.id)
+            : state.listDownloads;
         return state.copyWith(listDownloads: playlists);
     }
   }

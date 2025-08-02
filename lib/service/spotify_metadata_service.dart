@@ -1,37 +1,27 @@
 import 'dart:convert';
 import 'dart:typed_data';
+
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:web_scraper/web_scraper.dart';
+
 import '../class/spotify_metadata.dart';
 
 class SpotifyMetadataService {
-
   Future<SpotifyMetadata?> loadMetadata(String link) async {
     final webScraper = WebScraper();
 
     if (await webScraper.loadFullURL(link)) {
-      final ogTitle = webScraper
-          .getElement('meta[property="og:title"]', ['content'])
-          .first['attributes']['content'] as String?;
+      final ogTitle = webScraper.getElement('meta[property="og:title"]', ['content']).first['attributes']['content'] as String?;
 
-      final ogDescription = webScraper
-          .getElement('meta[property="og:description"]', ['content'])
-          .first['attributes']['content'] as String?;
+      final ogDescription = webScraper.getElement('meta[property="og:description"]', ['content']).first['attributes']['content'] as String?;
 
-      final ogImage = webScraper
-          .getElement('meta[property="og:image"]', ['content'])
-          .first['attributes']['content'] as String?;
+      final ogImage = webScraper.getElement('meta[property="og:image"]', ['content']).first['attributes']['content'] as String?;
 
       List<Map<String, dynamic>> elements = webScraper.getElement('head > title', ['content']);
       String artistDataElement = elements[0]['title'];
 
       if (ogTitle != null && ogDescription != null && ogImage != null) {
-        return SpotifyMetadata(
-            title: ogTitle,
-            description: ogDescription,
-            imageUrl: ogImage,
-            artistName: formatArtistNameToSave(artistDataElement)
-        );
+        return SpotifyMetadata(title: ogTitle, description: ogDescription, imageUrl: ogImage, artistName: formatArtistNameToSave(artistDataElement));
       }
     }
 
@@ -52,7 +42,8 @@ class SpotifyMetadataService {
     String formattedArtistName = "";
 
     if (artistFromHTML.contains('This Is ')) {
-      formattedArtistName = artistFromHTML.replaceAll('This Is ', '').replaceAll(' - playlist by Spotify | Spotify', '');
+      formattedArtistName =
+          artistFromHTML.replaceAll('This Is ', '').replaceAll(' - playlist by Spotify | Spotify', '').replaceAll(' | Spotify Playlist', '');
     }
     if (artistFromHTML.contains('song and lyrics by ')) {
       List<String> listSplit = artistFromHTML.split('by ');
@@ -71,7 +62,7 @@ class SpotifyMetadataService {
       formattedArtistName = listSplit[1].replaceAll(' | Spotify', '');
     }
 
-    return formattedArtistName;
+    return formattedArtistName.trim();
   }
 
   String formatTitleToSave(String title) {
@@ -83,5 +74,4 @@ class SpotifyMetadataService {
       return "";
     }
   }
-
 }

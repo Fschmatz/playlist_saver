@@ -74,7 +74,8 @@ class PlaylistService extends StoreService {
     };
 
     await dbPlaylist.update(row);
-    await loadPlaylists(selectCurrentDestination());
+
+    await loadPlaylistsOnChangeState(playlist.state, state);
   }
 
   Future<void> insertBackupData(Backup backup) async {

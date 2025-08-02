@@ -90,7 +90,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       ),
                       onTap: () {
                         _changePlaylistState(0);
-                        //widget.refreshHome();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -104,7 +103,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       ),
                       onTap: () {
                         _changePlaylistState(1);
-                        //widget.refreshHome();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -118,7 +116,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       ),
                       onTap: () {
                         _changePlaylistState(2);
-                        //widget.refreshHome();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -158,7 +155,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     Image? cover = (widget.playlist.cover != null)
         ? Image.memory(
             widget.playlist.cover!,
@@ -170,6 +167,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
         : null;
 
     return Card(
+      color: colorScheme.surfaceContainerHigh,
       child: InkWell(
         borderRadius: _cardBorderRadius,
         onTap: _launchLink,
@@ -186,7 +184,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                         child: Icon(
                           Icons.music_note_outlined,
                           size: 30,
-                          color: theme.hintColor,
+                          color: colorScheme.onPrimaryContainer,
                         ),
                       )
                     : ClipRRect(
@@ -209,12 +207,12 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                           height: 22,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: theme.colorScheme.primaryContainer,
+                            color: colorScheme.primaryContainer,
                           ),
                           child: Icon(
                             Icons.new_releases_outlined,
                             size: 18,
-                            color: theme.colorScheme.primary,
+                            color: colorScheme.primary,
                           ),
                         ),
                       ),
@@ -227,12 +225,12 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                             height: 22,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: theme.colorScheme.primaryContainer,
+                              color: colorScheme.primaryContainer,
                             ),
                             child: Icon(
                               Icons.download_outlined,
                               size: 18,
-                              color: theme.colorScheme.primary,
+                              color: colorScheme.primary,
                             ),
                           ),
                         ),
@@ -252,7 +250,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                   widget.playlist.title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12, color: theme.hintColor),
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: colorScheme.onPrimaryContainer),
                 ),
               ),
             ),
@@ -263,7 +261,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                   widget.playlist.artist!,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: TextStyle(fontSize: 10, color: theme.hintColor),
+                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: colorScheme.onSecondaryContainer),
                 ),
               ),
             ),
