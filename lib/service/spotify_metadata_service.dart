@@ -21,7 +21,11 @@ class SpotifyMetadataService {
       String artistDataElement = elements[0]['title'];
 
       if (ogTitle != null && ogDescription != null && ogImage != null) {
-        return SpotifyMetadata(title: ogTitle, description: ogDescription, imageUrl: ogImage, artistName: formatArtistNameToSave(artistDataElement));
+        // Adicionado quando o Spotify colocou mais dados no ogTitle, antes passava ele direto
+        String titleAjustado = ogTitle.split("-")[0].trim();
+
+        return SpotifyMetadata(
+            title: titleAjustado, description: ogDescription, imageUrl: ogImage, artistName: formatArtistNameToSave(artistDataElement));
       }
     }
 

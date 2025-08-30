@@ -120,9 +120,9 @@ class _HomeState extends State<Home> {
             label: Destination.favorites.name,
           ),
           NavigationDestination(
-            icon: Destination.archive.icon,
-            selectedIcon: Destination.archive.selectedIcon,
-            label: Destination.archive.name,
+            icon: Destination.downloads.icon,
+            selectedIcon: Destination.downloads.selectedIcon,
+            label: Destination.downloads.name,
           ),
         ],
       ),

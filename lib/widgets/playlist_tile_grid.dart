@@ -25,12 +25,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   final double _coverHeight = 120;
   final double _coverWidth = 200;
   final BorderRadius _cardBorderRadius = BorderRadius.circular(12);
-  final bool _isNewAlbum = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void _launchLink() {
     Utils().launchBrowser(widget.playlist.link);
