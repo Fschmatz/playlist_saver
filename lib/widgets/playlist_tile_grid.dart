@@ -25,6 +25,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   final double _coverHeight = 120;
   final double _coverWidth = 200;
   final BorderRadius _cardBorderRadius = BorderRadius.circular(12);
+  final BorderRadius _cardBorderRadiusImage = BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12));
 
   void _launchLink() {
     Utils().launchBrowser(widget.playlist.link);
@@ -182,7 +183,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                         ),
                       )
                     : ClipRRect(
-                        borderRadius: _cardBorderRadius,
+                        borderRadius: _cardBorderRadiusImage,
                         child: Opacity(
                           opacity: 0.9,
                           child: cover,

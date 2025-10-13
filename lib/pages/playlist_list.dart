@@ -23,22 +23,27 @@ class _PlaylistListState extends State<PlaylistList> {
       return selectPlaylistByDestination(widget.destination);
     }, builder: (context, playlists) {
       return ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, mainAxisExtent: 170),
-              physics: const ScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: playlists.length,
-              itemBuilder: (context, index) {
-                return PlaylistTileGrid(key: UniqueKey(), index: index, playlist: playlists[index]);
-              },
+          GridView.builder(
+            padding: EdgeInsets.zero,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisExtent: 170,
             ),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: playlists.length,
+            itemBuilder: (context, index) {
+              final playlist = playlists[index];
+              return PlaylistTileGrid(
+                key: ValueKey(playlist.idPlaylist),
+                index: index,
+                playlist: playlist,
+              );
+            },
           ),
-          const SizedBox(
-            height: 50,
-          )
+          const SizedBox(height: 50),
         ],
       );
     });

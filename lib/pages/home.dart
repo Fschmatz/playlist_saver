@@ -21,19 +21,19 @@ class _HomeState extends State<Home> {
   final ScrollController _scrollController = ScrollController();
   final List<Widget> _destinations = [
     PlaylistList(
-      key: UniqueKey(),
+      key: ValueKey(Destination.listen.id),
       destination: Destination.listen,
     ),
     PlaylistList(
-      key: UniqueKey(),
+      key: ValueKey(Destination.archive.id),
       destination: Destination.archive,
     ),
     PlaylistList(
-      key: UniqueKey(),
+      key: ValueKey(Destination.favorites.id),
       destination: Destination.favorites,
     ),
     PlaylistList(
-      key: UniqueKey(),
+      key: ValueKey(Destination.downloads.id),
       destination: Destination.downloads,
     ),
   ];
