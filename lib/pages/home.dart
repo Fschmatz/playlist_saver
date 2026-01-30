@@ -32,10 +32,12 @@ class _HomeState extends State<Home> {
       key: ValueKey(Destination.favorites.id),
       destination: Destination.favorites,
     ),
-    PlaylistList(
+    /*
+   PlaylistList(
       key: ValueKey(Destination.downloads.id),
       destination: Destination.downloads,
     ),
+    */
   ];
 
   void _executeOnDestinationSelected(int index) async {
@@ -119,11 +121,13 @@ class _HomeState extends State<Home> {
             selectedIcon: Destination.favorites.icon,
             label: Destination.favorites.name,
           ),
+          /*
           NavigationDestination(
             icon: Destination.downloads.icon,
             selectedIcon: Destination.downloads.selectedIcon,
             label: Destination.downloads.name,
           ),
+          */
         ],
       ),
     );

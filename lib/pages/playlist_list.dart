@@ -23,7 +23,7 @@ class _PlaylistListState extends State<PlaylistList> {
       return selectPlaylistByDestination(widget.destination);
     }, builder: (context, playlists) {
       return ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         children: [
           GridView.builder(
             padding: EdgeInsets.zero,

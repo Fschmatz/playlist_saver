@@ -1,7 +1,7 @@
 name: playlist_saver
 description: Flutter project.
 publish_to: 'none'
-version: 2.2.3
+version: 2.3.1
 
 environment:
   sdk: '>=3.2.6 <4.0.0'
@@ -16,10 +16,10 @@ dependencies:
   easy_dynamic_theme: ^2.3.1
   sqflite: ^2.4.2
   path_provider: ^2.1.5
-  fluttertoast: ^8.2.12
+  fluttertoast: ^9.0.0
   web_scraper: ^0.1.4
   animations: ^2.0.11
-  share_handler: ^0.0.22
+  share_handler: ^0.0.25
   flutter_image_compress: ^2.4.0
   cupertino_icons: ^1.0.2
   permission_handler: ^11.3.0

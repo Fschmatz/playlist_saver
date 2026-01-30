@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/service/playlist_service.dart';
+import 'package:playlist_saver/util/utils_functions.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../class/playlist.dart';
 import '../enum/destination.dart';
 import '../pages/edit_playlist.dart';
 import '../redux/selectors.dart';
-import '../util/utils.dart';
 
 class PlaylistTileGrid extends StatefulWidget {
   @override
@@ -23,12 +23,15 @@ class PlaylistTileGrid extends StatefulWidget {
 class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   final PlaylistService playlistService = PlaylistService();
   final double _coverHeight = 120;
-  final double _coverWidth = 200;
+  final double _coverWidth = 120;
   final BorderRadius _cardBorderRadius = BorderRadius.circular(12);
   final BorderRadius _cardBorderRadiusImage = BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12));
+  final double _tagHeight = 26;
+  final double _tagWidth = 26;
+  final double _tagIconSize = 20;
 
   void _launchLink() {
-    Utils().launchBrowser(widget.playlist.link);
+    UtilsFunctions.launchBrowser(widget.playlist.link);
   }
 
   Future<void> _delete() async {
@@ -162,6 +165,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
         : null;
 
     return Card(
+      margin: EdgeInsetsGeometry.all(3),
       color: colorScheme.surfaceContainerHigh,
       child: InkWell(
         borderRadius: _cardBorderRadius,
@@ -190,23 +194,23 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                         ),
                       ),
                 Positioned(
-                  bottom: 4,
-                  right: 4,
+                  bottom: 3,
+                  right: 3,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Visibility(
                         visible: widget.playlist.isNewAlbum(),
                         child: Container(
-                          width: 22,
-                          height: 22,
+                          width: _tagHeight,
+                          height: _tagWidth,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: colorScheme.primaryContainer,
                           ),
                           child: Icon(
                             Icons.new_releases_outlined,
-                            size: 18,
+                            size: _tagIconSize,
                             color: colorScheme.primary,
                           ),
                         ),
@@ -214,17 +218,17 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       Visibility(
                         visible: widget.playlist.isDownloaded(),
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
                           child: Container(
-                            width: 22,
-                            height: 22,
+                            width: _tagHeight,
+                            height: _tagWidth,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: colorScheme.primaryContainer,
                             ),
                             child: Icon(
                               Icons.download_outlined,
-                              size: 18,
+                              size: _tagIconSize,
                               color: colorScheme.primary,
                             ),
                           ),

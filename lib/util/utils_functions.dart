@@ -1,28 +1,28 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:playlist_saver/util/utils_string.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'app_details.dart';
 
-class Utils {
-  openGithubRepository() {
+class UtilsFunctions {
+  static void openGithubRepository() {
     launchBrowser(AppDetails.repositoryLink);
   }
 
-  launchBrowser(String url) {
+  static void launchBrowser(String url) {
     launchUrl(
       Uri.parse(url),
       mode: LaunchMode.externalApplication,
     );
   }
 
-  String getThemeStringFormatted(ThemeMode? currentTheme) {
+  static String getThemeStringFormatted(ThemeMode? currentTheme) {
     String theme = currentTheme.toString().replaceAll('ThemeMode.', '');
+
     if (theme == 'system') {
       theme = 'system default';
     }
-    return theme.replaceFirst(theme[0], theme[0].toUpperCase());
-  }
 
+    return UtilsString.capitalizeFirstLetterString(theme);
+  }
 }

@@ -1,19 +1,23 @@
 class AppDetails {
-  static String appVersion = "2.2.3";
+  static String appVersion = "2.3.1";
   static String appName = "Playlist Saver Fschmatz";
   static String appNameHomePage = "Playlist Saver";
-  static String backupFileName = "playlist_saver_backup";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''
 $appVersion
-- Async Redux
-- Update Flutter 3.32
-- Themed icon
+- Update Flutter 3.38
+- UI changes
 - Bug fixes
 ''';
 
   static String changelogsOld = '''
+2.2.3
+- Async Redux
+- Update Flutter 3.32
+- Themed icon
+- Bug fixes
+
 2.1.1
 - Changed method to parse metadata from Spotify
 - Bug fixes

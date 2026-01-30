@@ -6,6 +6,8 @@ import 'package:playlist_saver/service/spotify_metadata_service.dart';
 
 import '../class/spotify_metadata.dart';
 import '../service/playlist_service.dart';
+import '../widgets/playlist_artwork.dart';
+import '../widgets/playlist_form.dart';
 
 class SavePlaylist extends StatefulWidget {
   @override
@@ -68,147 +70,30 @@ class _SavePlaylistState extends State<SavePlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('New playlist'),
-        ),
-        body: ListView(children: [
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: metaData == null
-                    ? Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
-                        width: 125,
-                        height: 125,
-                        child: const Center(
-                          child: Icon(
-                            Icons.music_note_outlined,
-                            size: 30,
-                          ),
-                        ),
-                      )
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
-                        child: Image.network(
-                          metaData!.imageUrl,
-                          width: 125,
-                          height: 125,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-              ),
-            ]),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: TextField(
-              autofocus: true,
-              minLines: 1,
-              maxLines: 4,
-              maxLength: 500,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              textCapitalization: TextCapitalization.sentences,
-              keyboardType: TextInputType.name,
-              controller: controllerLink,
-              onSubmitted: (e) => _fetchMetadata(),
-              decoration: InputDecoration(
-                  labelText: "Link",
-                  helperText: "* Required",
-                  counterText: "",
-                  border: const OutlineInputBorder(),
-                  errorText: (_validLink) ? null : "Link is empty"),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: TextField(
-              minLines: 1,
-              maxLines: 3,
-              maxLength: 300,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              textCapitalization: TextCapitalization.sentences,
-              keyboardType: TextInputType.name,
-              controller: controllerPlaylistTitle,
-              decoration: InputDecoration(
-                  labelText: "Title",
-                  helperText: "* Required",
-                  counterText: "",
-                  border: const OutlineInputBorder(),
-                  errorText: (_validTitle) ? null : "Title is empty"),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: TextField(
-              minLines: 1,
-              maxLines: 2,
-              maxLength: 300,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              textCapitalization: TextCapitalization.sentences,
-              keyboardType: TextInputType.name,
-              controller: controllerArtist,
-              decoration: const InputDecoration(
-                labelText: "Artist",
-                counterText: "",
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          SwitchListTile(
-            title: const Text(
-              "Downloaded",
-            ),
-            subtitle: const Text(
-              "Downloaded to device",
-            ),
-            value: _downloaded,
-            onChanged: (value) {
-              setState(() {
-                _downloaded = value;
-              });
-            },
-          ),
-          SwitchListTile(
-            title: const Text(
-              "New album",
-            ),
-            subtitle: const Text(
-              "Highlight as new",
-            ),
-            value: _newAlbum,
-            onChanged: (value) {
-              setState(() {
-                _newAlbum = value;
-              });
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-            child: FilledButton.tonalIcon(
-                onPressed: () {
-                  if (validateTextFields()) {
-                    _savePlaylist();
-                    Navigator.of(context).pop();
-                  } else {
-                    setState(() {
-                      _validLink;
-                      _validTitle;
-                    });
-                  }
-                },
-                icon: const Icon(Icons.save_outlined),
-                label: const Text(
-                  'Save',
-                )),
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-        ]));
+    return PlaylistForm(
+      appBarTitle: 'New playlist',
+      linkController: controllerLink,
+      titleController: controllerPlaylistTitle,
+      artistController: controllerArtist,
+      validLink: _validLink,
+      validTitle: _validTitle,
+      downloaded: _downloaded,
+      newAlbum: _newAlbum,
+      isUpdate: false,
+      artwork: PlaylistArtwork(
+        imageUrl: metaData?.imageUrl,
+      ),
+      onLinkSubmitted: _fetchMetadata,
+      onDownloadedChanged: (v) => setState(() => _downloaded = v),
+      onNewAlbumChanged: (v) => setState(() => _newAlbum = v),
+      onSave: () {
+        if (validateTextFields()) {
+          _savePlaylist();
+          Navigator.pop(context);
+        } else {
+          setState(() {});
+        }
+      },
+    );
   }
 }

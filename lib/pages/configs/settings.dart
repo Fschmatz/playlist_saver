@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../util/app_details.dart';
 import '../../util/dialog_backup.dart';
 import '../../util/dialog_select_theme.dart';
-import '../../util/utils.dart';
+import '../../util/utils_functions.dart';
 import '../print_playlist_list.dart';
 import 'app_info.dart';
 import 'changelog.dart';
@@ -55,7 +55,7 @@ class SettingsState extends State<Settings> {
               title: const Text(
                 "App theme",
               ),
-              subtitle: Text(Utils().getThemeStringFormatted(EasyDynamicTheme.of(context).themeMode)),
+              subtitle: Text(UtilsFunctions.getThemeStringFormatted(EasyDynamicTheme.of(context).themeMode)),
             ),
             ListTile(
               title: Text("Backup", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorApp)),
