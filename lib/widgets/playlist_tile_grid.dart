@@ -129,8 +129,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final disabledColor = Theme.of(context).disabledColor;
     Image? cover = (widget.playlist.cover != null)
         ? Image.memory(
             widget.playlist.cover!,
@@ -140,6 +138,10 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
             gaplessPlayback: true,
           )
         : null;
+    final colorScheme = Theme.of(context).colorScheme;
+    final disabledColor = Theme.of(context).disabledColor;
+    final alertBackgroundColor = colorScheme.primaryContainer;
+    final alertIconColor = colorScheme.onPrimaryContainer;
 
     return Card(
       margin: EdgeInsetsGeometry.all(3),
@@ -183,12 +185,12 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                           height: _tagWidth,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: colorScheme.primaryContainer,
+                            color: alertBackgroundColor,
                           ),
                           child: Icon(
                             Icons.new_releases_outlined,
                             size: _tagIconSize,
-                            color: colorScheme.onPrimaryContainer,
+                            color: alertIconColor,
                           ),
                         ),
                       ),
@@ -201,12 +203,12 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                             height: _tagWidth,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: colorScheme.primaryContainer,
+                              color: alertBackgroundColor,
                             ),
                             child: Icon(
                               Icons.download_outlined,
                               size: _tagIconSize,
-                              color: disabledColor,
+                              color: alertIconColor,
                             ),
                           ),
                         ),
@@ -237,7 +239,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                   widget.playlist.artist!,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: colorScheme.onSecondaryContainer),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: disabledColor),
                 ),
               ),
             ),
