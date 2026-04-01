@@ -49,6 +49,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   void openBottomMenu() {
     showModalBottomSheet(
         context: context,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         builder: (BuildContext context) {
           return SafeArea(
             child: Padding(
@@ -68,7 +69,21 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                           )
                         : null,
                   ),
-                  const Divider(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Center(
+                      child: SegmentedButton<int>(
+                        showSelectedIcon: false,
+                        segments: const [
+                          ButtonSegment(value: 0, label: Text('Listen'), icon: Icon(Icons.queue_music_outlined)),
+                          ButtonSegment(value: 1, label: Text('Archive'), icon: Icon(Icons.archive_outlined)),
+                          ButtonSegment(value: 2, label: Text('Favorite'), icon: Icon(Icons.favorite_border_outlined)),
+                        ],
+                        selected: {widget.playlist.state},
+                        onSelectionChanged: (s) => {_changePlaylistState(s.first), Navigator.of(context).pop()},
+                      ),
+                    ),
+                  ),
                   ListTile(
                     leading: const Icon(Icons.share_outlined),
                     title: const Text(
@@ -78,45 +93,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       Navigator.of(context).pop();
                       Share.share("${widget.playlist.title} - ${widget.playlist.artist!}\n\n${widget.playlist.link}");
                     },
-                  ),
-                  Visibility(
-                    visible: widget.playlist.state != 0 && !isCurrentPageDownloads(),
-                    child: ListTile(
-                      leading: const Icon(Icons.queue_music_outlined),
-                      title: const Text(
-                        "Listen",
-                      ),
-                      onTap: () {
-                        _changePlaylistState(0);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                  Visibility(
-                    visible: widget.playlist.state != 1 && !isCurrentPageDownloads(),
-                    child: ListTile(
-                      leading: const Icon(Icons.archive_outlined),
-                      title: const Text(
-                        "Archive",
-                      ),
-                      onTap: () {
-                        _changePlaylistState(1);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                  Visibility(
-                    visible: widget.playlist.state != 2 && !isCurrentPageDownloads(),
-                    child: ListTile(
-                      leading: const Icon(Icons.favorite_border_outlined),
-                      title: const Text(
-                        "Favorite",
-                      ),
-                      onTap: () {
-                        _changePlaylistState(2);
-                        Navigator.of(context).pop();
-                      },
-                    ),
                   ),
                   ListTile(
                     leading: const Icon(Icons.edit_outlined),
@@ -154,6 +130,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final disabledColor = Theme.of(context).disabledColor;
     Image? cover = (widget.playlist.cover != null)
         ? Image.memory(
             widget.playlist.cover!,
@@ -166,7 +143,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
     return Card(
       margin: EdgeInsetsGeometry.all(3),
-      color: colorScheme.surfaceContainerHigh,
+      color: colorScheme.surfaceContainerHighest,
       child: InkWell(
         borderRadius: _cardBorderRadius,
         onTap: _launchLink,
@@ -211,7 +188,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                           child: Icon(
                             Icons.new_releases_outlined,
                             size: _tagIconSize,
-                            color: colorScheme.primary,
+                            color: colorScheme.onPrimaryContainer,
                           ),
                         ),
                       ),
@@ -229,7 +206,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                             child: Icon(
                               Icons.download_outlined,
                               size: _tagIconSize,
-                              color: colorScheme.primary,
+                              color: disabledColor,
                             ),
                           ),
                         ),
