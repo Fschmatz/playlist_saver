@@ -11,4 +11,8 @@ abstract class StoreService {
     await store.dispatchAndWaitAll(
         [LoadPlaylistsAction(Destination.fromId(oldState), forceReload: true), LoadPlaylistsAction(Destination.fromId(newState), forceReload: true)]);
   }
+
+  Future<void> loadAppParameters() async {
+    await store.dispatch(LoadAppParametersAction());
+  }
 }

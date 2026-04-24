@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:playlist_saver/service/app_parameter_service.dart';
 import 'package:playlist_saver/service/playlist_service.dart';
 
 import '../class/backup.dart';
@@ -39,8 +40,9 @@ class BackupUtils {
 
     Map<String, dynamic> backup = await _loadBackupData();
 
-    if (backup.isNotEmpty) {
+    if (backup['playlists'].isNotEmpty) {
       await _saveListAsJson(backup, fileName);
+      await AppParameterService().saveLastBackupDate();
 
       Fluttertoast.showToast(
         msg: "Backup completed!",
@@ -91,8 +93,9 @@ class BackupUtils {
 
   Future<Map<String, dynamic>> _loadBackupData() async {
     List<Map<String, dynamic>> playlistsJson = await playlistDao.queryAllRows();
+    List<Map<String, dynamic>> parametersJson = await AppParameterService().loadAllParameters();
 
-    Backup backupEntity = Backup(playlists: playlistsJson);
+    Backup backupEntity = Backup(playlists: playlistsJson, parameters: parametersJson);
 
     Map<String, dynamic> backupJson = backupEntity.toJson();
 
@@ -101,9 +104,11 @@ class BackupUtils {
 
   Future<void> _deleteAllData() async {
     await playlistDao.deleteAll();
+    await AppParameterService().deleteAllParameters();
   }
 
   Future<void> _insertBackupData(Backup backup) async {
-    PlaylistService().insertBackupData(backup);
+    await PlaylistService().insertBackupData(backup);
+    await AppParameterService().insertParametersFromRestoreBackup(backup.parameters);
   }
 }

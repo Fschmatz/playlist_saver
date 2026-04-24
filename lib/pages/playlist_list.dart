@@ -19,27 +19,32 @@ class PlaylistList extends StatefulWidget {
 class _PlaylistListState extends State<PlaylistList> {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, List<Playlist>>(converter: (store) {
-      return selectPlaylistByDestination(widget.destination);
-    }, builder: (context, playlists) {
+    return StoreConnector<AppState, (List<Playlist>, bool)>(converter: (store) {
+      return (selectPlaylistByDestination(widget.destination), selectParameterValueByKeyAsBoolean("showAlbumInfo"));
+    }, builder: (context, viewData) {
+      List<Playlist> playlists = viewData.$1;
+      bool showAlbumInfo = viewData.$2;
+
       return ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         children: [
           GridView.builder(
             padding: EdgeInsets.zero,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              mainAxisExtent: 170,
+              childAspectRatio: showAlbumInfo ? 0.74 : 1,
             ),
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: playlists.length,
             itemBuilder: (context, index) {
               final playlist = playlists[index];
+
               return PlaylistTileGrid(
                 key: ValueKey(playlist.idPlaylist),
                 index: index,
                 playlist: playlist,
+                showAlbumInfo: showAlbumInfo,
               );
             },
           ),

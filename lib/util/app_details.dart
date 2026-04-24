@@ -1,17 +1,22 @@
 class AppDetails {
-  static String appVersion = "2.3.2";
+  static String appVersion = "2.4.0";
   static String appName = "Playlist Saver Fschmatz";
   static String appNameHomePage = "Playlist Saver";
   static String repositoryLink = "https://github.com/Fschmatz/playlist_saver";
 
   static String changelogCurrent = '''
 $appVersion
-- Update Flutter 3.38
+- Add AppParameters
 - UI changes
 - Bug fixes
 ''';
 
   static String changelogsOld = '''
+2.3.2
+- Update Flutter 3.38
+- UI changes
+- Bug fixes
+
 2.2.3
 - Async Redux
 - Update Flutter 3.32

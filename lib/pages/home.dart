@@ -19,30 +19,18 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentTabIndex = 0;
   final ScrollController _scrollController = ScrollController();
-  final List<Widget> _destinations = [
-    PlaylistList(
-      key: ValueKey(Destination.listen.id),
-      destination: Destination.listen,
-    ),
-    PlaylistList(
-      key: ValueKey(Destination.archive.id),
-      destination: Destination.archive,
-    ),
-    PlaylistList(
-      key: ValueKey(Destination.favorites.id),
-      destination: Destination.favorites,
-    ),
-    /*
-   PlaylistList(
-      key: ValueKey(Destination.downloads.id),
-      destination: Destination.downloads,
-    ),
-    */
+
+  final List<Destination> _activeDestinations = [
+    Destination.listen,
+    Destination.archive,
+    Destination.favorites,
   ];
 
   void _executeOnDestinationSelected(int index) async {
-    await store.dispatch(LoadPlaylistsAction(Destination.fromId(index)));
-    await store.dispatch(ChangeDestinationAction(Destination.fromId(index)));
+    final selectedDestination = _activeDestinations[index];
+
+    await store.dispatch(LoadPlaylistsAction(selectedDestination));
+    await store.dispatch(ChangeDestinationAction(selectedDestination));
 
     setState(() {
       _currentTabIndex = index;
@@ -101,7 +89,10 @@ class _HomeState extends State<Home> {
                       secondaryAnimation: secondaryAnimation,
                       child: child,
                     ),
-                child: _destinations[_currentTabIndex]),
+                child: PlaylistList(
+                  key: ValueKey(_activeDestinations[_currentTabIndex].id),
+                  destination: _activeDestinations[_currentTabIndex],
+                )),
           )),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentTabIndex,
@@ -109,26 +100,13 @@ class _HomeState extends State<Home> {
         onDestinationSelected: (index) async {
           _executeOnDestinationSelected(index);
         },
-        destinations: [
-          NavigationDestination(icon: Destination.listen.icon, selectedIcon: Destination.listen.selectedIcon, label: Destination.listen.name),
-          NavigationDestination(
-            icon: Destination.archive.icon,
-            selectedIcon: Destination.archive.selectedIcon,
-            label: Destination.archive.name,
-          ),
-          NavigationDestination(
-            icon: Destination.favorites.icon,
-            selectedIcon: Destination.favorites.icon,
-            label: Destination.favorites.name,
-          ),
-          /*
-          NavigationDestination(
-            icon: Destination.downloads.icon,
-            selectedIcon: Destination.downloads.selectedIcon,
-            label: Destination.downloads.name,
-          ),
-          */
-        ],
+        destinations: _activeDestinations
+            .map((d) => NavigationDestination(
+                  icon: d.icon,
+                  selectedIcon: d.selectedIcon,
+                  label: d.name,
+                ))
+            .toList(),
       ),
     );
   }

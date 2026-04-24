@@ -1,36 +1,22 @@
-import 'dart:io';
-
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'database_helper.dart';
 
 class PlaylistDao {
-  static const _databaseName = "PlaylistSaver.db";
-  static const _databaseVersion = 1;
-
-  static const table = 'playlists';
-  static const columnIdPlaylist = 'id_playlist';
-  static const columnLink = 'link';
-  static const columnTitle = 'title';
-  static const columnState = 'state';
-  static const columnArtist = 'artist';
-  static const columnDownloaded = 'downloaded';
-  static const columnCover = 'cover';
-  static const columnNewAlbum = 'new_album';
-
-  static Database? _database;
-
-  Future<Database> get database async => _database ??= await _initDatabase();
+  static const table = DatabaseHelper.tablePlaylists;
+  static const columnIdPlaylist = DatabaseHelper.columnIdPlaylist;
+  static const columnLink = DatabaseHelper.columnLink;
+  static const columnTitle = DatabaseHelper.columnTitle;
+  static const columnState = DatabaseHelper.columnState;
+  static const columnArtist = DatabaseHelper.columnArtist;
+  static const columnDownloaded = DatabaseHelper.columnDownloaded;
+  static const columnCover = DatabaseHelper.columnCover;
+  static const columnNewAlbum = DatabaseHelper.columnNewAlbum;
 
   PlaylistDao._privateConstructor();
 
   static final PlaylistDao instance = PlaylistDao._privateConstructor();
 
-  _initDatabase() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, _databaseName);
-    return await openDatabase(path, version: _databaseVersion);
-  }
+  Future<Database> get database async => await DatabaseHelper.instance.database;
 
   Future<List<Map<String, dynamic>>> queryAllRows() async {
     Database db = await instance.database;

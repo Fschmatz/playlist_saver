@@ -16,19 +16,17 @@ class PlaylistTileGrid extends StatefulWidget {
 
   final Playlist playlist;
   final int index;
+  final bool showAlbumInfo;
 
-  const PlaylistTileGrid({super.key, required this.playlist, required this.index});
+  const PlaylistTileGrid({super.key, required this.playlist, required this.index, required this.showAlbumInfo});
 }
 
 class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   final PlaylistService playlistService = PlaylistService();
-  final double _coverHeight = 120;
-  final double _coverWidth = 120;
   final BorderRadius _cardBorderRadius = BorderRadius.circular(12);
-  final BorderRadius _cardBorderRadiusImage = BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12));
-  final double _tagHeight = 26;
-  final double _tagWidth = 26;
-  final double _tagIconSize = 20;
+  final double _tagHeight = 25;
+  final double _tagWidth = 25;
+  final double _tagIconSize = 19;
 
   void _launchLink() {
     UtilsFunctions.launchBrowser(widget.playlist.link);
@@ -132,8 +130,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
     Image? cover = (widget.playlist.cover != null)
         ? Image.memory(
             widget.playlist.cover!,
-            height: _coverHeight,
-            width: _coverWidth,
             fit: BoxFit.cover,
             gaplessPlayback: true,
           )
@@ -143,61 +139,56 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
     final alertBackgroundColor = colorScheme.primaryContainer;
     final alertIconColor = colorScheme.onPrimaryContainer;
 
+    bool showAlbumInfo = widget.showAlbumInfo;
+    BorderRadius coverBorder =
+        showAlbumInfo ? const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)) : BorderRadius.circular(12);
+
     return Card(
-      margin: EdgeInsetsGeometry.all(3),
+      margin: const EdgeInsets.all(3),
+      shape: showAlbumInfo
+          ? null
+          : RoundedRectangleBorder(
+              side: BorderSide(color: colorScheme.surfaceContainerHighest, width: 2),
+              borderRadius: _cardBorderRadius,
+            ),
       color: colorScheme.surfaceContainerHighest,
       child: InkWell(
         borderRadius: _cardBorderRadius,
         onTap: _launchLink,
         onLongPress: openBottomMenu,
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                (cover == null)
-                    ? SizedBox(
-                        height: _coverHeight,
-                        width: _coverWidth,
-                        child: Icon(
-                          Icons.music_note_outlined,
-                          size: 30,
-                          color: colorScheme.onPrimaryContainer,
-                        ),
-                      )
-                    : ClipRRect(
-                        borderRadius: _cardBorderRadiusImage,
-                        child: Opacity(
-                          opacity: 0.9,
-                          child: cover,
-                        ),
-                      ),
-                Positioned(
-                  bottom: 3,
-                  right: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Visibility(
-                        visible: widget.playlist.isNewAlbum(),
-                        child: Container(
-                          width: _tagHeight,
-                          height: _tagWidth,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: alertBackgroundColor,
-                          ),
+            AspectRatio(
+              aspectRatio: 1,
+              child: Stack(
+                children: [
+                  (cover == null)
+                      ? SizedBox.expand(
                           child: Icon(
-                            Icons.new_releases_outlined,
-                            size: _tagIconSize,
-                            color: alertIconColor,
+                            Icons.music_note_outlined,
+                            size: 30,
+                            color: colorScheme.onPrimaryContainer,
+                          ),
+                        )
+                      : Positioned.fill(
+                          child: ClipRRect(
+                            borderRadius: coverBorder,
+                            child: Opacity(
+                              opacity: 0.9,
+                              child: cover,
+                            ),
                           ),
                         ),
-                      ),
-                      Visibility(
-                        visible: widget.playlist.isDownloaded(),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
+                  Positioned(
+                    bottom: showAlbumInfo ? 3 : 5,
+                    right: showAlbumInfo ? 3 : 5,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Visibility(
+                          visible: widget.playlist.isNewAlbum(),
                           child: Container(
                             width: _tagHeight,
                             height: _tagWidth,
@@ -206,43 +197,64 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                               color: alertBackgroundColor,
                             ),
                             child: Icon(
-                              Icons.download_outlined,
+                              Icons.new_releases_outlined,
                               size: _tagIconSize,
                               color: alertIconColor,
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        Visibility(
+                          visible: widget.playlist.isDownloaded(),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
+                            child: Container(
+                              width: _tagHeight,
+                              height: _tagWidth,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: alertBackgroundColor,
+                              ),
+                              child: Icon(
+                                Icons.download_outlined,
+                                size: _tagIconSize,
+                                color: alertIconColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (showAlbumInfo) ...[
+              const SizedBox(
+                height: 3,
+              ),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(
+                    widget.playlist.title,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 3,
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  widget.playlist.title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+              ),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(
+                    widget.playlist.artist!,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: disabledColor),
+                  ),
                 ),
               ),
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  widget.playlist.artist!,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: disabledColor),
-                ),
-              ),
-            ),
+            ],
           ],
         ),
       ),

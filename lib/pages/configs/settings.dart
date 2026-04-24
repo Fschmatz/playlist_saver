@@ -5,6 +5,8 @@ import '../../util/app_details.dart';
 import '../../util/dialog_backup.dart';
 import '../../util/dialog_select_theme.dart';
 import '../../util/utils_functions.dart';
+import '../../widgets/app_parameter_value.dart';
+import '../../widgets/settings_switch.dart';
 import '../print_playlist_list.dart';
 import 'app_info.dart';
 import 'changelog.dart';
@@ -57,6 +59,12 @@ class SettingsState extends State<Settings> {
               ),
               subtitle: Text(UtilsFunctions.getThemeStringFormatted(EasyDynamicTheme.of(context).themeMode)),
             ),
+            const SettingsSwitch(
+              title: "Show album info",
+              subtitle: "Show title and artist on card",
+              parameterKey: "showAlbumInfo",
+              defaultValue: true,
+            ),
             ListTile(
               title: Text("Backup", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorApp)),
             ),
@@ -82,6 +90,14 @@ class SettingsState extends State<Settings> {
               leading: const Icon(Icons.save_outlined),
               title: const Text(
                 "Backup now",
+              ),
+              subtitle: const Row(
+                children: [
+                  Text("Last backup: "),
+                  AppParameterValue(
+                    parameterKey: 'lastBackupDate',
+                  ),
+                ],
               ),
             ),
             ListTile(
