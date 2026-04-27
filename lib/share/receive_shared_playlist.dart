@@ -62,15 +62,14 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   }
 
   Future<void> _savePlaylist() async {
-    Uint8List? compressedCover;
-
-    if (metaData != null) {
-      http.Response response = await http.get(Uri.parse(metaData!.imageUrl));
-      compressedCover = await SpotifyMetadataService().compressCoverImage(response.bodyBytes);
-    }
-
-    await PlaylistService()
-        .insertPlaylist(compressedCover, _controllerLink.text, _controllerPlaylistTitle.text, _controllerArtist.text, _downloaded, _newAlbum);
+    await PlaylistService().saveNewPlaylistFromMetadata(
+      metadata: metaData,
+      title: _controllerPlaylistTitle.text,
+      artist: _controllerArtist.text,
+      link: _controllerLink.text,
+      downloaded: _downloaded,
+      newAlbum: _newAlbum,
+    );
   }
 
   bool validateTextFields() {

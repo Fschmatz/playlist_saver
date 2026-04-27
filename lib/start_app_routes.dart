@@ -49,11 +49,11 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
         navigatorKey: _navKey,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: lightDynamic,
+          colorScheme: lightDynamic ?? ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
         ),
         darkTheme: ThemeData(
-          colorScheme: darkDynamic,
+          colorScheme: darkDynamic ?? ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark),
           useMaterial3: true,
         ),
         themeMode: EasyDynamicTheme.of(context).themeMode,

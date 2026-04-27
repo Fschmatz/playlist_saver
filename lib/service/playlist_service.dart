@@ -1,7 +1,10 @@
 import 'dart:typed_data';
 
+import 'package:http/http.dart' as http;
 import 'package:playlist_saver/class/playlist.dart';
+import 'package:playlist_saver/class/spotify_metadata.dart';
 import 'package:playlist_saver/enum/destination.dart';
+import 'package:playlist_saver/service/spotify_metadata_service.dart';
 import 'package:playlist_saver/service/store_service.dart';
 
 import '../class/backup.dart';
@@ -30,52 +33,31 @@ class PlaylistService extends StoreService {
     return resp.isNotEmpty ? resp.map((map) => Playlist.fromMap(map)).toList() : [];
   }
 
-  Future<void> insertPlaylist(Uint8List? compressedCover, String link, String title, String artist, bool downloaded, bool newAlbum) async {
-    Map<String, dynamic> row = {
-      PlaylistDao.columnLink: link,
-      PlaylistDao.columnTitle: title,
-      PlaylistDao.columnState: 0,
-      PlaylistDao.columnArtist: artist,
-      PlaylistDao.columnDownloaded: downloaded ? 1 : 0,
-      PlaylistDao.columnCover: compressedCover ?? compressedCover,
-      PlaylistDao.columnNewAlbum: newAlbum ? 1 : 0,
-    };
-
-    await dbPlaylist.insert(row);
+  Future<void> insertPlaylist(Playlist playlist) async {
+    await dbPlaylist.insert(playlist.toMap());
 
     loadPlaylists(Destination.listen);
   }
 
-  Future<void> updatePlaylist(int idPlaylist, String link, String title, String artist, bool downloaded, bool newAlbum) async {
-    Map<String, dynamic> row = {
-      PlaylistDao.columnIdPlaylist: idPlaylist,
-      PlaylistDao.columnLink: link,
-      PlaylistDao.columnTitle: title,
-      PlaylistDao.columnDownloaded: downloaded ? 1 : 0,
-      PlaylistDao.columnArtist: artist,
-      PlaylistDao.columnNewAlbum: newAlbum ? 1 : 0,
-    };
-
-    await dbPlaylist.update(row);
+  Future<void> updatePlaylist(Playlist playlist) async {
+    await dbPlaylist.update(playlist.toMap());
 
     await loadPlaylists(selectCurrentDestination());
   }
 
   Future<void> delete(Playlist playlist) async {
-    await dbPlaylist.delete(playlist.idPlaylist);
+    await dbPlaylist.delete(playlist.idPlaylist!);
 
     await loadPlaylists(selectCurrentDestination());
   }
 
-  Future<void> changePlaylistState(Playlist playlist, int state) async {
-    Map<String, dynamic> row = {
-      PlaylistDao.columnIdPlaylist: playlist.idPlaylist,
-      PlaylistDao.columnState: state,
-    };
+  Future<void> changePlaylistState(Playlist playlist, int newState) async {
+    int oldState = playlist.state;
 
-    await dbPlaylist.update(row);
+    Playlist updatedPlaylist = playlist.copyWith(state: newState);
+    await dbPlaylist.update(updatedPlaylist.toMap());
 
-    await loadPlaylistsOnChangeState(playlist.state, state);
+    await loadPlaylistsOnChangeState(oldState, newState);
   }
 
   Future<void> insertBackupData(Backup backup) async {
@@ -86,5 +68,33 @@ class PlaylistService extends StoreService {
     }
 
     await loadPlaylists(selectCurrentDestination());
+  }
+
+  Future<void> saveNewPlaylistFromMetadata({
+    required SpotifyMetadata? metadata,
+    required String title,
+    required String artist,
+    required String link,
+    required bool downloaded,
+    required bool newAlbum,
+  }) async {
+    Uint8List? compressedCover;
+
+    if (metadata != null) {
+      http.Response response = await http.get(Uri.parse(metadata.imageUrl));
+      compressedCover = await SpotifyMetadataService().compressCoverImage(response.bodyBytes);
+    }
+
+    Playlist playlist = Playlist(
+      link: link,
+      title: title,
+      state: 0,
+      artist: artist,
+      downloaded: downloaded ? 1 : 0,
+      cover: compressedCover,
+      newAlbum: newAlbum ? 1 : 0,
+    );
+
+    await insertPlaylist(playlist);
   }
 }

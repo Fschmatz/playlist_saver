@@ -34,8 +34,15 @@ class _EditPlaylistState extends State<EditPlaylist> {
   }
 
   Future<void> _updatePlaylist() async {
-    await PlaylistService().updatePlaylist(
-        widget.playlist.idPlaylist, _controllerLink.text, _controllerPlaylistTitle.text, _controllerArtist.text, _downloaded, _newAlbum);
+    Playlist updatedPlaylist = widget.playlist.copyWith(
+      link: _controllerLink.text,
+      title: _controllerPlaylistTitle.text,
+      artist: _controllerArtist.text,
+      downloaded: _downloaded ? 1 : 0,
+      newAlbum: _newAlbum ? 1 : 0,
+    );
+
+    await PlaylistService().updatePlaylist(updatedPlaylist);
   }
 
   bool validateTextFields() {

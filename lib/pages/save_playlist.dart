@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 import 'package:playlist_saver/service/spotify_metadata_service.dart';
 
 import '../class/spotify_metadata.dart';
@@ -44,15 +42,14 @@ class _SavePlaylistState extends State<SavePlaylist> {
   }
 
   Future<void> _savePlaylist() async {
-    Uint8List? compressedCover;
-
-    if (metaData != null) {
-      http.Response response = await http.get(Uri.parse(metaData!.imageUrl));
-      compressedCover = await SpotifyMetadataService().compressCoverImage(response.bodyBytes);
-    }
-
-    await PlaylistService()
-        .insertPlaylist(compressedCover, controllerLink.text, controllerPlaylistTitle.text, controllerArtist.text, _downloaded, _newAlbum);
+    await PlaylistService().saveNewPlaylistFromMetadata(
+      metadata: metaData,
+      title: controllerPlaylistTitle.text,
+      artist: controllerArtist.text,
+      link: controllerLink.text,
+      downloaded: _downloaded,
+      newAlbum: _newAlbum,
+    );
   }
 
   bool validateTextFields() {

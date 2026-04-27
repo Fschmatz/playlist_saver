@@ -19,6 +19,10 @@ Future<InitData> init() async {
   String sharedText = "";
   String routeName = homeRoute;
   final handler = ShareHandlerPlatform.instance;
+
+  // Small delay on cold boot
+  await Future.delayed(const Duration(milliseconds: 500));
+
   SharedMedia? sharedValue = await handler.getInitialSharedMedia();
 
   if (sharedValue != null) {
@@ -38,7 +42,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final databaseHelper = DatabaseHelper.instance;
-  databaseHelper.initDatabase();
+  await databaseHelper.database;
 
   //app not in memory
   InitData initData = await init();

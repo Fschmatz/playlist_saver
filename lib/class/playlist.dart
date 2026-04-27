@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:playlist_saver/db/playlist_dao.dart';
+
 class Playlist {
-  int idPlaylist;
+  int? idPlaylist;
   String link;
   String title;
   int state; //0 listen, 1 archive, 2 favorite
@@ -11,15 +13,16 @@ class Playlist {
   Uint8List? cover;
   int? newAlbum; //0 false, 1 true
 
-  Playlist(
-      {required this.idPlaylist,
-      required this.link,
-      required this.title,
-      required this.state,
-      this.artist,
-      this.downloaded,
-      this.cover,
-      this.newAlbum});
+  Playlist({
+    this.idPlaylist,
+    required this.link,
+    required this.title,
+    required this.state,
+    this.artist,
+    this.downloaded,
+    this.cover,
+    this.newAlbum,
+  });
 
   bool isDownloaded() {
     return downloaded == 1 ? true : false;
@@ -44,27 +47,49 @@ class Playlist {
 
   factory Playlist.fromMap(Map<String, dynamic> map) {
     return Playlist(
-      idPlaylist: map['id_playlist'],
-      link: map['link'],
-      title: map['title'],
-      state: map['state'],
-      artist: map['artist'],
-      downloaded: map['downloaded'],
-      cover: map['cover'],
-      newAlbum: map['new_album'],
+      idPlaylist: map[PlaylistDao.columnIdPlaylist],
+      link: map[PlaylistDao.columnLink],
+      title: map[PlaylistDao.columnTitle],
+      state: map[PlaylistDao.columnState],
+      artist: map[PlaylistDao.columnArtist],
+      downloaded: map[PlaylistDao.columnDownloaded],
+      cover: map[PlaylistDao.columnCover],
+      newAlbum: map[PlaylistDao.columnNewAlbum],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'id_playlist': idPlaylist,
-      'link': link,
-      'title': title,
-      'state': state,
-      'artist': artist,
-      'downloaded': downloaded,
-      'cover': cover,
-      'new_album': newAlbum,
+      if (idPlaylist != null) PlaylistDao.columnIdPlaylist: idPlaylist,
+      PlaylistDao.columnLink: link,
+      PlaylistDao.columnTitle: title,
+      PlaylistDao.columnState: state,
+      PlaylistDao.columnArtist: artist,
+      PlaylistDao.columnDownloaded: downloaded,
+      PlaylistDao.columnCover: cover,
+      PlaylistDao.columnNewAlbum: newAlbum,
     };
+  }
+
+  Playlist copyWith({
+    int? idPlaylist,
+    String? link,
+    String? title,
+    int? state,
+    String? artist,
+    int? downloaded,
+    Uint8List? cover,
+    int? newAlbum,
+  }) {
+    return Playlist(
+      idPlaylist: idPlaylist ?? this.idPlaylist,
+      link: link ?? this.link,
+      title: title ?? this.title,
+      state: state ?? this.state,
+      artist: artist ?? this.artist,
+      downloaded: downloaded ?? this.downloaded,
+      cover: cover ?? this.cover,
+      newAlbum: newAlbum ?? this.newAlbum,
+    );
   }
 }
