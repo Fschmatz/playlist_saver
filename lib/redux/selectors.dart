@@ -5,16 +5,12 @@ import '../class/app_parameter.dart';
 import '../main.dart';
 
 List<Playlist> selectPlaylistByDestination(Destination destination) {
-  switch (destination) {
-    case Destination.listen:
-      return store.state.listListen;
-    case Destination.archive:
-      return store.state.listArchive;
-    case Destination.favorites:
-      return store.state.listFavorites;
-    case Destination.downloads:
-      return store.state.listDownloads;
-  }
+  return switch (destination) {
+    Destination.listen => store.state.listListen,
+    Destination.archive => store.state.listArchive,
+    Destination.favorites => store.state.listFavorites,
+    Destination.downloads => store.state.listDownloads,
+  };
 }
 
 Destination selectCurrentDestination() => store.state.currentDestination;

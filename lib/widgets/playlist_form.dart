@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+import 'custom_text_field.dart';
 
 class PlaylistForm extends StatelessWidget {
   final TextEditingController linkController;
@@ -31,7 +32,7 @@ class PlaylistForm extends StatelessWidget {
     required this.onNewAlbumChanged,
     required this.onSave,
     required this.appBarTitle,
-    required this.isUpdate,
+    this.isUpdate = false,
     this.onLinkSubmitted,
     this.showLinkField = true,
     this.artwork,
@@ -54,85 +55,70 @@ class PlaylistForm extends StatelessWidget {
               ),
             ),
           if (showLinkField)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: TextField(
-                autofocus: !isUpdate,
-                minLines: 1,
-                maxLines: 4,
-                maxLength: 500,
-                maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.name,
-                controller: linkController,
-                onSubmitted: (_) => onLinkSubmitted?.call(),
-                decoration: InputDecoration(
-                  labelText: "Link",
-                  helperText: "* Required",
-                  counterText: "",
-                  border: const OutlineInputBorder(),
-                  errorText: validLink ? null : "Link is empty",
-                ),
-              ),
+            CustomTextField(
+              label: "Link",
+              controller: linkController,
+              required: true,
+              maxLines: 4,
+              maxLength: 500,
+              fieldValidator: validLink,
+              errorMsg: "Link is empty",
+              autofocus: !isUpdate,
+              onSubmitted: (_) => onLinkSubmitted?.call(),
             ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: TextField(
-              minLines: 1,
-              maxLines: 3,
-              maxLength: 300,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              textCapitalization: TextCapitalization.sentences,
-              keyboardType: TextInputType.name,
-              controller: titleController,
-              decoration: InputDecoration(
-                labelText: "Title",
-                helperText: "* Required",
-                counterText: "",
-                border: const OutlineInputBorder(),
-                errorText: validTitle ? null : "Title is empty",
-              ),
-            ),
+          CustomTextField(
+            label: "Title",
+            controller: titleController,
+            required: true,
+            maxLines: 3,
+            maxLength: 300,
+            fieldValidator: validTitle,
+            errorMsg: "Title is empty",
+          ),
+          CustomTextField(
+            label: "Artist",
+            controller: artistController,
+            required: false,
+            maxLines: 2,
+            maxLength: 300,
+            fieldValidator: true,
+            errorMsg: "",
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: TextField(
-              minLines: 1,
-              maxLines: 2,
-              maxLength: 300,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              textCapitalization: TextCapitalization.sentences,
-              keyboardType: TextInputType.name,
-              controller: artistController,
-              decoration: const InputDecoration(
-                labelText: "Artist",
-                counterText: "",
-                border: OutlineInputBorder(),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Card(
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                children: [
+                  SwitchListTile(
+                    title: const Text("Downloaded"),
+                    subtitle: const Text("Downloaded to device"),
+                    value: downloaded,
+                    onChanged: onDownloadedChanged,
+                    secondary: const Icon(Icons.download_outlined),
+                  ),
+                  Divider(color: Theme.of(context).colorScheme.surfaceContainerLow, height: 1),
+                  SwitchListTile(
+                    title: const Text("New album"),
+                    subtitle: const Text("Highlight as new"),
+                    value: newAlbum,
+                    onChanged: onNewAlbumChanged,
+                    secondary: const Icon(Icons.new_releases_outlined),
+                  ),
+                ],
               ),
             ),
           ),
-          SwitchListTile(
-            title: const Text("Downloaded"),
-            subtitle: const Text("Downloaded to device"),
-            value: downloaded,
-            onChanged: onDownloadedChanged,
-          ),
-          SwitchListTile(
-            title: const Text("New album"),
-            subtitle: const Text("Highlight as new"),
-            value: newAlbum,
-            onChanged: onNewAlbumChanged,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-            child: FilledButton.tonalIcon(
-              onPressed: onSave,
-              icon: const Icon(Icons.save_outlined),
-              label: const Text("Save"),
-            ),
-          ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 100),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: onSave,
+        icon: const Icon(Icons.save_outlined),
+        label: const Text(
+          "Save",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

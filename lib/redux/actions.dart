@@ -1,11 +1,10 @@
-import 'package:playlist_saver/class/playlist.dart';
 import 'package:playlist_saver/service/app_parameter_service.dart';
 
 import '../class/app_parameter.dart';
 import '../enum/destination.dart';
 import '../service/playlist_service.dart';
-import 'app_action.dart';
 import 'app_state.dart';
+import 'helper/app_action.dart';
 
 class LoadAppParametersAction extends AppAction {
   @override
@@ -37,28 +36,21 @@ class LoadPlaylistsAction extends AppAction {
 
   @override
   Future<AppState> reduce() async {
-    List<Playlist> playlists;
+    final cached = switch (destination) {
+      Destination.listen => state.listListen,
+      Destination.archive => state.listArchive,
+      Destination.favorites => state.listFavorites,
+      Destination.downloads => state.listDownloads,
+    };
 
-    switch (destination) {
-      case Destination.listen:
-        playlists =
-            state.listListen.isEmpty || forceReload ? await PlaylistService().queryAllByStateAndConvertToList(destination.id) : state.listListen;
-        return state.copyWith(listListen: playlists);
-      case Destination.archive:
-        playlists =
-            state.listArchive.isEmpty || forceReload ? await PlaylistService().queryAllByStateAndConvertToList(destination.id) : state.listArchive;
-        return state.copyWith(listArchive: playlists);
-      case Destination.favorites:
-        playlists = state.listFavorites.isEmpty || forceReload
-            ? await PlaylistService().queryAllByStateAndConvertToList(destination.id)
-            : state.listFavorites;
-        return state.copyWith(listFavorites: playlists);
-      case Destination.downloads:
-        playlists = state.listDownloads.isEmpty || forceReload
-            ? await PlaylistService().queryAllByStateAndConvertToList(destination.id)
-            : state.listDownloads;
-        return state.copyWith(listDownloads: playlists);
-    }
+    final playlists = cached.isEmpty || forceReload ? await PlaylistService().queryAllByStateAndConvertToList(destination.id) : cached;
+
+    return switch (destination) {
+      Destination.listen => state.copyWith(listListen: playlists, currentDestination: destination),
+      Destination.archive => state.copyWith(listArchive: playlists, currentDestination: destination),
+      Destination.favorites => state.copyWith(listFavorites: playlists, currentDestination: destination),
+      Destination.downloads => state.copyWith(listDownloads: playlists, currentDestination: destination),
+    };
   }
 }
 
@@ -68,7 +60,7 @@ class ChangeDestinationAction extends AppAction {
   ChangeDestinationAction(this.destination);
 
   @override
-  Future<AppState> reduce() async {
+  AppState reduce() {
     return state.copyWith(currentDestination: destination);
   }
 }

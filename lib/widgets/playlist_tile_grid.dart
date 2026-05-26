@@ -23,7 +23,7 @@ class PlaylistTileGrid extends StatefulWidget {
 
 class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   final PlaylistService playlistService = PlaylistService();
-  final BorderRadius _cardBorderRadius = BorderRadius.circular(12);
+  final BorderRadius _cardBorderRadius = BorderRadius.circular(20);
   final double _tagHeight = 25;
   final double _tagWidth = 25;
   final double _tagIconSize = 19;
@@ -47,76 +47,112 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   void openBottomMenu() {
     showModalBottomSheet(
         context: context,
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
+        isScrollControlled: true,
         builder: (BuildContext context) {
           return SafeArea(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Wrap(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  ListTile(
-                    minVerticalPadding: 0,
-                    title: Text(
-                      widget.playlist.title,
-                      textAlign: TextAlign.center,
-                    ),
-                    subtitle: widget.playlist.artist!.isNotEmpty
-                        ? Text(
-                            widget.playlist.artist!,
-                            textAlign: TextAlign.center,
-                          )
-                        : null,
+                  Text(
+                    widget.playlist.title,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Center(
-                      child: SegmentedButton<int>(
-                        showSelectedIcon: false,
-                        segments: const [
-                          ButtonSegment(value: 0, label: Text('Listen'), icon: Icon(Icons.queue_music_outlined)),
-                          ButtonSegment(value: 1, label: Text('Archive'), icon: Icon(Icons.archive_outlined)),
-                          ButtonSegment(value: 2, label: Text('Favorite'), icon: Icon(Icons.favorite_border_outlined)),
-                        ],
-                        selected: {widget.playlist.state},
-                        onSelectionChanged: (s) => {_changePlaylistState(s.first), Navigator.of(context).pop()},
+                  if (widget.playlist.artist!.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Text(
+                        widget.playlist.artist!,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            ),
                       ),
                     ),
+                  const SizedBox(height: 24),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      ChoiceChip(
+                        showCheckmark: false,
+                        label: const Text('Listen'),
+                        avatar: const Icon(Icons.queue_music_outlined),
+                        selected: widget.playlist.state == 0,
+                        onSelected: (_) {
+                          _changePlaylistState(0);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      ChoiceChip(
+                        showCheckmark: false,
+                        label: const Text('Archive'),
+                        avatar: const Icon(Icons.archive_outlined),
+                        selected: widget.playlist.state == 1,
+                        onSelected: (_) {
+                          _changePlaylistState(1);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      ChoiceChip(
+                        showCheckmark: false,
+                        label: const Text('Favorite'),
+                        avatar: const Icon(Icons.favorite_border_outlined),
+                        selected: widget.playlist.state == 2,
+                        onSelected: (_) {
+                          _changePlaylistState(2);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.share_outlined),
-                    title: const Text(
-                      "Share",
+                  const SizedBox(height: 24),
+                  Card(
+                    elevation: 0,
+                    margin: EdgeInsets.zero,
+                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: const Icon(Icons.share_outlined),
+                          title: const Text("Share"),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Share.share("${widget.playlist.title} - ${widget.playlist.artist!}\n\n${widget.playlist.link}");
+                          },
+                        ),
+                        Divider(),
+                        ListTile(
+                          leading: const Icon(Icons.edit_outlined),
+                          title: const Text("Edit"),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => EditPlaylist(
+                                    playlist: widget.playlist,
+                                  ),
+                                ));
+                          },
+                        ),
+                        Divider(),
+                        ListTile(
+                          leading: Icon(Icons.delete_outline_outlined),
+                          title: Text("Delete"),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            _delete();
+                          },
+                        ),
+                      ],
                     ),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      Share.share("${widget.playlist.title} - ${widget.playlist.artist!}\n\n${widget.playlist.link}");
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.edit_outlined),
-                    title: const Text(
-                      "Edit",
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => EditPlaylist(
-                              playlist: widget.playlist,
-                            ),
-                          ));
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.delete_outline_outlined),
-                    title: const Text(
-                      "Delete",
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      _delete();
-                    },
                   ),
                 ],
               ),
@@ -141,14 +177,14 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
     bool showAlbumInfo = widget.showAlbumInfo;
     BorderRadius coverBorder =
-        showAlbumInfo ? const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)) : BorderRadius.circular(12);
+        showAlbumInfo ? const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)) : BorderRadius.circular(20);
 
     return Card(
       margin: const EdgeInsets.all(3),
       shape: showAlbumInfo
           ? null
           : RoundedRectangleBorder(
-              side: BorderSide(color: colorScheme.surfaceContainerHighest, width: 2),
+              side: BorderSide(color: colorScheme.outlineVariant.withAlpha(150), width: 1),
               borderRadius: _cardBorderRadius,
             ),
       color: colorScheme.surfaceContainerHighest,
@@ -182,14 +218,13 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                           ),
                         ),
                   Positioned(
-                    bottom: showAlbumInfo ? 3 : 5,
-                    right: showAlbumInfo ? 3 : 5,
+                    bottom: showAlbumInfo ? 4 : 6,
+                    right: showAlbumInfo ? 4 : 6,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Visibility(
-                          visible: widget.playlist.isNewAlbum(),
-                          child: Container(
+                        if (widget.playlist.isNewAlbum())
+                          Container(
                             width: _tagHeight,
                             height: _tagWidth,
                             decoration: BoxDecoration(
@@ -202,10 +237,8 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                               color: alertIconColor,
                             ),
                           ),
-                        ),
-                        Visibility(
-                          visible: widget.playlist.isDownloaded(),
-                          child: Padding(
+                        if (widget.playlist.isDownloaded())
+                          Padding(
                             padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
                             child: Container(
                               width: _tagHeight,
@@ -221,7 +254,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                               ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -234,7 +266,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
               ),
               Flexible(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
                     widget.playlist.title,
                     overflow: TextOverflow.ellipsis,
@@ -245,7 +277,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
               ),
               Flexible(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
                     widget.playlist.artist!,
                     overflow: TextOverflow.ellipsis,

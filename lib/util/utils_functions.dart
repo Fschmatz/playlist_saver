@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:playlist_saver/util/app_constants.dart';
 import 'package:playlist_saver/util/utils_string.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'app_details.dart';
-
 class UtilsFunctions {
   static void openGithubRepository() {
-    launchBrowser(AppDetails.repositoryLink);
+    launchBrowser(AppConstants.repositoryLink);
   }
 
   static void launchBrowser(String url) {

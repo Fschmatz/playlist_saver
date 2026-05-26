@@ -6,6 +6,7 @@ import 'package:playlist_saver/widgets/playlist_tile_grid.dart';
 import '../enum/destination.dart';
 import '../redux/app_state.dart';
 import '../redux/selectors.dart';
+import '../util/app_constants.dart';
 
 class PlaylistList extends StatefulWidget {
   @override
@@ -20,10 +21,9 @@ class _PlaylistListState extends State<PlaylistList> {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, (List<Playlist>, bool)>(converter: (store) {
-      return (selectPlaylistByDestination(widget.destination), selectParameterValueByKeyAsBoolean("showAlbumInfo"));
+      return (selectPlaylistByDestination(widget.destination), selectParameterValueByKeyAsBoolean(AppConstants.showAlbumInfoAppParameter));
     }, builder: (context, viewData) {
-      List<Playlist> playlists = viewData.$1;
-      bool showAlbumInfo = viewData.$2;
+      final (playlists, showAlbumInfo) = viewData;
 
       return ListView(
         padding: const EdgeInsets.symmetric(horizontal: 8),

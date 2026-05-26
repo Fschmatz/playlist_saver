@@ -1,5 +1,6 @@
-import '../db/app_parameter_dao.dart';
 import '../class/app_parameter.dart';
+import '../db/app_parameter_dao.dart';
+import '../util/app_constants.dart';
 import 'store_service.dart';
 
 class AppParameterService extends StoreService {
@@ -17,24 +18,23 @@ class AppParameterService extends StoreService {
 
   Future<List<AppParameter>> getAll() async {
     var resp = await dbParams.queryAllRows();
-    
-    return resp.isNotEmpty
-        ? resp.map((map) => AppParameter.fromMap(map)).toList()
-        : [];
+
+    return resp.isNotEmpty ? resp.map((map) => AppParameter.fromMap(map)).toList() : [];
   }
 
   Future<void> saveLastBackupDate() async {
     DateTime now = DateTime.now();
-    String formattedDate = "${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
-    
+    String formattedDate =
+        "${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+
     await saveParameter(AppParameter(
-      key: 'lastBackupDate',
+      key: AppConstants.lastBackupDateAppParameter,
       value: formattedDate,
     ));
   }
 
   Future<String?> getLastBackupDate() async {
-    var resp = await dbParams.queryByKey('lastBackupDate');
+    var resp = await dbParams.queryByKey(AppConstants.lastBackupDateAppParameter);
     return resp != null ? AppParameter.fromMap(resp).getValue() : null;
   }
 
