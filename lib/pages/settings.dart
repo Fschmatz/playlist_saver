@@ -129,7 +129,7 @@ class SettingsState extends State<Settings> {
                         title: const Text("Backup now"),
                         subtitle: Row(
                           children: [
-                            const Text("Last backup: ", style: TextStyle(fontSize: 12)),
+                            const Text("Last backup: "),
                             AppParameterValue(parameterKey: AppConstants.lastBackupDateAppParameter),
                           ],
                         ),

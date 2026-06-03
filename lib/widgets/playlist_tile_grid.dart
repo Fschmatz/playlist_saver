@@ -47,7 +47,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   void openBottomMenu() {
     showModalBottomSheet(
         context: context,
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
         isScrollControlled: true,
         builder: (BuildContext context) {
           return SafeArea(
@@ -83,6 +82,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                         label: const Text('Listen'),
                         avatar: const Icon(Icons.queue_music_outlined),
                         selected: widget.playlist.state == 0,
+                        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
                         onSelected: (_) {
                           _changePlaylistState(0);
                           Navigator.of(context).pop();
@@ -93,6 +93,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                         label: const Text('Archive'),
                         avatar: const Icon(Icons.archive_outlined),
                         selected: widget.playlist.state == 1,
+                        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
                         onSelected: (_) {
                           _changePlaylistState(1);
                           Navigator.of(context).pop();
@@ -103,6 +104,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                         label: const Text('Favorite'),
                         avatar: const Icon(Icons.favorite_border_outlined),
                         selected: widget.playlist.state == 2,
+                        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
                         onSelected: (_) {
                           _changePlaylistState(2);
                           Navigator.of(context).pop();
@@ -114,7 +116,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                   Card(
                     elevation: 0,
                     margin: EdgeInsets.zero,
-                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                     clipBehavior: Clip.antiAlias,
                     child: Column(
@@ -266,7 +268,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
               ),
               Flexible(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
                     widget.playlist.title,
                     overflow: TextOverflow.ellipsis,
@@ -277,7 +279,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
               ),
               Flexible(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
                     widget.playlist.artist!,
                     overflow: TextOverflow.ellipsis,

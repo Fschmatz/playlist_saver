@@ -10,16 +10,16 @@ import 'class/init_data.dart';
 import 'class/show_data_argument.dart';
 import 'main.dart';
 
-class StartAppRoutes extends StatefulWidget {
-  const StartAppRoutes({super.key, required this.initData});
+class AppRoutes extends StatefulWidget {
+  const AppRoutes({super.key, required this.initData});
 
   final InitData initData;
 
   @override
-  State<StartAppRoutes> createState() => _StartAppRoutesState();
+  State<AppRoutes> createState() => _AppRoutesState();
 }
 
-class _StartAppRoutesState extends State<StartAppRoutes> {
+class _AppRoutesState extends State<AppRoutes> {
   final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
   SharedMedia? media;
 
@@ -53,9 +53,11 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
         return ThemeData(
           colorScheme: colorScheme,
           useMaterial3: true,
+          /*
           scaffoldBackgroundColor: colorScheme.surfaceContainerLow,
+           */
           appBarTheme: AppBarThemeData(
-            backgroundColor: colorScheme.surfaceContainerLow,
+            elevation: 0,
           ),
           dividerTheme: DividerThemeData(color: colorScheme.surfaceContainerLow, space: 1),
           cardTheme: CardThemeData(
@@ -66,7 +68,8 @@ class _StartAppRoutesState extends State<StartAppRoutes> {
           dialogTheme: DialogThemeData(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
           ),
-          bottomSheetTheme: const BottomSheetThemeData(
+          bottomSheetTheme: BottomSheetThemeData(
+            backgroundColor: colorScheme.surfaceContainer,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
             ),
