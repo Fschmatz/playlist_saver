@@ -23,6 +23,11 @@ class PlaylistDao {
     return await db.query(table);
   }
 
+  Future<List<Map<String, dynamic>>> queryAllRowsOrderByTitle() async {
+    Database db = await instance.database;
+    return await db.rawQuery('SELECT * FROM $table ORDER BY title');
+  }
+
   Future<List<Map<String, dynamic>>> queryAllRowsDesc() async {
     Database db = await instance.database;
     return await db.rawQuery('SELECT * FROM $table ORDER BY id_playlist DESC');

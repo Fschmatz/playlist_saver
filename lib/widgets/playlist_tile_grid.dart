@@ -72,45 +72,52 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                       ),
                     ),
                   const SizedBox(height: 24),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      ChoiceChip(
-                        showCheckmark: false,
-                        label: const Text('Listen'),
-                        avatar: const Icon(Icons.queue_music_outlined),
-                        selected: widget.playlist.state == 0,
-                        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-                        onSelected: (_) {
-                          _changePlaylistState(0);
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      const borderWidth = 1.0;
+                      final segmentWidth = (constraints.maxWidth - borderWidth * 5) / 3;
+                      return ToggleButtons(
+                        borderRadius: BorderRadius.circular(24),
+                        selectedColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                        fillColor: Theme.of(context).colorScheme.primaryContainer,
+                        constraints: BoxConstraints(minWidth: segmentWidth, minHeight: 48),
+                        isSelected: [
+                          widget.playlist.state == 0,
+                          widget.playlist.state == 1,
+                          widget.playlist.state == 2,
+                        ],
+                        onPressed: (i) {
+                          _changePlaylistState(i);
                           Navigator.of(context).pop();
                         },
-                      ),
-                      ChoiceChip(
-                        showCheckmark: false,
-                        label: const Text('Archive'),
-                        avatar: const Icon(Icons.archive_outlined),
-                        selected: widget.playlist.state == 1,
-                        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-                        onSelected: (_) {
-                          _changePlaylistState(1);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      ChoiceChip(
-                        showCheckmark: false,
-                        label: const Text('Favorite'),
-                        avatar: const Icon(Icons.favorite_border_outlined),
-                        selected: widget.playlist.state == 2,
-                        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-                        onSelected: (_) {
-                          _changePlaylistState(2);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
+                        children: const [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              Icon(Icons.queue_music_outlined, size: 18),
+                              Text('Listen'),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              Icon(Icons.archive_outlined, size: 18),
+                              Text('Archive'),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              Icon(Icons.favorite_border_outlined, size: 18),
+                              Text('Favorite'),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   const SizedBox(height: 24),
                   Card(

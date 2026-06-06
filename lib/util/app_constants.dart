@@ -4,7 +4,7 @@ class AppConstants {
   static const String lastBackupDateAppParameter = "lastBackupDate";
 
   // STRINGS
-  static const String appVersion = "2.5.1";
+  static const String appVersion = "2.6.1";
   static final String backupFileName = "playlist_saver_backup";
   static const String appName = "Playlist Saver Fschmatz";
   static const String appNameHomePage = "Playlist Saver";
@@ -12,12 +12,18 @@ class AppConstants {
 
   static const String changelogCurrent = '''
 $appVersion
+- Add widget
 - UI changes
-- Logic changes
+- Redux changes
 - Bug fixes
 ''';
 
   static const String changelogsOld = '''
+2.5.1
+- UI changes
+- Logic changes
+- Bug fixes
+
 2.4.1
 - Add AppParameters
 - UI changes

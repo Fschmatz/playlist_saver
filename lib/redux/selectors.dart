@@ -10,6 +10,7 @@ List<Playlist> selectPlaylistByDestination(Destination destination) {
     Destination.archive => store.state.listArchive,
     Destination.favorites => store.state.listFavorites,
     Destination.downloads => store.state.listDownloads,
+    Destination.all => store.state.listAll,
   };
 }
 

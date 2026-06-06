@@ -3,6 +3,7 @@ import 'package:playlist_saver/service/app_parameter_service.dart';
 import '../class/app_parameter.dart';
 import '../enum/destination.dart';
 import '../service/playlist_service.dart';
+import '../service/widget_service.dart';
 import 'app_state.dart';
 import 'helper/app_action.dart';
 
@@ -41,15 +42,18 @@ class LoadPlaylistsAction extends AppAction {
       Destination.archive => state.listArchive,
       Destination.favorites => state.listFavorites,
       Destination.downloads => state.listDownloads,
+      Destination.all => state.listAll,
     };
 
     final playlists = cached.isEmpty || forceReload ? await PlaylistService().queryAllByStateAndConvertToList(destination.id) : cached;
+
 
     return switch (destination) {
       Destination.listen => state.copyWith(listListen: playlists, currentDestination: destination),
       Destination.archive => state.copyWith(listArchive: playlists, currentDestination: destination),
       Destination.favorites => state.copyWith(listFavorites: playlists, currentDestination: destination),
       Destination.downloads => state.copyWith(listDownloads: playlists, currentDestination: destination),
+      Destination.all => state.copyWith(listAll: playlists, currentDestination: destination),
     };
   }
 }

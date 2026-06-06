@@ -28,6 +28,13 @@ enum Destination {
       Icon(Icons.download_outlined),
       Icon(
         Icons.download,
+      )),
+  all(
+      4,
+      "All",
+      Icon(Icons.all_inclusive_outlined),
+      Icon(
+        Icons.all_inclusive,
       ));
 
   const Destination(this.id, this.name, this.icon, this.selectedIcon);

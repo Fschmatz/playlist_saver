@@ -53,9 +53,6 @@ class _AppRoutesState extends State<AppRoutes> {
         return ThemeData(
           colorScheme: colorScheme,
           useMaterial3: true,
-          /*
-          scaffoldBackgroundColor: colorScheme.surfaceContainerLow,
-           */
           appBarTheme: AppBarThemeData(
             elevation: 0,
           ),

@@ -10,6 +10,7 @@ import 'package:playlist_saver/service/store_service.dart';
 import '../class/backup.dart';
 import '../db/playlist_dao.dart';
 import '../redux/selectors.dart';
+import 'widget_service.dart';
 
 class PlaylistService extends StoreService {
   final dbPlaylist = PlaylistDao.instance;
@@ -28,6 +29,9 @@ class PlaylistService extends StoreService {
       case 3:
         resp = await dbPlaylist.queryAllRowsDownloadedOrderByTitle();
         break;
+      case 4:
+        resp = await dbPlaylist.queryAllRowsOrderByTitle();
+        break;
     }
 
     return resp.isNotEmpty ? resp.map((map) => Playlist.fromMap(map)).toList() : [];
@@ -37,18 +41,21 @@ class PlaylistService extends StoreService {
     await dbPlaylist.insert(playlist.toMap());
 
     loadPlaylists(Destination.listen);
+    await _updateWidget();
   }
 
   Future<void> updatePlaylist(Playlist playlist) async {
     await dbPlaylist.update(playlist.toMap());
 
     await loadPlaylists(selectCurrentDestination());
+    await _updateWidget();
   }
 
   Future<void> delete(Playlist playlist) async {
     await dbPlaylist.delete(playlist.idPlaylist!);
 
     await loadPlaylists(selectCurrentDestination());
+    await _updateWidget();
   }
 
   Future<void> changePlaylistState(Playlist playlist, int newState) async {
@@ -58,6 +65,7 @@ class PlaylistService extends StoreService {
     await dbPlaylist.update(updatedPlaylist.toMap());
 
     await loadPlaylistsOnChangeState(oldState, newState);
+    await _updateWidget();
   }
 
   Future<void> insertBackupData(Backup backup) async {
@@ -68,6 +76,13 @@ class PlaylistService extends StoreService {
     }
 
     await loadPlaylists(selectCurrentDestination());
+    await _updateWidget();
+  }
+
+  Future<void> _updateWidget() async {
+    final listenPlaylists = await dbPlaylist.queryAllRowsDescState(Destination.listen.id);
+    final playlists = listenPlaylists.map((map) => Playlist.fromMap(map)).toList();
+    await WidgetService.updatePlaylistWidget(playlists);
   }
 
   Future<void> saveNewPlaylistFromMetadata({

@@ -25,31 +25,34 @@ class _PlaylistListState extends State<PlaylistList> {
     }, builder: (context, viewData) {
       final (playlists, showAlbumInfo) = viewData;
 
-      return ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        children: [
-          GridView.builder(
-            padding: EdgeInsets.zero,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: showAlbumInfo ? 0.74 : 1,
-            ),
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: playlists.length,
-            itemBuilder: (context, index) {
-              final playlist = playlists[index];
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            GridView.builder(
+              padding: EdgeInsets.zero,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: showAlbumInfo ? 0.74 : 1,
+              ),
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: playlists.length,
+              itemBuilder: (context, index) {
+                final playlist = playlists[index];
 
-              return PlaylistTileGrid(
-                key: ValueKey(playlist.idPlaylist),
-                index: index,
-                playlist: playlist,
-                showAlbumInfo: showAlbumInfo,
-              );
-            },
-          ),
-          const SizedBox(height: 50),
-        ],
+                return PlaylistTileGrid(
+                  key: ValueKey(playlist.idPlaylist),
+                  index: index,
+                  playlist: playlist,
+                  showAlbumInfo: showAlbumInfo,
+                );
+              },
+            ),
+            const SizedBox(height: 50),
+          ],
+        ),
       );
     });
   }
