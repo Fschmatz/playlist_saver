@@ -4,32 +4,33 @@ import 'package:http/http.dart' as http;
 import 'package:playlist_saver/class/playlist.dart';
 import 'package:playlist_saver/class/spotify_metadata.dart';
 import 'package:playlist_saver/enum/destination.dart';
+import 'package:playlist_saver/enum/playlist_status.dart';
 import 'package:playlist_saver/service/spotify_metadata_service.dart';
-import 'package:playlist_saver/service/store_service.dart';
 
 import '../class/backup.dart';
 import '../db/playlist_dao.dart';
-import '../redux/selectors.dart';
 import 'widget_service.dart';
 
-class PlaylistService extends StoreService {
+class PlaylistService {
   final dbPlaylist = PlaylistDao.instance;
 
-  Future<List<Playlist>> queryAllByStateAndConvertToList(int stateValue) async {
+  Future<List<Playlist>> queryByDestination(Destination destination) async {
     List<Map<String, dynamic>> resp = [];
 
-    switch (stateValue) {
-      case 0:
-        resp = await dbPlaylist.queryAllRowsDescState(stateValue);
+    switch (destination) {
+      case Destination.listen:
+        resp = await dbPlaylist.queryAllRowsDescState(PlaylistStatus.listen.id);
         break;
-      case 1:
-      case 2:
-        resp = await dbPlaylist.queryAllRowsByStateOrderByTitle(stateValue);
+      case Destination.archive:
+        resp = await dbPlaylist.queryAllRowsByStateOrderByTitle(PlaylistStatus.archive.id);
         break;
-      case 3:
+      case Destination.favorites:
+        resp = await dbPlaylist.queryAllRowsByStateOrderByTitle(PlaylistStatus.favorite.id);
+        break;
+      case Destination.downloads:
         resp = await dbPlaylist.queryAllRowsDownloadedOrderByTitle();
         break;
-      case 4:
+      case Destination.all:
         resp = await dbPlaylist.queryAllRowsOrderByTitle();
         break;
     }
@@ -39,37 +40,22 @@ class PlaylistService extends StoreService {
 
   Future<void> insertPlaylist(Playlist playlist) async {
     await dbPlaylist.insert(playlist.toMap());
-
-    loadPlaylists(Destination.listen);
     await _updateWidget();
   }
 
-  Future<void> updatePlaylist(Playlist playlist, int oldState) async {
+  Future<void> updatePlaylist(Playlist playlist, PlaylistStatus oldState) async {
     await dbPlaylist.update(playlist.toMap());
-
-    if (playlist.state != oldState) {
-      await loadPlaylistsOnChangeState(oldState, playlist.state);
-    } else {
-      await loadPlaylists(selectCurrentDestination());
-    }
-
     await _updateWidget();
   }
 
   Future<void> delete(Playlist playlist) async {
     await dbPlaylist.delete(playlist.idPlaylist!);
-
-    await loadPlaylists(selectCurrentDestination());
     await _updateWidget();
   }
 
-  Future<void> changePlaylistState(Playlist playlist, int newState) async {
-    int oldState = playlist.state;
-
+  Future<void> changePlaylistState(Playlist playlist, PlaylistStatus newState) async {
     Playlist updatedPlaylist = playlist.copyWith(state: newState);
     await dbPlaylist.update(updatedPlaylist.toMap());
-
-    await loadPlaylistsOnChangeState(oldState, newState);
     await _updateWidget();
   }
 
@@ -79,13 +65,11 @@ class PlaylistService extends StoreService {
         await dbPlaylist.insert(playlist);
       }
     }
-
-    await loadPlaylists(selectCurrentDestination());
     await _updateWidget();
   }
 
   Future<void> _updateWidget() async {
-    final listenPlaylists = await dbPlaylist.queryAllRowsDescState(Destination.listen.id);
+    final listenPlaylists = await dbPlaylist.queryAllRowsDescState(PlaylistStatus.listen.id);
     final playlists = listenPlaylists.map((map) => Playlist.fromMap(map)).toList();
     await WidgetService.updatePlaylistWidget(playlists);
   }
@@ -108,7 +92,7 @@ class PlaylistService extends StoreService {
     Playlist playlist = Playlist(
       link: link,
       title: title,
-      state: 0,
+      state: PlaylistStatus.listen,
       artist: artist,
       downloaded: downloaded ? 1 : 0,
       cover: compressedCover,

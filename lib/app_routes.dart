@@ -75,6 +75,30 @@ class _AppRoutesState extends State<AppRoutes> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             elevation: 3,
           ),
+          dropdownMenuTheme: DropdownMenuThemeData(
+            inputDecorationTheme: InputDecorationTheme(
+              filled: true,
+              fillColor: colorScheme.surfaceContainerHigh,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: colorScheme.primary, width: 2),
+              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            ),
+            menuStyle: MenuStyle(
+              shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              ),
+            ),
+          ),
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
             fillColor: colorScheme.surfaceContainerHigh,

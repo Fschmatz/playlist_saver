@@ -2,24 +2,19 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_saver/pages/playlist_list.dart';
 import 'package:playlist_saver/pages/save_playlist.dart';
+import 'package:playlist_saver/redux/app_state.dart';
 import 'package:playlist_saver/util/app_constants.dart';
 
 import '../enum/destination.dart';
 import '../main.dart';
 import '../redux/actions.dart';
+import '../redux/selectors.dart';
 import 'settings.dart';
 
-class Home extends StatefulWidget {
-  @override
-  State<Home> createState() => _HomeState();
-
+class Home extends StatelessWidget {
   const Home({super.key});
-}
 
-class _HomeState extends State<Home> {
-  int _currentTabIndex = 0;
-
-  final List<Destination> _activeDestinations = [
+  final List<Destination> _activeDestinations = const [
     Destination.listen,
     Destination.archive,
     Destination.favorites,
@@ -27,18 +22,15 @@ class _HomeState extends State<Home> {
     Destination.all,
   ];
 
-  void _executeOnDestinationSelected(int index) async {
-    final selectedDestination = _activeDestinations[index];
-
+  void _executeOnDestinationSelected(BuildContext context, Destination selectedDestination) async {
     await store.dispatch(LoadPlaylistsAction(selectedDestination));
-
-    setState(() {
-      _currentTabIndex = index;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentDestination = context.select(selectCurrentDestination);
+    final currentTabIndex = _activeDestinations.indexOf(currentDestination);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppConstants.appNameHomePage),
@@ -73,14 +65,14 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => SavePlaylist(),
+                      builder: (BuildContext context) => const SavePlaylist(),
                     ),
                   );
                 case 1:
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => Settings(),
+                      builder: (BuildContext context) => const Settings(),
                     ),
                   );
               }
@@ -97,7 +89,7 @@ class _HomeState extends State<Home> {
               children: _activeDestinations.asMap().entries.map((entry) {
                 final int index = entry.key;
                 final Destination dest = entry.value;
-                final bool isSelected = _currentTabIndex == index;
+                final bool isSelected = currentTabIndex == index;
                 final colorscheme = Theme.of(context).colorScheme;
 
                 return Padding(
@@ -123,7 +115,7 @@ class _HomeState extends State<Home> {
                     ),
                     onSelected: (bool selected) {
                       if (!isSelected) {
-                        _executeOnDestinationSelected(index);
+                        _executeOnDestinationSelected(context, dest);
                       }
                     },
                   ),
@@ -145,8 +137,8 @@ class _HomeState extends State<Home> {
               );
             },
             child: PlaylistList(
-              key: ValueKey(_activeDestinations[_currentTabIndex].id),
-              destination: _activeDestinations[_currentTabIndex],
+              key: ValueKey(currentDestination.id),
+              destination: currentDestination,
             ),
           ),
         ],

@@ -2,32 +2,32 @@ import 'package:playlist_saver/class/playlist.dart';
 import 'package:playlist_saver/enum/destination.dart';
 
 import '../class/app_parameter.dart';
-import '../main.dart';
+import 'app_state.dart';
 
-List<Playlist> selectPlaylistByDestination(Destination destination) {
+List<Playlist> selectPlaylistByDestination(AppState state, Destination destination) {
   return switch (destination) {
-    Destination.listen => store.state.listListen,
-    Destination.archive => store.state.listArchive,
-    Destination.favorites => store.state.listFavorites,
-    Destination.downloads => store.state.listDownloads,
-    Destination.all => store.state.listAll,
+    Destination.listen => state.listListen,
+    Destination.archive => state.listArchive,
+    Destination.favorites => state.listFavorites,
+    Destination.downloads => state.listDownloads,
+    Destination.all => state.listAll,
   };
 }
 
-Destination selectCurrentDestination() => store.state.currentDestination;
+Destination selectCurrentDestination(AppState state) => state.currentDestination;
 
-List<AppParameter> selectAppParameters() => store.state.appParameters;
+List<AppParameter> selectAppParameters(AppState state) => state.appParameters;
 
-String? selectParameterValueByKey(String key) {
+String? selectParameterValueByKey(AppState state, String key) {
   try {
-    return store.state.appParameters.firstWhere((element) => element.getKey() == key).getValue();
+    return state.appParameters.firstWhere((element) => element.getKey() == key).getValue();
   } catch (e) {
     return null;
   }
 }
 
-bool selectParameterValueByKeyAsBoolean(String key, {bool defaultValue = true}) {
-  String? value = selectParameterValueByKey(key);
+bool selectParameterValueByKeyAsBoolean(AppState state, String key, {bool defaultValue = true}) {
+  String? value = selectParameterValueByKey(state, key);
 
   if (value == null) {
     return defaultValue;

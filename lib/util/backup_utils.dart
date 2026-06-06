@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:async_redux/async_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:playlist_saver/redux/actions.dart';
 import 'package:playlist_saver/service/app_parameter_service.dart';
-import 'package:playlist_saver/service/playlist_service.dart';
 
 import '../class/backup.dart';
 import '../db/playlist_dao.dart';
+import '../main.dart';
 
 class BackupUtils {
   final playlistDao = PlaylistDao.instance;
@@ -79,7 +81,7 @@ class BackupUtils {
       Backup backup = Backup.fromJson(json.decode(jsonString));
 
       await _deleteAllData();
-      await _insertBackupData(backup);
+      await store.dispatch(RestoreBackupAction(backup));
 
       Fluttertoast.showToast(
         msg: "Success!",
@@ -105,10 +107,5 @@ class BackupUtils {
   Future<void> _deleteAllData() async {
     await playlistDao.deleteAll();
     await AppParameterService().deleteAllParameters();
-  }
-
-  Future<void> _insertBackupData(Backup backup) async {
-    await PlaylistService().insertBackupData(backup);
-    await AppParameterService().insertParametersFromRestoreBackup(backup.parameters);
   }
 }

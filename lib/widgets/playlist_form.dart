@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:playlist_saver/enum/playlist_status.dart';
 
 import 'custom_text_field.dart';
 
@@ -18,8 +19,8 @@ class PlaylistForm extends StatelessWidget {
   final String appBarTitle;
   final Widget? artwork;
   final bool isUpdate;
-  final void Function(int)? onPlaylistStateChanged;
-  final int? playlistState;
+  final void Function(PlaylistStatus)? onPlaylistStateChanged;
+  final PlaylistStatus? playlistState;
 
   const PlaylistForm({
     super.key,
@@ -88,6 +89,30 @@ class PlaylistForm extends StatelessWidget {
             fieldValidator: true,
             errorMsg: "",
           ),
+          if (isUpdate) ...[
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              child: DropdownMenu<PlaylistStatus>(
+                initialSelection: playlistState,
+                expandedInsets: EdgeInsets.zero,
+                label: const Text('Status'),
+                onSelected: (PlaylistStatus? value) {
+                  if (value != null) {
+                    onPlaylistStateChanged?.call(value);
+                  }
+                },
+                dropdownMenuEntries: PlaylistStatus.values.map((status) {
+                  return DropdownMenuEntry<PlaylistStatus>(
+                    value: status,
+                    label: status.name,
+                    leadingIcon: Icon(status.icon),
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(height: 24),
+          ],
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Card(
@@ -113,44 +138,6 @@ class PlaylistForm extends StatelessWidget {
               ),
             ),
           ),
-          if (isUpdate) ...[
-            const SizedBox(height: 24),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-              child: SizedBox(
-                width: double.infinity,
-                child: SegmentedButton<int>(
-                  style: SegmentedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-                    selectedBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                    selectedForegroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                  segments: const [
-                    ButtonSegment(
-                      value: 0,
-                      label: Text('Listen'),
-                      icon: Icon(Icons.queue_music_outlined),
-                    ),
-                    ButtonSegment(
-                      value: 1,
-                      label: Text('Archive'),
-                      icon: Icon(Icons.archive_outlined),
-                    ),
-                    ButtonSegment(
-                      value: 2,
-                      label: Text('Favorite'),
-                      icon: Icon(Icons.favorite_border_outlined),
-                    ),
-                  ],
-                  selected: {if (playlistState != null) playlistState!},
-                  onSelectionChanged: (newSelection) {
-                    onPlaylistStateChanged?.call(newSelection.first);
-                  },
-                  showSelectedIcon: false,
-                ),
-              ),
-            ),
-          ],
           const SizedBox(height: 100),
         ],
       ),

@@ -1,7 +1,9 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:playlist_saver/enum/playlist_status.dart';
 
 import '../class/playlist.dart';
-import '../service/playlist_service.dart';
+import '../redux/actions.dart';
 import '../widgets/playlist_form.dart';
 
 class EditPlaylist extends StatefulWidget {
@@ -21,8 +23,8 @@ class _EditPlaylistState extends State<EditPlaylist> {
   bool _validLink = true;
   bool _downloaded = false;
   bool _newAlbum = false;
-  int _playlistState = 0;
-  late int _originalPlaylistState;
+  PlaylistStatus _playlistState = PlaylistStatus.listen;
+  late PlaylistStatus _originalPlaylistState;
 
   @override
   void initState() {
@@ -37,7 +39,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
     _originalPlaylistState = widget.playlist.state;
   }
 
-  Future<void> _updatePlaylist() async {
+  void _updatePlaylist() {
     Playlist updatedPlaylist = widget.playlist.copyWith(
       link: _controllerLink.text,
       title: _controllerPlaylistTitle.text,
@@ -47,7 +49,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
       state: _playlistState,
     );
 
-    await PlaylistService().updatePlaylist(updatedPlaylist, _originalPlaylistState);
+    context.dispatch(UpdatePlaylistAction(updatedPlaylist, _originalPlaylistState));
   }
 
   bool validateTextFields() {

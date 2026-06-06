@@ -6,9 +6,7 @@ import 'package:playlist_saver/util/utils_functions.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../class/playlist.dart';
-import '../enum/destination.dart';
 import '../pages/edit_playlist.dart';
-import '../redux/selectors.dart';
 
 class PlaylistTileGrid extends StatefulWidget {
   @override
@@ -34,10 +32,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
 
   Future<void> _delete() async {
     await playlistService.delete(widget.playlist);
-  }
-
-  bool isCurrentPageDownloads() {
-    return selectCurrentDestination() == Destination.downloads;
   }
 
   void openBottomMenu() {
@@ -77,15 +71,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                     child: Column(
                       children: [
                         ListTile(
-                          leading: const Icon(Icons.share_outlined),
-                          title: const Text("Share"),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            Share.share("${widget.playlist.title} - ${widget.playlist.artist!}\n\n${widget.playlist.link}");
-                          },
-                        ),
-                        Divider(),
-                        ListTile(
                           leading: const Icon(Icons.edit_outlined),
                           title: const Text("Edit"),
                           onTap: () {
@@ -97,6 +82,15 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                                     playlist: widget.playlist,
                                   ),
                                 ));
+                          },
+                        ),
+                        Divider(),
+                        ListTile(
+                          leading: const Icon(Icons.share_outlined),
+                          title: const Text("Share"),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Share.share("${widget.playlist.title} - ${widget.playlist.artist!}\n\n${widget.playlist.link}");
                           },
                         ),
                         Divider(),

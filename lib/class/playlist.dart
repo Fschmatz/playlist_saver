@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:playlist_saver/db/playlist_dao.dart';
+import 'package:playlist_saver/enum/playlist_status.dart';
 
 class Playlist {
   int? idPlaylist;
   String link;
   String title;
-  int state; //0 listen, 1 archive, 2 favorite
+  PlaylistStatus state; //0 listen, 1 archive, 2 favorite
   String? artist;
   int? downloaded; //0 false, 1 true
   Uint8List? cover;
@@ -50,7 +51,7 @@ class Playlist {
       idPlaylist: map[PlaylistDao.columnIdPlaylist],
       link: map[PlaylistDao.columnLink],
       title: map[PlaylistDao.columnTitle],
-      state: map[PlaylistDao.columnState],
+      state: PlaylistStatus.fromId(map[PlaylistDao.columnState]),
       artist: map[PlaylistDao.columnArtist],
       downloaded: map[PlaylistDao.columnDownloaded],
       cover: map[PlaylistDao.columnCover],
@@ -63,7 +64,7 @@ class Playlist {
       if (idPlaylist != null) PlaylistDao.columnIdPlaylist: idPlaylist,
       PlaylistDao.columnLink: link,
       PlaylistDao.columnTitle: title,
-      PlaylistDao.columnState: state,
+      PlaylistDao.columnState: state.id,
       PlaylistDao.columnArtist: artist,
       PlaylistDao.columnDownloaded: downloaded,
       PlaylistDao.columnCover: cover,
@@ -75,7 +76,7 @@ class Playlist {
     int? idPlaylist,
     String? link,
     String? title,
-    int? state,
+    PlaylistStatus? state,
     String? artist,
     int? downloaded,
     Uint8List? cover,

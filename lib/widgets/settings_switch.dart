@@ -22,26 +22,20 @@ class SettingsSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, bool>(
-      converter: (store) {
-        return selectParameterValueByKeyAsBoolean(parameterKey, defaultValue: defaultValue);
-      },
-      builder: (context, value) {
-        return SwitchListTile(
-          title: Text(title),
-          subtitle: subtitle != null ? Text(subtitle!) : null,
-          value: value,
-          onChanged: (newValue) {
-            StoreProvider.dispatch(
-              context,
-              SaveAppParameterAction(
-                AppParameter(
-                  key: parameterKey,
-                  value: newValue.toString(),
-                ),
-              ),
-            );
-          },
+    final value = context.select((state) => selectParameterValueByKeyAsBoolean(state, parameterKey, defaultValue: defaultValue));
+
+    return SwitchListTile(
+      title: Text(title),
+      subtitle: subtitle != null ? Text(subtitle!) : null,
+      value: value,
+      onChanged: (newValue) {
+        context.dispatch(
+          SaveAppParameterAction(
+            AppParameter(
+              key: parameterKey,
+              value: newValue.toString(),
+            ),
+          ),
         );
       },
     );

@@ -1,19 +1,16 @@
 import '../class/app_parameter.dart';
 import '../db/app_parameter_dao.dart';
 import '../util/app_constants.dart';
-import 'store_service.dart';
 
-class AppParameterService extends StoreService {
+class AppParameterService {
   final dbParams = AppParameterDAO.instance;
 
   Future<void> saveParameter(AppParameter parameter) async {
     await dbParams.insertOrUpdate(parameter.toMap());
-    await loadAppParameters();
   }
 
   Future<void> deleteParameter(String key) async {
     await dbParams.delete(key);
-    await loadAppParameters();
   }
 
   Future<List<AppParameter>> getAll() async {
@@ -50,6 +47,5 @@ class AppParameterService extends StoreService {
     for (var item in jsonData) {
       await dbParams.insertOrUpdate(item as Map<String, dynamic>);
     }
-    await loadAppParameters();
   }
 }

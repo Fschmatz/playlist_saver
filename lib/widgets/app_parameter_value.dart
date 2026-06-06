@@ -1,4 +1,3 @@
-import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 
 import '../redux/app_state.dart';
@@ -14,11 +13,8 @@ class AppParameterValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, String?>(
-      converter: (store) => selectParameterValueByKey(parameterKey),
-      builder: (context, value) {
-        return Text(value ?? '');
-      },
-    );
+    final value = context.select((state) => selectParameterValueByKey(state, parameterKey));
+
+    return Text(value ?? '');
   }
 }
