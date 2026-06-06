@@ -36,10 +36,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
     await playlistService.delete(widget.playlist);
   }
 
-  Future<void> _changePlaylistState(int state) async {
-    await playlistService.changePlaylistState(widget.playlist, state);
-  }
-
   bool isCurrentPageDownloads() {
     return selectCurrentDestination() == Destination.downloads;
   }
@@ -71,54 +67,6 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
                             ),
                       ),
                     ),
-                  const SizedBox(height: 24),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      const borderWidth = 1.0;
-                      final segmentWidth = (constraints.maxWidth - borderWidth * 5) / 3;
-                      return ToggleButtons(
-                        borderRadius: BorderRadius.circular(24),
-                        selectedColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                        fillColor: Theme.of(context).colorScheme.primaryContainer,
-                        constraints: BoxConstraints(minWidth: segmentWidth, minHeight: 48),
-                        isSelected: [
-                          widget.playlist.state == 0,
-                          widget.playlist.state == 1,
-                          widget.playlist.state == 2,
-                        ],
-                        onPressed: (i) {
-                          _changePlaylistState(i);
-                          Navigator.of(context).pop();
-                        },
-                        children: const [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: 8,
-                            children: [
-                              Icon(Icons.queue_music_outlined, size: 18),
-                              Text('Listen'),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: 8,
-                            children: [
-                              Icon(Icons.archive_outlined, size: 18),
-                              Text('Archive'),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: 8,
-                            children: [
-                              Icon(Icons.favorite_border_outlined, size: 18),
-                              Text('Favorite'),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
                   const SizedBox(height: 24),
                   Card(
                     elevation: 0,

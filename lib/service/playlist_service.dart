@@ -44,10 +44,15 @@ class PlaylistService extends StoreService {
     await _updateWidget();
   }
 
-  Future<void> updatePlaylist(Playlist playlist) async {
+  Future<void> updatePlaylist(Playlist playlist, int oldState) async {
     await dbPlaylist.update(playlist.toMap());
 
-    await loadPlaylists(selectCurrentDestination());
+    if (playlist.state != oldState) {
+      await loadPlaylistsOnChangeState(oldState, playlist.state);
+    } else {
+      await loadPlaylists(selectCurrentDestination());
+    }
+
     await _updateWidget();
   }
 

@@ -18,15 +18,16 @@
             android:layout_width="58dp"
             android:layout_height="58dp"
             android:scaleType="centerCrop"
-            android:background="@drawable/bg_image_placeholder" />
+            android:background="@drawable/rounded_image"
+            android:clipToOutline="true" />
 
         <ImageView
             android:id="@+id/iv_downloaded"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="bottom|end"
-            android:layout_marginEnd="2dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
             android:padding="2dp"
             android:background="@drawable/bg_download_icon"
             android:src="@android:drawable/stat_sys_download_done"

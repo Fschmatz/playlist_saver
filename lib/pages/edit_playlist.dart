@@ -21,6 +21,8 @@ class _EditPlaylistState extends State<EditPlaylist> {
   bool _validLink = true;
   bool _downloaded = false;
   bool _newAlbum = false;
+  int _playlistState = 0;
+  late int _originalPlaylistState;
 
   @override
   void initState() {
@@ -31,6 +33,8 @@ class _EditPlaylistState extends State<EditPlaylist> {
     _controllerArtist.text = widget.playlist.artist!;
     _downloaded = widget.playlist.isDownloaded();
     _newAlbum = widget.playlist.isNewAlbum();
+    _playlistState = widget.playlist.state;
+    _originalPlaylistState = widget.playlist.state;
   }
 
   Future<void> _updatePlaylist() async {
@@ -40,9 +44,10 @@ class _EditPlaylistState extends State<EditPlaylist> {
       artist: _controllerArtist.text,
       downloaded: _downloaded ? 1 : 0,
       newAlbum: _newAlbum ? 1 : 0,
+      state: _playlistState,
     );
 
-    await PlaylistService().updatePlaylist(updatedPlaylist);
+    await PlaylistService().updatePlaylist(updatedPlaylist, _originalPlaylistState);
   }
 
   bool validateTextFields() {
@@ -74,6 +79,8 @@ class _EditPlaylistState extends State<EditPlaylist> {
       isUpdate: true,
       onDownloadedChanged: (v) => setState(() => _downloaded = v),
       onNewAlbumChanged: (v) => setState(() => _newAlbum = v),
+      onPlaylistStateChanged: (v) => setState(() => _playlistState = v),
+      playlistState: _playlistState,
       onSave: () {
         if (validateTextFields()) {
           _updatePlaylist();
