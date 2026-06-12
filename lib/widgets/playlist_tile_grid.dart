@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:playlist_saver/service/playlist_service.dart';
 import 'package:playlist_saver/util/utils_functions.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../class/playlist.dart';
 import '../pages/edit_playlist.dart';
+import '../redux/actions.dart';
 
 class PlaylistTileGrid extends StatefulWidget {
   @override
@@ -20,7 +21,6 @@ class PlaylistTileGrid extends StatefulWidget {
 }
 
 class _PlaylistTileGridState extends State<PlaylistTileGrid> {
-  final PlaylistService playlistService = PlaylistService();
   final BorderRadius _cardBorderRadius = BorderRadius.circular(20);
   final double _tagHeight = 25;
   final double _tagWidth = 25;
@@ -31,7 +31,7 @@ class _PlaylistTileGridState extends State<PlaylistTileGrid> {
   }
 
   Future<void> _delete() async {
-    await playlistService.delete(widget.playlist);
+    context.dispatch(DeletePlaylistAction(widget.playlist));
   }
 
   void openBottomMenu() {

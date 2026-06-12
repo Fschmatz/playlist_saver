@@ -65,12 +65,14 @@ class PlaylistService {
         await dbPlaylist.insert(playlist);
       }
     }
+
     await _updateWidget();
   }
 
   Future<void> _updateWidget() async {
     final listenPlaylists = await dbPlaylist.queryAllRowsDescState(PlaylistStatus.listen.id);
     final playlists = listenPlaylists.map((map) => Playlist.fromMap(map)).toList();
+
     await WidgetService.updatePlaylistWidget(playlists);
   }
 

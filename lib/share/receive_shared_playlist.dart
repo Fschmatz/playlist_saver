@@ -1,9 +1,10 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../class/spotify_metadata.dart';
-import '../service/playlist_service.dart';
+import '../redux/actions.dart';
 import '../service/spotify_metadata_service.dart';
 import '../widgets/playlist_artwork.dart';
 import '../widgets/playlist_form.dart';
@@ -61,14 +62,14 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   }
 
   Future<void> _savePlaylist() async {
-    await PlaylistService().saveNewPlaylistFromMetadata(
+    context.dispatch(AddPlaylistAction(
       metadata: metaData,
       title: _controllerPlaylistTitle.text,
       artist: _controllerArtist.text,
       link: _controllerLink.text,
       downloaded: _downloaded,
       newAlbum: _newAlbum,
-    );
+    ));
   }
 
   bool validateTextFields() {

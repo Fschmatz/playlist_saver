@@ -154,8 +154,22 @@ class AddPlaylistAction extends AppAction {
 
     await PlaylistService().insertPlaylist(playlist);
 
-    final playlists = await PlaylistService().queryByDestination(Destination.listen);
-    return state.copyWith(listListen: playlists);
+    List<Destination> toReload = [Destination.listen, Destination.all];
+    if (downloaded) toReload.add(Destination.downloads);
+
+    AppState newState = state;
+    for (final dest in toReload) {
+      final playlists = await PlaylistService().queryByDestination(dest);
+      newState = switch (dest) {
+        Destination.listen => newState.copyWith(listListen: playlists),
+        Destination.archive => newState.copyWith(listArchive: playlists),
+        Destination.favorites => newState.copyWith(listFavorites: playlists),
+        Destination.downloads => newState.copyWith(listDownloads: playlists),
+        Destination.all => newState.copyWith(listAll: playlists),
+      };
+    }
+
+    return newState;
   }
 }
 
@@ -169,7 +183,7 @@ class UpdatePlaylistAction extends AppAction {
   Future<AppState> reduce() async {
     await PlaylistService().updatePlaylist(playlist, oldState);
 
-    List<Destination> toReload = [];
+    List<Destination> toReload = [Destination.all, Destination.downloads];
     if (playlist.state != oldState) {
       toReload.add(_destinationFromStatus(oldState));
       toReload.add(_destinationFromStatus(playlist.state));
@@ -209,16 +223,29 @@ class DeletePlaylistAction extends AppAction {
   @override
   Future<AppState> reduce() async {
     await PlaylistService().delete(playlist);
-    final destination = _destinationFromStatus(playlist.state);
-    final playlists = await PlaylistService().queryByDestination(destination);
 
-    return switch (destination) {
-      Destination.listen => state.copyWith(listListen: playlists),
-      Destination.archive => state.copyWith(listArchive: playlists),
-      Destination.favorites => state.copyWith(listFavorites: playlists),
-      Destination.downloads => state.copyWith(listDownloads: playlists),
-      Destination.all => state.copyWith(listAll: playlists),
-    };
+    List<Destination> toReload = [
+      _destinationFromStatus(playlist.state),
+      Destination.all,
+    ];
+
+    if (playlist.isDownloaded()) {
+      toReload.add(Destination.downloads);
+    }
+
+    AppState newState = state;
+    for (final dest in toReload) {
+      final playlists = await PlaylistService().queryByDestination(dest);
+      newState = switch (dest) {
+        Destination.listen => newState.copyWith(listListen: playlists),
+        Destination.archive => newState.copyWith(listArchive: playlists),
+        Destination.favorites => newState.copyWith(listFavorites: playlists),
+        Destination.downloads => newState.copyWith(listDownloads: playlists),
+        Destination.all => newState.copyWith(listAll: playlists),
+      };
+    }
+
+    return newState;
   }
 
   Destination _destinationFromStatus(PlaylistStatus status) {
