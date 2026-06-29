@@ -53,6 +53,7 @@
 
         <receiver
             android:name="com.fschmatz.playlist_saver.PlaylistWidgetProvider"
+            android:label="Playlist Saver - List"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -60,6 +61,18 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/playlist_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name="com.fschmatz.playlist_saver.PlaylistGridWidgetProvider"
+            android:label="Playlist Saver - Grid"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/playlist_grid_widget_info" />
         </receiver>
 
         <service

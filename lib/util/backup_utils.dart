@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:async_redux/async_redux.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:playlist_saver/redux/actions.dart';
 import 'package:playlist_saver/service/app_parameter_service.dart';
+import 'package:playlist_saver/util/toast_utils.dart';
 
 import '../class/backup.dart';
 import '../db/playlist_dao.dart';
@@ -46,12 +45,12 @@ class BackupUtils {
       await _saveListAsJson(backup, fileName);
       await AppParameterService().saveLastBackupDate();
 
-      Fluttertoast.showToast(
-        msg: "Backup completed!",
+      ToastUtils.show(
+        "Backup complete!",
       );
     } else {
-      Fluttertoast.showToast(
-        msg: "No data found!",
+      ToastUtils.showErrorMessage(
+        "No data found!",
       );
     }
   }
@@ -64,9 +63,7 @@ class BackupUtils {
 
       await file.writeAsString(json.encode(data));
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Error!",
-      );
+      ToastUtils.showError();
     }
   }
 
@@ -83,13 +80,9 @@ class BackupUtils {
       await _deleteAllData();
       await store.dispatch(RestoreBackupAction(backup));
 
-      Fluttertoast.showToast(
-        msg: "Success!",
-      );
+      ToastUtils.showSuccess();
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Error!",
-      );
+      ToastUtils.showError();
     }
   }
 

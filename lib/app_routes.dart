@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playlist_saver/pages/home.dart';
 import 'package:playlist_saver/share/receive_shared_playlist.dart';
+import 'package:playlist_saver/util/toast_utils.dart';
 import 'package:share_handler/share_handler.dart';
 
 import 'class/init_data.dart';
@@ -122,6 +123,7 @@ class _AppRoutesState extends State<AppRoutes> {
       return MaterialApp(
         navigatorKey: _navKey,
         debugShowCheckedModeBanner: false,
+        scaffoldMessengerKey: ToastUtils.scaffoldMessengerKey,
         theme: buildTheme(lightScheme),
         darkTheme: buildTheme(darkScheme),
         themeMode: EasyDynamicTheme.of(context).themeMode,

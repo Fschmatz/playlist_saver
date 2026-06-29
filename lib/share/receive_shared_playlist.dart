@@ -1,11 +1,11 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../class/spotify_metadata.dart';
 import '../redux/actions.dart';
 import '../service/spotify_metadata_service.dart';
+import '../util/toast_utils.dart';
 import '../widgets/playlist_artwork.dart';
 import '../widgets/playlist_form.dart';
 
@@ -27,6 +27,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   bool _validLink = true;
   bool _downloaded = false;
   bool _newAlbum = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -43,20 +44,27 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   }
 
   void _fetchMetadata() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       metaData = await SpotifyMetadataService().loadMetadata(_controllerLink.text);
     } catch (e) {
       metaData = null;
-      Fluttertoast.showToast(
-        msg: "Error parsing data",
+      ToastUtils.showErrorMessage(
+        "Error parsing data",
       );
     }
 
     if (mounted) {
       setState(() {
+        _isLoading = false;
         metaData;
-        _controllerPlaylistTitle.text = SpotifyMetadataService().formatTitleToSave(metaData!.title);
-        _controllerArtist.text = metaData!.artistName!;
+        if (metaData != null) {
+          _controllerPlaylistTitle.text = SpotifyMetadataService().formatTitleToSave(metaData!.title);
+          _controllerArtist.text = metaData!.artistName!;
+        }
       });
     }
   }
@@ -110,8 +118,10 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
         downloaded: _downloaded,
         newAlbum: _newAlbum,
         isUpdate: false,
+        isLoading: _isLoading,
         artwork: PlaylistArtwork(
           imageUrl: metaData?.imageUrl,
+          isLoading: _isLoading,
         ),
         onDownloadedChanged: (v) => setState(() => _downloaded = v),
         onNewAlbumChanged: (v) => setState(() => _newAlbum = v),

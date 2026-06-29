@@ -1,10 +1,10 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:playlist_saver/service/spotify_metadata_service.dart';
 
 import '../class/spotify_metadata.dart';
 import '../redux/actions.dart';
+import '../util/toast_utils.dart';
 import '../widgets/playlist_artwork.dart';
 import '../widgets/playlist_form.dart';
 
@@ -24,21 +24,29 @@ class _SavePlaylistState extends State<SavePlaylist> {
   bool _validLink = true;
   bool _downloaded = false;
   bool _newAlbum = false;
+  bool _isLoading = false;
 
   void _fetchMetadata() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       metaData = await SpotifyMetadataService().loadMetadata(controllerLink.text);
     } catch (e) {
       metaData = null;
-      Fluttertoast.showToast(
-        msg: "Error parsing data",
+      ToastUtils.showErrorMessage(
+        "Error parsing data",
       );
     }
 
     setState(() {
+      _isLoading = false;
       metaData;
-      controllerPlaylistTitle.text = metaData!.title;
-      controllerArtist.text = metaData!.artistName!;
+      if (metaData != null) {
+        controllerPlaylistTitle.text = metaData!.title;
+        controllerArtist.text = metaData!.artistName!;
+      }
     });
   }
 
@@ -78,8 +86,10 @@ class _SavePlaylistState extends State<SavePlaylist> {
       downloaded: _downloaded,
       newAlbum: _newAlbum,
       isUpdate: false,
+      isLoading: _isLoading,
       artwork: PlaylistArtwork(
         imageUrl: metaData?.imageUrl,
+        isLoading: _isLoading,
       ),
       onLinkSubmitted: _fetchMetadata,
       onDownloadedChanged: (v) => setState(() => _downloaded = v),

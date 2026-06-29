@@ -70,12 +70,13 @@ class SpotifyMetadataService {
   }
 
   String formatTitleToSave(String title) {
-    if (title.isNotEmpty) {
+    if (title.isEmpty) return "";
+    
+    try {
       List<int> bytes = latin1.encode(title);
-
       return utf8.decode(bytes);
-    } else {
-      return "";
+    } catch (e) {
+      return title;
     }
   }
 }

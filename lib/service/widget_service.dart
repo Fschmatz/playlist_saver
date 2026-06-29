@@ -8,6 +8,7 @@ import '../class/playlist.dart';
 
 class WidgetService {
   static const String androidWidgetName = 'PlaylistWidgetProvider';
+  static const String androidGridWidgetName = 'PlaylistGridWidgetProvider';
 
   static Future<void> updatePlaylistWidget(List<Playlist> playlists) async {
     try {
@@ -52,6 +53,10 @@ class WidgetService {
 
       await HomeWidget.updateWidget(
         name: androidWidgetName,
+      );
+      
+      await HomeWidget.updateWidget(
+        name: androidGridWidgetName,
       );
     } catch (e) {
       // Ignore

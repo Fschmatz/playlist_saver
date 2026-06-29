@@ -19,6 +19,7 @@ class PlaylistForm extends StatelessWidget {
   final String appBarTitle;
   final Widget? artwork;
   final bool isUpdate;
+  final bool isLoading;
   final void Function(PlaylistStatus)? onPlaylistStateChanged;
   final PlaylistStatus? playlistState;
 
@@ -36,6 +37,7 @@ class PlaylistForm extends StatelessWidget {
     required this.onSave,
     required this.appBarTitle,
     this.isUpdate = false,
+    this.isLoading = false,
     this.onLinkSubmitted,
     this.showLinkField = true,
     this.artwork,
@@ -53,7 +55,7 @@ class PlaylistForm extends StatelessWidget {
         children: [
           if (artwork != null)
             ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              contentPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [artwork!],
@@ -61,6 +63,7 @@ class PlaylistForm extends StatelessWidget {
             ),
           if (showLinkField)
             CustomTextField(
+              key: const ValueKey('link'),
               label: "Link",
               controller: linkController,
               required: true,
@@ -69,9 +72,13 @@ class PlaylistForm extends StatelessWidget {
               fieldValidator: validLink,
               errorMsg: "Link is empty",
               autofocus: !isUpdate,
-              onSubmitted: (_) => onLinkSubmitted?.call(),
+              onSubmitted: (_) {
+                FocusScope.of(context).unfocus();
+                onLinkSubmitted?.call();
+              },
             ),
           CustomTextField(
+            key: const ValueKey('title'),
             label: "Title",
             controller: titleController,
             required: true,
@@ -81,6 +88,7 @@ class PlaylistForm extends StatelessWidget {
             errorMsg: "Title is empty",
           ),
           CustomTextField(
+            key: const ValueKey('artist'),
             label: "Artist",
             controller: artistController,
             required: false,
@@ -142,11 +150,17 @@ class PlaylistForm extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: onSave,
-        icon: const Icon(Icons.save_outlined),
-        label: const Text(
-          "Save",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        onPressed: isLoading ? null : onSave,
+        icon: isLoading
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : const Icon(Icons.save_outlined),
+        label: Text(
+          isLoading ? "Loading..." : "Save",
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );

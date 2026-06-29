@@ -4,7 +4,7 @@ class AppConstants {
   static const String lastBackupDateAppParameter = "lastBackupDate";
 
   // STRINGS
-  static const String appVersion = "3.0.0";
+  static const String appVersion = "3.1.0";
   static final String backupFileName = "playlist_saver_backup";
   static const String appName = "Playlist Saver Fschmatz";
   static const String appNameHomePage = "Playlist Saver";
@@ -12,14 +12,19 @@ class AppConstants {
 
   static const String changelogCurrent = '''
 $appVersion
+- Add grid widget
+- UI changes
+- Bug fixes
+''';
+
+  static const String changelogsOld = '''
+3.0.0
 - Add widget
 - UI changes
 - Redux changes
 - Bug fixes
 - Flutter 3.44
-''';
 
-  static const String changelogsOld = '''
 2.5.1
 - UI changes
 - Logic changes
