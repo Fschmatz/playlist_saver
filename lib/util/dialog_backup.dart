@@ -14,11 +14,11 @@ class DialogBackup extends StatefulWidget {
 
 class _DialogBackupState extends State<DialogBackup> {
   Future<void> _createBackup() async {
-    await BackupUtils().backupData(AppConstants.backupFileName);
+    await BackupUtils().backupData();
   }
 
   Future<void> _restoreFromBackup() async {
-    await BackupUtils().restoreBackupData(AppConstants.backupFileName);
+    await BackupUtils().restoreBackupData();
   }
 
   Future<void> _executeBackup() async {

@@ -44,7 +44,7 @@ android {
         applicationId "com.fschmatz.playlist_saver"
         minSdkVersion flutter.minSdkVersion
         minSdkVersion 24
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
