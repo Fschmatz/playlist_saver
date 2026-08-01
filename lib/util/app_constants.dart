@@ -4,7 +4,7 @@ class AppConstants {
   static const String lastBackupDateAppParameter = "lastBackupDate";
 
   // STRINGS
-  static const String appVersion = "3.1.1";
+  static const String appVersion = "3.1.2";
   static final String backupFileName = "playlist_saver_backup";
   static const String appName = "Playlist Saver Fschmatz";
   static const String appNameHomePage = "Playlist Saver";

@@ -70,7 +70,7 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
   }
 
   Future<void> _savePlaylist() async {
-    context.dispatch(AddPlaylistAction(
+    await context.dispatchAndWait(AddPlaylistAction(
       metadata: metaData,
       title: _controllerPlaylistTitle.text,
       artist: _controllerArtist.text,
@@ -127,6 +127,9 @@ class _ReceiveSharedPlaylistState extends State<ReceiveSharedPlaylist> {
         onNewAlbumChanged: (v) => setState(() => _newAlbum = v),
         onSave: () async {
           if (validateTextFields()) {
+            setState(() {
+              _isLoading = true;
+            });
             await _savePlaylist();
             SystemNavigator.pop();
           } else {

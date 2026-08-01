@@ -51,7 +51,7 @@ class _SavePlaylistState extends State<SavePlaylist> {
   }
 
   Future<void> _savePlaylist() async {
-    context.dispatch(AddPlaylistAction(
+    await context.dispatchAndWait(AddPlaylistAction(
       metadata: metaData,
       title: controllerPlaylistTitle.text,
       artist: controllerArtist.text,
@@ -94,10 +94,13 @@ class _SavePlaylistState extends State<SavePlaylist> {
       onLinkSubmitted: _fetchMetadata,
       onDownloadedChanged: (v) => setState(() => _downloaded = v),
       onNewAlbumChanged: (v) => setState(() => _newAlbum = v),
-      onSave: () {
+      onSave: () async {
         if (validateTextFields()) {
-          _savePlaylist();
-          Navigator.pop(context);
+          setState(() {
+            _isLoading = true;
+          });
+          await _savePlaylist();
+          if (mounted) Navigator.pop(context);
         } else {
           setState(() {});
         }
